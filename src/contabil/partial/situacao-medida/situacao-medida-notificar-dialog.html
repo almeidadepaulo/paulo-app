@@ -1,0 +1,67 @@
+<md-dialog ng-cloak flex="40" aria-label="">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Notificação (Publish)</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+
+        <form name="form" layout-padding>
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm="">
+                    <label>Nome</label>
+                    <input name="nome" ng-model="vm.example.nome" required>
+                    <div ng-messages="form.nome.$error">
+                        <div ng-message="required">Campo obrigatório</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm="">
+                    <label>E-mail</label>
+                    <input name="email" ng-model="vm.example.email" type="email" required>
+                    <div ng-messages="form.email.$error" multiple md-auto-hide="false" ng-show="form.email.$touched">
+                        <div ng-message="required">Campo obrigatório</div>
+                        <div ng-message="email">E-mail inválido.</div>
+                    </div>
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm="">
+                    <label>Celular</label>
+                    <input name="celular" ng-model="vm.example.celular" ui-br-phone-number required>
+                    <div ng-messages="form.celular.$error" multiple md-auto-hide="false" ng-show="form.celular.$touched">
+                        <div ng-message="required">Campo obrigatório</div>
+                        <p ng-message="brPhoneNumber">Celular inválido</p>
+                    </div>
+                </md-input-container>
+            </div>
+        </form>
+
+        <!-- <md-divider></md-divider> -->
+
+        <div class="md-actions" layout="row" layout-xs="column">
+
+            <!-- <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+                <i class="fa fa-times" aria-hidden="true"></i> Remover
+            </md-button> -->
+
+            <span flex></span>
+
+            <md-button ng-click="vm.cancel()">
+                <i class="" aria-hidden="true"></i> Cancelar
+            </md-button>
+
+            <md-button class="md-raised md-primary" ng-click="vm.send(vm.example)" ng-disabled="form.$invalid">
+                <i class="fa fa-envelope-o" aria-hidden="true"></i> Enviar
+            </md-button>
+        </div>
+    </md-dialog-content>
+</md-dialog>

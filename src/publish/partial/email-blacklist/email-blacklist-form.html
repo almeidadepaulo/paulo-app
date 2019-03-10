@@ -1,0 +1,55 @@
+<div layout="column" ng-cloak class="email-blacklist-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Blacklist e-mail)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>CPF</label>
+                        <input name="EM065_NR_CPFCNPJ" ng-model="vm.blacklist.EM065_NR_CPFCNPJ" required ui-br-cpf-mask>
+                        <div ng-messages="form.EM065_NR_CPFCNPJ.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="cpf">CPF inválido.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>EMAIL</label>
+                        <input type="email" name="EM065_DS_EMAIL" ng-model="vm.blacklist.EM065_DS_EMAIL" required>
+                        <div ng-messages="form.EM065_DS_EMAIL.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="email">E-mail inválido.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+            </form>
+        </div>
+
+        <md-actions layout="row" layout-xs="column">
+
+            <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+                <i class="fa fa-times" aria-hidden="true"></i> Remover
+            </md-button>
+
+            <span flex></span>
+
+            <md-button ng-click="vm.cancel()">
+                <i class="" aria-hidden="true"></i> Cancelar
+            </md-button>
+
+            <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+                <i class="fa fa-check" aria-hidden="true"></i> Salvar
+            </md-button>
+        </md-actions>
+    </md-content>
+</div>

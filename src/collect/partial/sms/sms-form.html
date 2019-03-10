@@ -1,0 +1,60 @@
+<div layout="column" ng-cloak class="sms-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>SMS</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding>
+        <div>
+            <form name="form">
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Sacado</label>
+                        <input name="sacado" ng-model="vm.filter.sacado.name" ng-readonly="true" placeholder="Selecionar sacado" class="pointer" ng-click="vm.filterDialog('sacado')" required>
+                        <div ng-messages="form.sacado.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Celular</label>
+                        <input ui-br-phone-number required name="celular" ng-model="vm.sms.celular"> </input>
+
+                        <div ng-messages="form.celular.$error" ng-if="!showHints">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Mensagem</label>
+                        <input md-maxlength="140" required name="mensagem" ng-model="vm.sms.mensagem"> </input>
+
+                        <div ng-messages="form.mensagem.$error" ng-if="!showHints">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="md-maxlength">A mensagem deve ter até 140 caracteres.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+    </md-content>
+    <md-actions layout="row" layout-xs="column">
+
+        <span flex></span>
+
+        <md-button ng-click="vm.cancel()">
+            <i class="" aria-hidden="true"></i> Cancelar
+        </md-button>
+
+        <md-button class="md-raised md-primary" ng-click="vm.send(vm.example)" ng-disabled="form.$invalid">
+            <i class="fa fa-envelope-o" aria-hidden="true"></i> Enviar
+        </md-button>
+    </md-actions>
+</div>

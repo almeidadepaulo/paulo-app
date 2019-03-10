@@ -1,0 +1,66 @@
+<md-dialog ng-cloak flex="70" aria-label="" ng-init="vm.init()" class="produto-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Selecione o produto</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+        <form name="formSearch" class="filter">
+            <h5>Utilize o campo abaixo para filtrar a listagem.</h5>
+            <div layout-gt-sm="row">
+                <md-input-container flex-gt-sm="50" flex-gt-sm layout-xs="100">
+                    <label>Código</label>
+                    <input ng-model="vm.filter.CB255_CD_PROD">
+                </md-input-container>
+
+                <md-input-container flex-gt-sm="50" layout-xs="100">
+                    <label>Nome</label>
+                    <input ng-model="vm.filter.CB255_DS_PROD">
+                </md-input-container>
+            </div>
+        </form>
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.produto.selected.length">
+            <div class="md-toolbar-tools">
+                <span>Produto</span>
+                <span flex></span>
+                <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                    <md-icon>refresh</md-icon>
+                    Atualizar listagem
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-toolbar class="md-accent md-hue-1" ng-show="vm.produto.selected.length">
+            <div class="md-toolbar-tools">
+                <span>{{vm.produto.selected.length}} {{vm.produto.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.remove()">
+                    <md-icon>delete</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div>
+            <md-table-container>
+                <table md-table md-row-select="false" multiple="false" ng-model="vm.produto.selected" md-progress="vm.produto.promise">
+                    <thead md-head md-order="vm.produto.order">
+                        <tr md-row>
+                            <th md-column md-order-by="CB255_CD_PROD"><span>Código</span></th>
+                            <th md-column md-order-by="CB255_DS_PROD"><span>Descrição</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.produto.data | orderBy: vm.produto.order" class="pointer" ng-click="vm.itemClick(item)">
+                            <td md-cell>{{item.CB255_CD_PROD}}</td>
+                            <td md-cell>{{item.CB255_DS_PROD}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.produto.limit" md-page="vm.produto.page" md-total="{{vm.produto.total}}" md-page-select md-on-paginate="vm.produto.pagination"></md-table-pagination>
+        </div>
+    </md-dialog-content>
+</md-dialog>

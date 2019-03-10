@@ -1,0 +1,221 @@
+<div layout="column" ng-cloak class="cedente-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Cedente</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding>
+        <!-- <md-tabs md-center-tabs="true" md-dynamic-height md-border-bottom md-autoselect md-stretch-tabs="always">
+            <md-tab label="Geral"> -->
+        <div>
+            <form name="form">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Código</label>
+                        <input type="text" max="99999999" name="CB053_CD_EMIEMP" ng-model="vm.cedente.CB053_CD_EMIEMP" ng-disabled="true">
+                        <div ng-messages="form.CB053_CD_EMIEMP.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="max">Código inválido.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>CNPJ</label>
+                        <input name="CB053_NR_CPFCNPJ" ng-model="vm.cedente.CB053_NR_CPFCNPJ" ui-br-cnpj-mask required ng-disabled="vm.perfilTipo === 3">
+                        <div ng-messages="form.CB053_NR_CPFCNPJ.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="cnpj">CNPJ inválido.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Razão social</label>
+                        <input name="CB053_DS_EMIEMP" ng-model="vm.cedente.CB053_DS_EMIEMP" required ng-disabled="vm.perfilTipo === 3">
+                        <div ng-messages="form.CB053_DS_EMIEMP.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nome fantasia</label>
+                        <input name="CB053_DS_EMIEMR" ng-model="vm.cedente.CB053_DS_EMIEMR" required ng-disabled="vm.perfilTipo === 3">
+                        <div ng-messages="form.CB053_DS_EMIEMR.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>E-mail 1</label>
+                        <input name="CB053_NM_EMAIL" ng-model="vm.cedente.CB053_NM_EMAIL" required type="email">
+                        <div ng-messages="form.CB053_NM_EMAIL.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="email">E-mail1 inválido.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>E-mail 2</label>
+                        <input name="CB053_NM_EMAIL2" ng-model="vm.cedente.CB053_NM_EMAIL2" type="email">
+                        <div ng-messages="form.CB053_NM_EMAIL2.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="email">E-mail2 inválido.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Telefone 1</label>
+                        <input name="CB053_NR_TEL" ng-model="vm.cedente.CB053_NR_TEL" required ui-br-phone-number>
+                        <div ng-messages="form.CB053_NR_TEL.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Telefone 2</label>
+                        <input name="CB053_NR_CEL" ng-model="vm.cedente.CB053_NR_CEL" ui-br-phone-number>
+                        <div ng-messages="form.CB053_NR_CEL.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="30">
+                        <label>CEP</label>
+                        <input name="CB053_NR_CEP" ng-model="vm.cedente.CB053_NR_CEP" required ui-br-cep-mask cep-search cep-search-event="vm.cepSearch(event)">
+                        <div ng-messages="form.CB053_NR_CEP.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Endereço</label>
+                        <input name="CB053_NM_END" ng-model="vm.cedente.CB053_NM_END" required>
+                    </md-input-container>
+
+                    <md-input-container flex-gt-sm="15">
+                        <label>Nº</label>
+                        <input type="number" name="CB053_NR_END" ng-model="vm.cedente.CB053_NR_END" required>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container flex-gt-sm="">
+                        <label>Complemento</label>
+                        <input type="text" name="CB053_NM_COMPL" ng-model="vm.cedente.CB053_NM_COMPL">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Bairro</label>
+                        <input name="CB053_NM_BAIRRO" ng-model="vm.cedente.CB053_NM_BAIRRO" required>
+                        <div ng-messages="form.CB053_NM_BAIRRO.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Cidade</label>
+                        <input name="CB053_NM_CIDADE" ng-model="vm.cedente.CB053_NM_CIDADE" required>
+                        <div ng-messages="form.CB053_NM_CIDADE.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="15">
+                        <label>Estado</label>
+                        <input name="CB053_NM_ESTADO" ng-model="vm.cedente.CB053_NM_ESTADO" required>
+                        <div ng-messages="form.CB053_NM_ESTADO.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <!--
+                <div>
+                    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.cedenteContato.selected.length">
+                        <div class="md-toolbar-tools">
+                            <span>Contatos deste cedente</span>
+                            <span flex></span>
+                            <md-button class="md-primary" ng-click="vm.saveCedenteContato()">
+                                <md-icon>add</md-icon>
+                                Adicionar contato
+                            </md-button>
+                            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                                <md-icon>refresh</md-icon>
+                                Atualizar listagem
+                            </md-button>
+                        </div>
+                    </md-toolbar>
+
+                    <md-toolbar class="md-accent md-hue-1" ng-show="vm.cedenteContato.selected.length">
+                        <div class="md-toolbar-tools">
+                            <span>{{vm.cedenteContato.selected.length}} {{vm.cedenteContato.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+                            <span flex></span>
+                            <md-button class="md-primary" ng-click="vm.removeCedenteContato()">
+                                <md-icon>delete</md-icon>
+                                Remover contato
+                            </md-button>
+                        </div>
+                    </md-toolbar>
+                    <md-content class="content" flex>
+                        <md-table-container>
+                            <table md-table md-row-select="true" multiple="true" ng-model="vm.cedenteContato.selected" md-progress="vm.cedenteContato.promise">
+                                <thead md-head md-order="vm.cedenteContato.order">
+                                    <tr md-row>
+                                        <th md-column md-order-by=""><span>Nome</span></th>
+                                        <th md-column md-order-by=""><span>Cargo</span></th>
+                                        <th md-column md-order-by=""><span>E-mail</span></th>
+                                        <th md-column md-order-by=""><span>Telefone 1</span></th>
+                                        <th md-column md-order-by=""><span>Telefone 2</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody md-body>
+                                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.cedenteContato.data | orderBy: vm.cedenteContato.order | limitTo: vm.cedenteContato.limit: (vm.cedenteContato.page - 1) * vm.cedenteContato.limit">
+                                        <td md-cell>{{item.CB054_NM_CONTA}}</td>
+                                        <td md-cell>{{item.CB054_NM_CARGO}}</td>
+                                        <td md-cell>{{item.CB054_NM_CARGO}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </md-table-container>
+                    </md-content>
+                    <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.cedenteContato.limit" md-page="vm.cedenteContato.page" md-total="{{vm.cedenteContato.total}}" md-page-select></md-table-pagination>
+                </div>
+                -->
+            </form>
+        </div>
+        <!-- </md-tab>
+
+            <md-tab label="Contas">
+                <div>teste</div>
+            </md-tab>
+        </md-tabs> -->
+    </md-content>
+
+    <md-actions layout="row" layout-xs="column">
+
+        <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update' && vm.perfilTipo === '0'">
+            <i class="fa fa-times" aria-hidden="true"></i> Remover
+        </md-button>
+
+        <span flex></span>
+
+        <md-button ng-click="vm.cancel()">
+            <i class="" aria-hidden="true"></i> Cancelar
+        </md-button>
+
+        <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+            <i class="fa fa-check" aria-hidden="true"></i> Salvar
+        </md-button>
+    </md-actions>
+</div>

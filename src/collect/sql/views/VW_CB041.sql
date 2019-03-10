@@ -1,0 +1,45 @@
+-- Configura View
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Apaga view
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[VW_CB041]'))
+DROP VIEW [dbo].[VW_CB041]
+GO
+
+-- Cria View
+CREATE VIEW [dbo].[VW_CB041]
+WITH ENCRYPTION
+AS
+  SELECT
+    CB041_CD_LOCALI,
+  CB041_CD_ESTBR,
+  CB041_NM_LOCALI,
+  CB041_NR_CEP,
+  CB041_ST_LOCALI,
+  CASE 
+  WHEN CB041_ST_LOCALI = 0 THEN 'Sem logradouro'
+  WHEN CB041_ST_LOCALI = 1 THEN 'Município com log.'
+  WHEN CB041_ST_LOCALI = 2 THEN 'Distrito com log.'
+  ELSE 'indefinido'
+  END CB041_ST_LOCALI_L,
+  CB041_TP_LOCALI,
+  CASE 
+  WHEN CB041_TP_LOCALI = 'D' THEN 'Distrito'
+  WHEN CB041_TP_LOCALI = 'M' THEN 'Município'
+  WHEN CB041_TP_LOCALI = 'P' THEN 'Povoado'
+  WHEN CB041_TP_LOCALI = 'R' THEN 'Região administrativa'
+  ELSE 'indefinido'
+  END CB041_TP_LOCALI_L,
+  
+  CB041_CD_LOCSUB,
+  CB041_NM_LOCBR,
+  CB041_CD_IBGE,
+  CB041_CD_OPESIS,
+  CB041_DT_INCSIS,
+  CB041_DT_ATUSIS
+    
+  FROM CB041
+
+GO

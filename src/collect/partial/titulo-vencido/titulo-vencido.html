@@ -1,0 +1,49 @@
+<div layout="column" ng-cloak class="titulo-vencido" ng-init="vm.init()">
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.tituloVencido.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Título Vencido</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})" ng-disabled="formSearch.$invalid">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="false" ng-model="vm.tituloVencido.selected" md-progress="vm.tituloVencido.promise">
+                <thead md-head md-order="vm.tituloVencido.order">
+                    <tr md-row>
+                        <th md-column><span>Analítico</span></th>
+                        <th md-column md-order-by=""><span>Posição</span></th>
+                        <th md-column md-order-by="" class="right"><span>Qtde Títulos</span></th>
+                        <th md-column md-order-by="" class="right"><span>Valor Total</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.tituloVencido.data | orderBy: vm.tituloVencido.order | limitTo: vm.tituloVencido.limit: (vm.tituloVencido.page - 1) * vm.tituloVencido.limit">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.filterDialog('analitico', item)">
+                                <!-- <md-tooltip md-direction="top">Análitico</md-tooltip> -->
+                                <md-icon>search</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.POSICAO}}</td>
+                        <td md-cell class="right">{{item.CB208_QT_TOTAL | number}}</td>
+                        <td md-cell class="right">{{item.CB208_VL_TOTDIA | currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.tituloVencido.limit" md-page="vm.tituloVencido.page" md-total="{{vm.tituloVencido.total}}" md-page-select md-on-paginate="vm.tituloVencido.pagination"></md-table-pagination>
+    </div>
+</div>

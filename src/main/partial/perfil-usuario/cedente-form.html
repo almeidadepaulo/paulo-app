@@ -1,0 +1,78 @@
+<div layout="column" ng-cloak class="cedente-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Cedente</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Código</label>
+                        <input type="number" name="CB053_CD_EMIEMP" ng-model="vm.cedente.CB053_CD_EMIEMP" required>
+                        <div ng-messages="form.CB053_CD_EMIEMP.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>CNPJ</label>
+                        <input name="CB053_NR_CPFCNPJ" ng-model="vm.cedente.CB053_NR_CPFCNPJ" ui-br-cnpj-mask required>
+                        <div ng-messages="form.CB053_NR_CPFCNPJ.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="cnpj">CNPJ inválido.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nome</label>
+                        <input name="CB053_DS_EMIEMP" ng-model="vm.cedente.CB053_DS_EMIEMP" required>
+                        <div ng-messages="form.CB053_DS_EMIEMP.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nome resumido</label>
+                        <input name="CB053_DS_EMIEMR" ng-model="vm.cedente.CB053_DS_EMIEMR" required>
+                        <div ng-messages="form.CB053_DS_EMIEMR.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Arquivo</label>
+                        <input name="CB053_DS_NMARQ" ng-model="vm.cedente.CB053_DS_NMARQ" required>
+                        <div ng-messages="form.CB053_DS_NMARQ.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+    </md-content>
+    <md-actions layout="row" layout-xs="column">
+
+        <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+            <i class="fa fa-times" aria-hidden="true"></i> Remover
+        </md-button>
+
+        <span flex></span>
+
+        <md-button ng-click="vm.cancel()">
+            <i class="" aria-hidden="true"></i> Cancelar
+        </md-button>
+
+        <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+            <i class="fa fa-check" aria-hidden="true"></i> Salvar
+        </md-button>
+    </md-actions>
+</div>

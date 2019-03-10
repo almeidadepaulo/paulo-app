@@ -1,0 +1,85 @@
+<div layout="row" layout-align="center center">
+    <md-radio-group ng-model="vm.register.CL001_TP_PESSOA" layout="row" ng-change="vm.tipoPessoaChange(vm.register.CL001_TP_PESSOA)">
+        <md-radio-button value="F" class="md-primary">Pessoa Física</md-radio-button>
+        <md-radio-button value="J" class="md-primary"> Pessoa Jurídia </md-radio-button>
+    </md-radio-group>
+</div>
+
+<div layout-gt-sm="row">
+    <md-input-container class="md-block" flex-gt-sm="" ng-if="vm.register.CL001_TP_PESSOA === 'F'">
+        <label>CPF</label>
+        <input name="CB053_NR_CPFCNPJ" ng-model="vm.register.CL001_NR_CPFCNPJ" ui-br-cpf-mask required>
+        <div ng-messages="form.CB053_NR_CPFCNPJ.$error" multiple md-auto-hide="false">
+            <div ng-message="required">Campo obrigatório.</div>
+            <div ng-message="cpf">CPF inválido.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex-gt-sm="" ng-if="vm.register.CL001_TP_PESSOA === 'J'">
+        <label>CNPJ</label>
+        <input name="CB053_NR_CPFCNPJ" ng-model="vm.register.CL001_NR_CPFCNPJ" ui-br-cnpj-mask required>
+        <div ng-messages="form.CB053_NR_CPFCNPJ.$error" multiple md-auto-hide="false">
+            <div ng-message="required">Campo obrigatório.</div>
+            <div ng-message="cnpj">CNPJ inválido.</div>
+        </div>
+    </md-input-container>
+</div>
+
+<div layout-gt-sm="row">
+    <md-input-container class="md-block" flex-gt-sm="">
+        <label>{{vm.register.CL001_TP_PESSOA === 'F' ? 'Nome' : 'Razão social'}}</label>
+        <input name="CL001_NM_CLIENT" ng-model="vm.register.CL001_NM_CLIENT" required>
+        <div ng-messages="form.CB053_DS_EMIEMP.$error" multiple md-auto-hide="false">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+</div>
+
+<div layout-gt-sm="row" ng-if="vm.register.CL001_TP_PESSOA === 'J'">
+    <md-input-container class="md-block" flex-gt-sm="">
+        <label>Nome fantasia</label>
+        <input name="CL001_NM_CLIENTR" ng-model="vm.register.CL001_NM_CLIENTR" required>
+        <div ng-messages="form.CL001_NM_CLIENTR.$error" multiple md-auto-hide="false">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+</div>
+
+<div layout-gt-sm="row">
+    <md-input-container class="md-block" flex-gt-sm="">
+        <label>E-mail</label>
+        <input name="CL001_NM_EMAIL" ng-model="vm.register.CL001_NM_EMAIL" required type="email">
+        <div ng-messages="form.CL001_NM_EMAIL.$error">
+            <div ng-message="required">Campo obrigatório.</div>
+            <div ng-message="email">E-mail1 inválido.</div>
+        </div>
+    </md-input-container>
+</div>
+
+<div layout-gt-sm="row">
+    <md-input-container class="md-block" flex-gt-sm="">
+        <label>Telefone 1</label>
+        <input name="CL001_NR_CEL" ng-model="vm.register.CL001_NR_CEL" ui-br-phone-number>
+        <div ng-messages="form.CL001_NR_CEL.$error">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex-gt-sm="">
+        <label>Telefone 2</label>
+        <input name="CL001_NR_TEL" ng-model="vm.register.CL001_NR_TEL" ui-br-phone-number>
+        <div ng-messages="form.CL001_NR_TEL.$error">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+</div>
+
+<div layout-gt-sm="row" ng-if="vm.register.CL001_TP_PESSOA === 'F'">
+    <md-input-container class="md-block" flex-gt-sm="">
+        <label>Nome da mãe</label>
+        <input name="CL002_NM_MAE" ng-model="vm.register.CL002_NM_MAE">
+        <div ng-messages="form.CL002_NM_MAE.$error" multiple md-auto-hide="false">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+</div>

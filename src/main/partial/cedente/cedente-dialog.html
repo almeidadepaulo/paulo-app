@@ -1,0 +1,65 @@
+<md-dialog ng-cloak flex="70" aria-label="" ng-init="vm.init()" class="cedente-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Selecione um cedente</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+        <form name="formSearch" class="filter">
+            <h5>Utilize o campo abaixo para filtrar a listagem.</h5>
+            <div layout-gt-sm="row">
+                <md-input-container flex-gt-sm="100" layout-xs="100">
+                    <label>Código do cedente</label>
+                    <input ng-model="vm.filter.cedente_id">
+                </md-input-container>
+                <md-input-container flex-gt-sm="100" layout-xs="100">
+                    <label>Nome do cedente</label>
+                    <input ng-model="vm.filter.cedente_nome">
+                </md-input-container>
+            </div>
+        </form>
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.cedente.selected.length">
+            <div class="md-toolbar-tools">
+                <span>Cedente</span>
+                <span flex></span>
+                <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                    <md-icon>refresh</md-icon>
+                    Atualizar
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-toolbar class="md-accent md-hue-1" ng-show="vm.cedente.selected.length">
+            <div class="md-toolbar-tools">
+                <span>{{vm.cedente.selected.length}} {{vm.cedente.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.remove()">
+                    <md-icon>delete</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div>
+            <md-table-container>
+                <table md-table md-row-select="false" multiple="false" ng-model="vm.cedente.selected" md-progress="vm.cedente.promise">
+                    <thead md-head md-order="vm.cedente.order">
+                        <tr md-row>
+                            <th md-column md-order-by=""><span>Código do cedente</span></th>
+                            <th md-column md-order-by=""><span>Nome do cedente</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row md-select="item" md-select-id="PER_ID" md-auto-select ng-repeat="item in vm.cedente.data | orderBy: vm.cedente.order" ng-click="vm.itemClick(item)">
+                            <td md-cell>{{item.CEDENTE_ID}}</td>
+                            <td md-cell>{{item.CEDENTE_NOME}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.cedente.limit" md-page="vm.cedente.page" md-total="{{vm.cedente.total}}" md-page-select md-on-paginate="vm.cedente.pagination"></md-table-pagination>
+        </div>
+    </md-dialog-content>
+</md-dialog>

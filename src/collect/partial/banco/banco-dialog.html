@@ -1,0 +1,182 @@
+<md-dialog ng-cloak flex="70" aria-label="" ng-init="vm.init()" class="banco-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Selecione o banco</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content ng-switch on="vm.switch">
+        <div ng-switch-when="list">
+            <form name="formSearch" class="filter">
+                <h5>Utilize o campo abaixo para filtrar a listagem.</h5>
+                <div layout-gt-sm="row">
+                    <md-input-container flex-gt-sm="50" flex-gt-sm layout-xs="100">
+                        <label>Código</label>
+                        <input type="number" ng-model="vm.filter.CB250_CD_COMPSC">
+                    </md-input-container>
+
+                    <md-input-container flex-gt-sm="50" layout-xs="100">
+                        <label>Nome</label>
+                        <input ng-model="vm.filter.CB250_NM_BANCO">
+                    </md-input-container>
+                </div>
+            </form>
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.banco.selected.length">
+                <div class="md-toolbar-tools">
+                    <span>Banco</span>
+                    <span flex></span>
+
+                    <md-button class="md-primary" ng-click="vm.create()" ng-if="vm.formShow">
+                        <md-icon>add</md-icon>
+                        Adicionar banco
+                    </md-button>
+                    <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                        <md-icon>refresh</md-icon>
+                        Atualizar listagem
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-toolbar class="md-accent md-hue-1" ng-show="vm.banco.selected.length">
+                <div class="md-toolbar-tools">
+                    <span>{{vm.banco.selected.length}} {{vm.banco.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="vm.remove()">
+                        <md-icon>delete</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <div>
+                <md-table-container>
+                    <table md-table md-row-select="false" multiple="false" ng-model="vm.banco.selected" md-progress="vm.banco.promise">
+                        <thead md-head md-order="vm.banco.order">
+                            <tr md-row>
+                                <th md-column ng-if="vm.formShow"><span></span></th>
+                                <th md-column md-order-by="CB250_CD_COMPSC"><span>Código</span></th>
+                                <th md-column md-order-by="CB250_NM_BANCO"><span>Descrição</span></th>
+                            </tr>
+                        </thead>
+                        <tbody md-body>
+                            <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.banco.data | orderBy: vm.banco.order" class="pointer">
+                                <td md-cell ng-if="vm.formShow">
+                                    <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                        <md-icon>mode_edit</md-icon>
+                                    </md-button>
+                                </td>
+                                <td md-cell ng-click="vm.itemClick(item)">{{item.CB250_CD_COMPSC}}</td>
+                                <td md-cell ng-click="vm.itemClick(item)">{{item.CB250_NM_BANCO}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+                <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.banco.limit" md-page="vm.banco.page" md-total="{{vm.banco.total}}" md-page-select md-on-paginate="vm.banco.pagination"></md-table-pagination>
+            </div>
+        </div>
+
+        <form name="form" ng-switch-when="form">
+            <div class="md-dialog-content">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Código</label>
+                        <input type="number" max="99999" name="CB250_CD_COMPSC" ng-model="vm.bancoForm.CB250_CD_COMPSC" required>
+                        <div ng-messages="form.CB250_CD_COMPSC.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="max">Código não permitido</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nome</label>
+                        <input name="CB250_NM_BANCO" ng-model="vm.bancoForm.CB250_NM_BANCO" required maxlength="60">
+                        <div ng-messages="form.CB250_NM_BANCO.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>CNPJ</label>
+                        <input name="CB250_NR_CNPJ" ng-model="vm.bancoForm.CB250_NR_CNPJ" ui-br-cnpj-mask required>
+                        <div ng-messages="form.CB250_NR_CNPJ.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="cnpj">CNPJ inválido.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container>
+                        <label>CEP</label>
+                        <input name="CB250_NR_CEP" ng-model="vm.bancoForm.CB250_NR_CEP" ui-br-cep-mask cep-search cep-search-event="vm.cepSearch(event)">
+                        <div ng-messages="form.CB250_NR_CEP.$error">
+                            <div ng-message="cep">CEP inválido.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Endereço</label>
+                        <input name="CB250_NM_END" ng-model="vm.bancoForm.CB250_NM_END">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="20">
+                        <label>Número</label>
+                        <input name="CB250_NR_END" ng-model="vm.bancoForm.CB250_NR_END">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Complemento</label>
+                        <input name="CB250_DS_COMPL" ng-model="vm.bancoForm.CB250_DS_COMPL">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Bairro</label>
+                        <input name="CB250_NM_BAIRRO" ng-model="vm.bancoForm.CB250_NM_BAIRRO">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Estado</label>
+                        <input name="CB250_SG_ESTADO" ng-model="vm.bancoForm.CB250_SG_ESTADO">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Cidade</label>
+                        <input name="CB250_NM_CIDADE" ng-model="vm.bancoForm.CB250_NM_CIDADE">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nosso Número</label>
+                        <input ng-pattern="/^[0-9]*$/" maxlength="17" name="CB250_NR_NOSNUM" ng-model="vm.bancoForm.CB250_NR_NOSNUM">
+                        <div ng-messages="form.CB250_NR_NOSNUM.$error" multiple md-auto-hide="false">
+                            <div ng-message="pattern">Digite apenas números.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+        </form>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row" ng-if="vm.switch === 'form'">
+        <span flex></span>
+
+        <md-button ng-click="vm.back()">
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+
+        <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+            <i class="fa fa-check" aria-hidden="true"></i> Salvar
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

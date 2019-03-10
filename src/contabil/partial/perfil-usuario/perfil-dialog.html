@@ -1,0 +1,35 @@
+<md-dialog ng-cloak flex="70" aria-label="">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Selecione um perfil</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+        <form name="formPerfilSearch" class="filter">
+            <center>
+                <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+            </center>
+            <div layout-gt-sm="row">
+                <md-input-container flex-gt-sm layout-xs="100">
+                    <label>Nome do grupo</label>
+                    <input ng-model="vm.filter.nome">
+                </md-input-container>
+            </div>
+        </form>
+
+        <div layout="row" layout-sm="column" layout-align="end center" layout-wrap>
+            <md-button class="md-raised" ng-click="vm.getData()">
+                <i ng-class="vm.dgPerfilControl.working | dataGridRefresh" aria-hidden="true"></i> Atualizar
+            </md-button>
+        </div>
+        <div>
+            <px-data-grid id="dgPerfil" class="table-striped table-bordered" px-debug="true" px-control="vm.dgPerfilControl" px-init="vm.dgPerfilInit(event)" px-config="{{vm.dgPerfilConfig}}" px-check="false" px-item-click="vm.itemClick(event)" px-label-function="vm.dgPerfilLabel(event)">
+            </px-data-grid>
+        </div>
+    </md-dialog-content>
+</md-dialog>

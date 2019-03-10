@@ -1,0 +1,122 @@
+<div layout="column" ng-cloak class="carteira-relatorio" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container class="md-block" flex-gt-sm="20">
+                <label>Tipo do relatório</label>
+                <md-select ng-model="vm.filter.visao" ng-change="vm.tipoRelatorioChange()">
+                    <md-option value="geral">
+                        Geral
+                    </md-option>
+                    <md-option value="banco">
+                        Banco
+                    </md-option>
+                    <md-option value="carteira">
+                        Carteira
+                    </md-option>
+                    <md-option value="produto">
+                        Produto
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <div>
+                <sm-range-picker-input fname="CB209_DT_MOVTO" label="Data de movimento" form="formSearch" ng-model="vm.filter.CB209_DT_MOVTO" flex-size="100" is-required="true" format="DD/MM/YYYY" divider="até">
+                </sm-range-picker-input>
+            </div>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Banco</label>
+                <input name="banco" ng-model="vm.filter.banco.name" ng-readonly="true" placeholder="Selecionar banco" class="pointer" ng-click="vm.filterDialog('banco')">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('banco')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="" ng-if="vm.filter.visao === 'banco'">
+                <label>Agência</label>
+                <input name="agencia" ng-model="vm.filter.agencia.name" ng-readonly="true" placeholder="Selecionar agência" class="pointer" ng-click="vm.filterDialog('agencia')" ng-disabled="!vm.filter.banco.id">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('agencia')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="" ng-if="vm.filter.visao === 'banco'">
+                <label>Conta</label>
+                <input name="conta" ng-model="vm.filter.conta.name" ng-readonly="true" placeholder="Selecionar conta" class="pointer" ng-click="vm.filterDialog('conta')" ng-disabled="!vm.filter.agencia.id">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('conta')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="" ng-if="vm.filter.visao === 'carteira' || vm.filter.visao === 'produto'">
+                <label>Carteira</label>
+                <input name="carteira" ng-model="vm.filter.carteira.name" ng-readonly="true" placeholder="Selecionar carteira" class="pointer" ng-click="vm.filterDialog('carteira')">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('carteira')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="" ng-if="vm.filter.visao === 'produto'">
+                <label>Produto</label>
+                <input name="produto" ng-model="vm.filter.produto.name" ng-readonly="true" placeholder="Selecionar produto" class="pointer" ng-click="vm.filterDialog('produto')">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('produto')">close</md-icon>
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.carteiraRelatorio.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Carteira</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="false" ng-model="vm.carteiraRelatorio.selected" md-progress="vm.carteiraRelatorio.promise">
+                <thead md-head md-order="vm.carteiraRelatorio.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by=""><span>Data</span></th>
+                        <th md-column md-order-by=""><span>Banco</span></th>
+                        <th md-column md-order-by="" ng-if="vm.filter.visao === 'banco'"><span>Agência</span></th>
+                        <th md-column md-order-by="" ng-if="vm.filter.visao === 'banco'"><span>Conta</span></th>
+                        <th md-column md-order-by="" ng-if="vm.filter.visao === 'carteira' || vm.filter.visao === 'produto'"><span>Carteira</span></th>
+                        <th md-column md-order-by="" ng-if="vm.filter.visao === 'produto'"><span>Produto</span></th>
+                        <th md-column md-order-by="" class="right"><span>Tipo</span></th>
+                        <th md-column md-order-by="" class="right"><span>Qtde. (Títulos)</span></th>
+                        <!-- <th md-column md-order-by="" class="right"><span>Qtde. (Títulos) -->
+                        </span>
+                        </th>
+                        <th md-column md-order-by="" class="right"><span>Valor</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.carteiraRelatorio.data | orderBy: vm.carteiraRelatorio.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.filterDialog('analitico', item)">
+                                <!-- <md-tooltip md-direction="top">Análitico</md-tooltip> -->
+                                <md-icon>search</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.CB209_DT_MOVTO | numberToDate | date : 'dd/MM/yyyy'}}</td>
+                        <td md-cell>{{item.CB250_NM_BANCO}}</td>
+                        <td md-cell ng-if="vm.filter.visao === 'banco'">{{item.CB209_NR_AGENC}}</td>
+                        <td md-cell ng-if="vm.filter.visao === 'banco'">{{item.CB209_NR_CONTA}}</td>
+                        <td md-cell ng-if="vm.filter.visao === 'carteira' || vm.filter.visao === 'produto'">{{item.CB256_DS_CART}}</td>
+                        <td md-cell ng-if="vm.filter.visao === 'produto'">{{item.CB255_DS_PROD}}</td>
+                        <td md-cell class="right">{{item.CB209_ID_TIPOAC}}</td>
+                        <td md-cell class="right">{{item.CB209_QT_TOTAL | number}}</td>
+                        <!-- <td md-cell class="right">{{item.CB209_QT_CONTRA | number}}</td> -->
+                        <td md-cell class="right">{{item.CB209_VL_VALOR | currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.carteiraRelatorio.limit" md-page="vm.carteiraRelatorio.page" md-total="{{vm.carteiraRelatorio.total}}" md-page-select md-on-paginate="vm.carteiraRelatorio.pagination"></md-table-pagination>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<seeaway-view-header logo="contabil\assets\img\logo\logo-header.png" menus="vm.toolbar.menus" item-click="vm.itemClick(event)" toggle-click="vm.toggleRight(event)" class="teste"></seeaway-view-header>
+<md-content class="home">
+    <div layout="column" layout-align="center center" ui-view class="container">
+    </div>
+</md-content>
+<md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+    <md-toolbar class="">
+        <h2 class="md-toolbar-tools">Configurações</h2>
+    </md-toolbar>
+    <md-content layout="column" layout-align="center stretch" layout-padding>
+        <form layout="column" layout-align="center stretch" layout-padding>
+            <md-button class="md-raised md-block" aria-label="Learn More" layout-padding>
+                <i class="fa fa fa-user-circle-o fa-lg" aria-hidden="true"></i>{{vm.sideNav.nome}}
+            </md-button>
+
+            <div class="md-block" flex-gt-sm="" ng-show="false">
+                <md-autocomplete ng-disabled="vm.isDisabled" md-no-cache="vm.noCache" md-selected-item="vm.selectedItem" md-search-text-change="vm.searchTextChange(vm.searchText)" md-search-text="vm.searchText" md-selected-item-change="vm.selectedItemChange(item)" md-items="item in vm.querySearch(vm.searchText)"
+                    md-item-text="item.display" md-min-length="0" placeholder="What is your favorite US state?">
+                    <md-item-template>
+                        <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.display}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No states matching "{{vm.searchText}}" were found.
+                        <a ng-click="vm.newState(vm.searchText)">Create a new one!</a>
+                    </md-not-found>
+                </md-autocomplete>
+            </div>
+
+            <md-button ng-click="vm.logout();" class="md-primary md-block" layout-padding>
+                Sair do sistema
+            </md-button>
+
+        </form>
+    </md-content>
+</md-sidenav>

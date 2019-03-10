@@ -1,0 +1,90 @@
+<div layout="column" ng-cloak class="divergencia" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container flex-gt-sm="33" flex-gt-sm layout-xs="100">
+                <label>Banco Cobrador</label>
+                <input ng-model="vm.filter.CB057_NR_BANCO">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="33" layout-xs="100">
+                <label>Agência Cobradora</label>
+                <input name="CB057_NR_AGENC" ng-model="vm.filter.CB057_NR_AGENC">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="33" layout-xs="100">
+                <label>Conta</label>
+                <input name="CB057_NR_CONTA" ng-model="vm.filter.CB057_NR_CONTA">
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.divergencia.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Divergências no Recebimento</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <!--<md-toolbar class="md-accent md-hue-1" ng-show="vm.divergencia.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.divergencia.selected.length}} {{vm.divergencia.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>-->
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="false" ng-model="vm.divergencia.selected" md-progress="vm.divergencia.promise">
+                <thead md-head md-order="vm.divergencia.order">
+                    <tr md-row>
+                        <!--<th md-column><span></span></th>-->
+                        <th md-column md-order-by="CB057_NR_CONTRA"><span>Título</span></th>
+                        <th md-column md-order-by="CB057_NR_NOSNUM"><span>Nosso Numero</span></th>
+                        <th md-column md-order-by="CB057_VL_TITUORI"><span>Vlr Original</span></th>
+                        <th md-column md-order-by="CB057_VL_TITUREC"><span>Vlr Informado</span></th>
+                        <th md-column md-order-by="CB057_VL_DEVORI"><span>Vlr Devido</span></th>
+                        <th md-column md-order-by="CB057_VL_DEVREC"><span>Vlr Recebido</span></th>
+                        <th md-column md-order-by="CB057_VL_TARNCONT"><span>Trf Contratada</span></th>
+                        <th md-column md-order-by="CB057_VL_TARNCOBR"><span>Trf Cobrada</span></th>
+                        <th md-column md-order-by="CB057_VL_TARATCONT"><span>Trf Atraso Contratada</span></th>
+                        <th md-column md-order-by="CB057_VL_TARATCOBR"><span>Trf Atraso Cobrada</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.divergencia.data | orderBy: vm.divergencia.order">
+                        <!-- <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                <md-icon>mode_edit</md-icon>
+                            </md-button>
+                        </td>-->
+                        <td md-cell>{{item.CB057_NR_CONTRA}}</td>
+                        <td md-cell>{{item.CB057_NR_NOSNUM}}</td>
+                        <td md-cell>{{item.CB057_VL_TITUORI}}</td>
+                        <td md-cell>{{item.CB057_VL_TITUREC}}</td>
+                        <td md-cell>{{item.CB057_VL_DEVORI}}</td>
+                        <td md-cell>{{item.CB057_VL_DEVREC}}</td>
+                        <td md-cell>{{item.CB057_VL_TARNCONT}}</td>
+                        <td md-cell>{{item.CB057_VL_TARNCOBR}}</td>
+                        <td md-cell>{{item.CB057_VL_TARATCONT}}</td>
+                        <td md-cell>{{item.CB057_VL_TARATCOBR}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.divergencia.limit" md-page="vm.divergencia.page" md-total="{{vm.divergencia.total}}" md-page-select md-on-paginate="vm.divergencia.pagination"></md-table-pagination>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+-- Configura View
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Apaga view
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[VW_CB050]'))
+DROP VIEW [dbo].[VW_CB050]
+GO
+
+-- Cria View
+CREATE VIEW [dbo].[VW_CB050]
+WITH ENCRYPTION
+AS
+  SELECT 
+  
+  CB050_NR_INST,
+  CB050_NM_INST,  
+  CB050_NM_INSTR,
+  CB050_CD_OPESIS,
+  CB050_DT_INCSIS,
+  CB050_DT_ATUSIS,
+  
+  Cast(CB050_NR_INST as varchar) +' - '+ CB050_NM_INST AS CB050_NR_NM_INST
+  --'Conglomerado '+Cast(CB050_NR_INST as varchar) AS CB050_NR_NM_INST
+  
+  FROM CB050 AS CB050
+
+GO
+
+

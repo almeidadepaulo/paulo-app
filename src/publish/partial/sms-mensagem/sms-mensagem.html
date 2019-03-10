@@ -1,0 +1,87 @@
+<div layout="column" ng-cloak class="sms-mensagem" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <!-- <md-input-container class="md-block" flex-gt-sm="">
+                <label>Código</label>
+                <input name="MG061_CD_CODSMS" ng-model="vm.filter.MG055_DS_CODSMS" ng-readonly="true" placeholder="Clique aqui para selecionar um código" class="pointer" ng-click="vm.codigoDialog($event)">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterCodigoClean()">close</md-icon>
+            </md-input-container> -->
+
+            <!-- <md-input-container flex-gt-sm="50" layout-xs="100">
+                <label>Texto do mensagem</label>
+                <input ng-model="vm.filter.MG061_DS_TEXTO">
+            </md-input-container> -->
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Código</label>
+                <input type="number" ng-model="vm.filter.MG061_CD_CODSMS">
+            </md-input-container>
+
+
+            <md-input-container flex-gt-sm="50" layout-xs="100">
+                <label>Tipo</label>
+                <input ng-model="vm.filter.MG055_DS_CODSMS">
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.smsMensagem.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Mensagem (SMS)</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.create()">
+                <md-icon>add</md-icon>
+                Adicionar
+            </md-button>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-accent md-hue-1" ng-show="vm.smsMensagem.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.smsMensagem.selected.length}} {{vm.smsMensagem.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="true" multiple="true" ng-model="vm.smsMensagem.selected" md-progress="vm.smsMensagem.promise">
+                <thead md-head md-order="vm.smsMensagem.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by=""><span>Código</span></th>
+                        <th md-column md-order-by=""><span>Tipo</span></th>
+                        <!-- <th md-column md-order-by=""><span>Texto</span></th> -->
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.smsMensagem.data | orderBy: vm.smsMensagem.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                <md-icon>mode_edit</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.MG061_CD_CODSMS}}</td>
+                        <td md-cell>{{item.MG055_DS_CODSMS}}</td>
+                        <!-- <td md-cell>{{item.MG061_DS_TEXTO}}</td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.smsMensagem.limit" md-page="vm.smsMensagem.page" md-total="{{vm.smsMensagem.total}}" md-page-select md-on-paginate="vm.smsMensagem.pagination"></md-table-pagination>
+    </div>
+</div>

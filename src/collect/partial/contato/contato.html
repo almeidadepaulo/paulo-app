@@ -1,0 +1,74 @@
+<div layout="column" ng-cloak class="contato" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container flex-gt-sm="100" layout-xs="100">
+                <label>Nome</label>
+                <input ng-model="vm.filter.CB054_NM_CONTA">
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.contato.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Contato</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.create()">
+                <md-icon>add</md-icon>
+                Adicionar
+            </md-button>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-accent md-hue-1" ng-show="vm.contato.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.contato.selected.length}} {{vm.contato.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="true" multiple="true" ng-model="vm.contato.selected" md-progress="vm.contato.promise">
+                <thead md-head md-order="vm.contato.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by=""><span>Nome</span></th>
+                        <th md-column md-order-by=""><span>Cargo</span></th>
+                        <th md-column md-order-by=""><span>E-mail</span></th>
+                        <th md-column md-order-by=""><span>Telefone 1</span></th>
+                        <th md-column md-order-by=""><span>Telefone 2</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.contato.data | orderBy: vm.contato.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                <md-icon>mode_edit</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.CB054_NM_CONTA}}</td>
+                        <td md-cell>{{item.CB054_NM_EMAIL}}</td>
+                        <td md-cell>{{item.CB054_NM_CARGO}}</td>
+                        <td md-cell>{{item.CB054_NR_TEL | brPhoneNumber}}</td>
+                        <td md-cell>{{item.CB054_NR_CEL | brPhoneNumber}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.contato.limit" md-page="vm.contato.page" md-total="{{vm.contato.total}}" md-page-select md-on-paginate="vm.contato.pagination"></md-table-pagination>
+    </div>
+</div>

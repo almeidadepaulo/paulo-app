@@ -1,0 +1,220 @@
+@charset "utf-8";
+.login {
+	.container {
+		margin: 0 auto;
+		width: 900px;
+	}
+	.h2 {
+		color: #60a83a;
+		font-weight: bold;
+	}
+	.hr {
+		border-top: 1px solid #dadada;
+		position: relative;
+		height: 1px;
+		margin: 32px 0;
+		clear: both;
+	}
+	.hr:before {
+		border-top: 1px solid #fff;
+		position: absolute;
+		top: 0;
+		content: '';
+		display: block;
+		width: 100%;
+	}
+	#header {
+		background-color: #fcfcfc;
+		position: fixed;
+		z-index: 1;
+		width: 100%;
+		height: 94px;
+	}
+	#header .container {
+		padding: 12px 0 16px 0;
+	}
+	#site-title {
+		float: left;
+		margin: 0;
+	}
+	#site-title a {
+		background: url(contabil/assets/img/logo/logo-login.jpg) 0 0 no-repeat;
+		width: 121px;
+		height: 66px;
+		display: block;
+		border: 0;
+		text-indent: -999em;
+		overflow: hidden;
+		margin-right: 0px;
+	}
+	#main {
+		clear: both;
+		padding-top: 94px;
+	}
+	#content {
+		position: relative;
+		/*text-align: center;*/
+	}
+	#loginDiv {
+		margin: 0px auto;
+		width: 272px;
+	}
+	#loginDiv .recover-link {
+		width: 100%;
+		text-align: center;
+		color: #60a83a;
+		font-weight: 400;
+		display: block;
+		margin-top: 5px;
+		cursor: pointer;
+	}
+	#loginDiv .working {
+		width: 100%;
+		text-align: center;
+		color: #60a83a;
+		font-weight: 400;
+		display: block;
+		margin-top: 5px;
+	}
+	#loginDiv .new-user-link {
+		width: 100%;
+		text-align: center;
+		color: #60a83a;
+		font-weight: 400;
+		display: block;
+		margin-top: 5px;
+		cursor: pointer;
+	}
+	.animate-switch-container {
+		position: relative;
+		height: 270px;
+		overflow: hidden;
+		padding-top: 5px;		
+	}
+	.animate-switch {
+		padding: 0px;
+	}
+	.animate-switch.ng-animate {
+		transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.7s;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+	.animate-switch.ng-leave.ng-leave-active, .animate-switch.ng-enter {
+		top: -260px;
+	}
+	.animate-switch.ng-leave, .animate-switch.ng-enter.ng-enter-active {
+		top: 0;
+	}
+	/*RODAPÉ*/
+	#colophon {
+		background-color: #60a83a;
+		position: fixed;
+		width: 100%;
+		bottom: 0px;
+	}
+	.copyright {
+		width: 100%;
+		background-color: #373435;
+		font-size: 14px;
+	}
+	.copyright a {
+		display: inline-block;
+		color: #ffffff;
+	}
+	.social {
+		-webkit-transform: scale(0.8);
+		-moz-transform: scale(0.8);
+		-o-transform: scale(0.8);
+		-webkit-transition-duration: 0.5s;
+		-moz-transition-duration: 0.5s;
+		-o-transition-duration: 0.5s;
+		font-size: 45px;
+	}
+	/*Media Social*/
+	#social-fb {
+		color: #FFFFFF;
+	}
+	#social-tw {
+		color: #FFFFFF;
+	}
+	#social-gp {
+		color: #FFFFFF;
+	}
+	#social-ld {
+		color: #FFFFFF;
+	}
+	#social-em {
+		color: #FFFFFF;
+	}
+	#social-fb:hover {
+		color: #3B5998;
+	}
+	#social-tw:hover {
+		color: #4099FF;
+	}
+	#social-gp:hover {
+		color: #2F2F2F;
+	}
+	#social-ld:hover {
+		color: #0077B5;
+	}
+	#social-em:hover {
+		color: #AAAAAA;
+	}
+	.footer-container {
+		/*border: 1px solid #000;*/
+		display: flex;
+		justify-content: space-around;
+		font-size: 14px;
+	}
+	.footer-item {
+		margin: 5px;
+		color: #fff;
+		padding: 5px;
+		display: flex;
+		justify-content: space-around;
+		width: 100%;
+	}
+	.footer-item .contato i {
+		font-size: 20px;
+		padding-right: 5px;
+	}
+	.footer-item .telefone {
+		padding-right: 5px;
+	}
+	.footer-logo {
+		width: 60px;
+		height: 60px;
+		float: left;
+		background: url("main/assets/img/logo/logo-footer-white.png");
+		background-size: contain;
+		margin-right: 15px;
+	}
+	/* unvisited link */
+	footer a {
+		color: #FFFFFF;
+	}
+	footer a:hover {
+		color: #FFFFFF;
+	}
+	footer a:visited {
+		color: #FFFFFF;
+	}
+	footer a:active {
+		color: #FFFFFF;
+	}
+	.login fieldset {
+		/*padding: .35em .625em .75em;*/
+		margin: 0 2px;
+		border: none;
+	}
+	.login .input-control {
+		position: relative;
+		vertical-align: middle;
+		margin: .500rem 0;
+		line-height: 1;
+	}
+}

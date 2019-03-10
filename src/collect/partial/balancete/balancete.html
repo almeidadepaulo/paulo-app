@@ -1,0 +1,106 @@
+<div layout="column" ng-cloak class="balancete" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Produto</label>
+                <input name="produto" ng-model="vm.filter.produto.name" ng-readonly="true" placeholder="Selecionar produto" class="pointer" ng-click="vm.filterDialog('produto')">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('produto')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Banco</label>
+                <input name="banco" ng-model="vm.filter.banco.name" ng-readonly="true" placeholder="Selecionar banco" class="pointer" ng-click="vm.filterDialog('banco')">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('banco')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Agência</label>
+                <input name="agencia" ng-model="vm.filter.agencia.name" ng-readonly="true" placeholder="Selecionar agência" class="pointer" ng-click="vm.filterDialog('agencia')" ng-disabled="!vm.filter.banco.id">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('agencia')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Conta</label>
+                <input name="conta" ng-model="vm.filter.conta.name" ng-readonly="true" placeholder="Selecionar conta" class="pointer" ng-click="vm.filterDialog('conta')" ng-disabled="!vm.filter.agencia.id">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('conta')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="20" flex-gt-sm layout-xs="100">
+                <label>Movimento</label>
+                <md-datepicker name="CB209_DT_MOVTO" ng-model="vm.filter.CB209_DT_MOVTO" required></md-datepicker>
+                <div ng-messages="formSearch.CB209_DT_MOVTO.$error">
+                    <div ng-message="required">Campo obrigatório.</div>
+                </div>
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.balancete.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Balancete</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})" ng-disabled="formSearch.$invalid">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <!--<md-toolbar class="md-accent md-hue-1" ng-show="vm.balancete.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.balancete.selected.length}} {{vm.balancete.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>-->
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="false" ng-model="vm.balancete.selected" md-progress="vm.balancete.promise">
+                <thead md-head md-order="vm.balancete.order">
+                    <tr md-row>
+                        <th md-column md-order-by="CB209_DT_MOVTO"><span>Data</span></th>
+                        <th md-column md-order-by="CB255_DS_PROD"><span>Produto</span></th>
+                        <th md-column md-order-by="CB209_QT_TOTAL1"><span>Qtde</span></th>
+                        <th md-column md-order-by="CB209_VL_VALOR1"><span>Saldo Anterior</span></th>
+                        <th md-column md-order-by="CB209_QT_TOTAL2"><span>Qtde</span></th>
+                        <th md-column md-order-by="CB209_VL_VALOR2"><span>Entradas</span></th>
+                        <th md-column md-order-by="CB209_QT_TOTAL3"><span>Qtde</span></th>
+                        <th md-column md-order-by="CB209_VL_VALOR3"><span>Liquidações</span></th>
+                        <th md-column md-order-by="CB209_QT_TOTAL4"><span>Qtde</span></th>
+                        <th md-column md-order-by="CB209_VL_VALOR4"><span>Baixas</span></th>
+                        <th md-column md-order-by="CB209_QT_TOTAL5"><span>Qtde</span></th>
+                        <th md-column md-order-by="CB209_VL_VALOR5"><span>Saldo Atual</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.balancete.data | orderBy: vm.balancete.order | limitTo: vm.balancete.limit: (vm.balancete.page - 1) * vm.balancete.limit">
+                        <td md-cell>{{item.CB209_DT_MOVTO | numberToDate | date : 'dd/MM/yyyy'}}</td>
+                        <td md-cell>{{item.CB255_DS_PROD}}</td>
+                        <td md-cell>{{item.CB209_QT_TOTAL1 | number}}</td>
+                        <td md-cell>{{item.CB209_VL_VALOR1 | currency}}</td>
+                        <td md-cell>{{item.CB209_QT_TOTAL2 | number}}</td>
+                        <td md-cell>{{item.CB209_VL_VALOR2 | currency}}</td>
+                        <td md-cell>{{item.CB209_QT_TOTAL3 | number}}</td>
+                        <td md-cell>{{item.CB209_VL_VALOR3 | currency}}</td>
+                        <td md-cell>{{item.CB209_QT_TOTAL4 | number}}</td>
+                        <td md-cell>{{item.CB209_VL_VALOR4 | currency}}</td>
+                        <td md-cell>{{item.CB209_QT_TOTAL5 | number}}</td>
+                        <td md-cell>{{item.CB209_VL_VALOR5 | currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.balancete.limit" md-page="vm.balancete.page" md-total="{{vm.balancete.total}}" md-page-select md-on-paginate="vm.balancete.pagination"></md-table-pagination>
+    </div>
+</div>

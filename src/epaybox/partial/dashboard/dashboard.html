@@ -1,0 +1,42 @@
+<div layout="column" ng-cloak class="dashboard">
+    <div class="hello">
+        <h3>{{vm.hello}}</h3>
+    </div>
+    <md-content class="content">
+        <div class="alerts" layout="column" layout-align="space-around center">
+            <div layout="row">
+                <div class="alert alert-vencido">
+                    <h3>{{vm.getBoletoStatus.query.CB210_QT_VCTO}} {{vm.chartQtd.labels[0]}}</h3>
+                </div>
+
+                <div class="alert alert-aberto">
+                    <h3>{{vm.getBoletoStatus.query.CB210_QT_ABERTO}} {{vm.chartQtd.labels[1]}}</h3>
+                </div>
+
+                <div class="alert alert-pago">
+                    <h3>{{vm.getBoletoStatus.query.CB210_QT_PAGO}} {{vm.chartQtd.labels[2]}}</h3>
+                </div>
+            </div>
+
+            <md-content class="charts">
+                <div layout="row" layout-align="space-around center">
+                    <div class="title">
+                        Quantidade
+                    </div>
+                    <div class="title">
+                        Valor (R$)
+                    </div>
+                </div>
+
+                <div layout="row" layout-align="space-around center">
+                    <div>
+                        <canvas id="radar" class="chart chart-doughnut" chart-data="vm.chartQtd.data" chart-options="vm.chartQtd.options" chart-labels="vm.chartQtd.labels" chart-colors="vm.chartQtd.colors"></canvas>
+                    </div>
+                    <div>
+                        <canvas id="bar" class="chart chart-bar" chart-data="vm.chartValor.data" chart-options="vm.chartValor.options" chart-labels="vm.chartValor.labels" chart-colors="vm.chartValor.colors"></canvas>
+                    </div>
+                </div>
+            </md-content>
+        </div>
+    </md-content>
+</div>

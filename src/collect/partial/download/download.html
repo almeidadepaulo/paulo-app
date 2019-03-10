@@ -1,0 +1,70 @@
+<div layout="column" ng-cloak class="download" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container flex-gt-sm="" layout-xs="100">
+                <label>Nome do arquivo</label>
+                <input ng-model="vm.filter.descricao">
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.download.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Receber arquivo</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-accent md-hue-1" ng-show="vm.download.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.download.selected.length}} {{vm.download.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="false" ng-model="vm.download.selected" md-progress="vm.download.promise">
+                <thead md-head md-order="vm.download.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by=""><span>Arquivo</span></th>
+                        <th md-column md-order-by=""><span>Data</span></th>
+                        <th md-column md-order-by=""><span>Hora</span></th>
+                        <th md-column md-order-by=""><span>Status</span></th>
+                        <th md-column md-order-by=""><span>Usuário</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.download.data | orderBy: vm.download.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.itemClick(item)">
+                                <md-icon>file_download</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.EM805_NM_ARQ}}</td>
+                        <td md-cell>{{item.EM805_DT_PROC | date : 'dd/MM/yyyy'}}</td>
+                        <td md-cell>{{item.EM805_HR_PROC_LABEL}}</td>
+                        <td md-cell>{{item.EM805_ID_STATUS_LABEL}}</td>
+                        <td md-cell>{{item.usu_nome}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.download.limit" md-page="vm.download.page" md-total="{{vm.download.total}}" md-page-select md-on-paginate="vm.download.pagination"></md-table-pagination>
+    </div>
+</div>

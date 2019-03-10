@@ -1,0 +1,25 @@
+<md-dialog class="email-pesquisa-detalhe-dialog" ng-cloak flex="80" aria-label="" ng-init="vm.init()">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Mensagem do e-mail</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <form name="form">
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div layout="row">
+                    <div layout="row" layout-sm="column" layout-wrap layout-padding flex="100">
+                        <div ng-cloak flex="100">
+                            <ng-quill-editor id="mensagem" name="mensagem" callback="editorCallback(editor, name)" ng-model="mensagem" translations="translations" toolbar="true" show-toolbar="false" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image"
+                                editor-required="true" required="" error-class="input-error" fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions" ng-click="mensagemClick($event)"></ng-quill-editor>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

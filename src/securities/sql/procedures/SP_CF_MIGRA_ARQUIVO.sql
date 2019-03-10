@@ -1,0 +1,130 @@
+
+
+-- Configura Procedure
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+-- Apaga Procedure
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP_CF_MIGRA_ARQUIVO]') AND type in (N'P', N'PC'))
+DROP PROCEDURE  [dbo].[SP_CF_MIGRA_ARQUIVO]
+GO
+
+
+-- EXEC SP_CF_MIGRA_ARQUIVO 1, 'TESTE_01', 'PEDRO'
+
+CREATE PROCEDURE [dbo].[SP_CF_MIGRA_ARQUIVO]
+@NR_BANCO INT, @NOMEARQ VARCHAR(255), @USUARIO VARCHAR(255)
+WITH ENCRYPTION
+AS
+IF( NOT EXISTS (SELECT NOMEARQ FROM CF_001 WHERE NOMEARQ=@NOMEARQ ) )
+BEGIN
+/*
+DELETE FROM CF_001 WHERE NOMEARQ = 'TESTE_01'
+
+INSERT CF_001
+	SELECT 'TESTE_01',
+		   1,
+		   X.BKN010_NR_ENT,
+		   X.BKN010_NR_CPFCNPJ,
+		   0,
+		   '',
+		   X.BKN010_VL_PARC,
+		   GETDATE(),
+		   GETDATE(),
+		   'PEDRO',
+		   0.00,
+		   NULL,
+		   0,
+		   '',
+		   0,
+		   0,
+		   null,
+		   null,
+		   null,
+		   null,
+		   NULL,
+		   NULL,
+		   NULL,
+		   NULL,
+		   NULL,
+		   NULL,
+		   NULL,
+		   NULL
+		   
+FROM BKN010 X
+WHERE X.BKN010_NR_BANCO=1
+*/
+
+    -- INSERE OS ARQUIVOS
+	INSERT CF_001
+	SELECT X.BN414_NM_ARQ, 
+		   Y.BKN001_NR_BANCO,
+		   Z.BKN003_NR_ENT,
+		   X.BN414_NR_CPFCNPJ,
+		   X.BN414_NR_CONTRA,
+		   X.BN414_NR_MATRIC,
+		   dbo.CFP_ConverteNumber(X.BN414_VL_VALOR),
+		   GETDATE(),
+		   GETDATE(),
+		   @USUARIO,
+		   0.00,
+		   NULL,
+		   0,
+		   '',
+		   0,
+		   0,
+		   null,
+		   null,
+		   null,
+		   null,
+		   NULL,
+		   NULL,
+		   NULL,
+		   NULL,
+		   NULL,
+		   NULL,
+		   NULL,
+		   NULL
+		   
+		   
+	from BN_FGC.dbo.BN414 X, BKN001 Y, BKN003 Z
+	WHERE X.BN414_NM_ARQ=@NOMEARQ AND
+	      X.BN414_NR_BANCO = Y.BKN001_NR_CNPJ AND
+		  X.BN414_NR_ENTID = Z.BKN003_NR_CNPJ AND
+		  Y.BKN001_NR_BANCO=@NR_BANCO 
+		  
+	-- GRAVA O NUMERO DA LINHA DO ARQUIVO	  
+	DECLARE @NL INT
+	SET @NL=1
+	DECLARE @KNSEQ INT
+	DECLARE NAVEGA_ CURSOR LOCAL FAST_FORWARD FOR
+	SELECT NSEQ FROM CF_001 WHERE NOMEARQ=@NOMEARQ
+	ORDER BY NSEQ
+	OPEN NAVEGA_
+	FETCH NEXT FROM NAVEGA_
+	INTO @KNSEQ
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+	
+	     UPDATE CF_001
+	     SET LINHA=@NL
+	     WHERE NSEQ=@KNSEQ
+	     
+	     SET @NL = @NL + 1
+	   
+	  FETCH NEXT FROM NAVEGA_
+	  INTO @KNSEQ
+	END
+	CLOSE NAVEGA_
+	DEALLOCATE  NAVEGA_
+		  
+END		  
+
+
+
+
+GO
+
+

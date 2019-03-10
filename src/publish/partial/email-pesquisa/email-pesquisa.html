@@ -1,0 +1,81 @@
+<div layout="column" ng-cloak class="email-pesquisa" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+
+            <md-input-container>
+                <label>Movimento</label>
+                <md-datepicker ng-model="vm.filter.EM002_DT_REMESS"></md-datepicker>
+            </md-input-container>
+
+            <md-input-container flex-gt-sm layout-xs="100">
+                <label>CPF</label>
+                <input name="EM002_NR_CPF" ng-model="vm.filter.EM002_NR_CPF" ui-br-cpf-mask>
+                <div ng-messages="formSearch.EM002_NR_CPF.$error" multiple md-auto-hide="false">
+                    <div ng-message="cpf">CPF inválido.</div>
+                </div>
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.emailPesquisa.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Pesquisa e-mail</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="true" ng-model="vm.emailPesquisa.selected" md-progress="vm.emailPesquisa.promise">
+                <thead md-head md-order="vm.emailPesquisa.order">
+                    <tr md-row>
+                        <th md-column><span>Mensagem</span></th>
+                        <th md-column><span>Anexo</span></th>
+                        <th md-column md-order-by=""><span>Data</span></th>
+                        <th md-column md-order-by=""><span>CPF</span></th>
+                        <th md-column md-order-by=""><span>Tipo</span></th>
+                        <th md-column md-order-by=""><span>Telefone</span></th>
+                        <!-- <th md-column md-order-by=""><span>Mensagem</span></th> -->
+                        <th md-column md-order-by=""><span>Situação</span></th>
+                        <th md-column md-order-by=""><span>Status</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.emailPesquisa.data | orderBy: vm.emailPesquisa.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.filterDialog('mensagem', item)">
+                                <md-icon>search</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.filterDialog('anexo', item)">
+                                <md-icon>attach_file</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.EM002_DT_REMESS | numberToDate | date : 'dd/MM/yyyy'}}</td>
+                        <td md-cell nowrap>{{item.EM002_NR_CPF | brCpf}}</td>
+                        <td md-cell>{{item.EM055_DS_CODEMAIL}}</td>
+                        <td md-cell nowrap>({{item.EM002_NR_DDD}}) {{item.EM002_NR_TEL}}</td>
+                        <!-- <td md-cell>{{item.EM002_NM_TEXTO}}</td> -->
+                        <td md-cell>{{item.EM002_ID_SITUAC_LABEL}}</td>
+                        <td md-cell>{{item.EM002_ID_STATUS_LABEL}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row " layout-align="center center " class="back-pagination ">
+        <span flex></span>
+        <md-button class="md-primary " ui-sref="menu()">
+            <md-tooltip md-direction="left ">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'} " md-limit="vm.emailPesquisa.limit " md-page="vm.emailPesquisa.page " md-total="{{vm.emailPesquisa.total}} " md-page-select md-on-paginate="vm.emailPesquisa.pagination "></md-table-pagination>
+    </div>
+</div>

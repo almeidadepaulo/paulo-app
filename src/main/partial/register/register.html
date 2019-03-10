@@ -1,0 +1,98 @@
+<div layout="column" layout-align="center center" class="register" ng-init="vm.init()">
+
+    <div layout="column" ng-cloak class="step">
+        <md-toolbar class="header">
+            <div class="md-toolbar-tools">
+
+                <div layout="row" layout-align="cente center" layout-padding>
+                    <!-- <i class="material-icons">create_new_folder</i> -->
+                    <i class="material-icons">account_box</i>
+                    <!-- <i class="material-icons">account_circle</i> -->
+                    <span>ABERTURA DE CONTA</span>
+                </div>
+
+                <span flex></span>
+
+                <img src="main\assets\img\logo\logo-header-smartbank.fw.png">
+            </div>
+        </md-toolbar>
+
+        <md-toolbar class="toolbar-step" ng-hide="vm.cedente.selected.length">
+
+            <!--
+            <div layout="column" layout-align="center center" class="md-toolbar-tools" layout-padding>
+                <div>
+                    <h2>
+                        <span>Preencha os campos abaixo para criar sua conta</span>
+                    </h2>
+                </div>
+            </div>
+            -->
+
+            <!-- the links to our nested states using relative paths -->
+            <!-- add the active class if the state matches our ui-sref -->
+            <div id="status-buttons" layout="row" layout-align="space-around center" class="md-toolbar-tools">
+                <a ui-sref-active="active" ui-sref=".profile">
+                    <div layout="column">
+                        <div>
+                            <md-icon class="material-icons">perm_identity</md-icon>
+                        </div>
+                        <span>Dados pessoais</span>
+                    </div>
+                </a>
+                <a ui-sref-active="active" ui-sref=".info" ng-show="false">
+                    <div layout="column">
+                        <div>
+                            <md-icon class="material-icons">info_outline</md-icon>
+                        </div>
+                        <span>Dados complementares</span>
+                    </div>
+                </a>
+                <a ui-sref-active="active" ui-sref=".address">
+                    <div layout="column">
+                        <div>
+                            <md-icon class="material-icons">location_on</md-icon>
+                        </div>
+                        <span>Endereço</span>
+                    </div>
+                </a>
+                <a ui-sref-active="active" ui-sref=".doc">
+                    <div layout="column">
+                        <div>
+                            <md-icon class="material-icons">attach_file</md-icon>
+                        </div>
+                        <span>Documentos</span>
+                    </div>
+                </a>
+            </div>
+
+        </md-toolbar>
+
+        <md-content layout="column" layout-padding>
+
+            <form name="form">
+
+                <!-- state views will be injected here -->
+                <div id="form-views" ui-view></div>
+
+            </form>
+        </md-content>
+
+        <md-actions layout="row" layout-xs="column">
+            <md-button class="md-raised md-primary" ng-click="vm.back()" ng-if="vm.currentState && vm.currentState !== 'register.profile'">
+                <md-icon>arrow_back</md-icon>
+                Voltar
+            </md-button>
+
+            <span flex></span>
+
+            <md-button class="md-raised md-primary" ng-click="vm.next()">
+                {{vm.currentState === 'register.doc' || vm.currentState === 'register.save' ? 'Enviar dados' : 'Próximo'}}
+                <md-icon>arrow_forward</md-icon>
+            </md-button>
+        </md-actions>
+    </div>
+    <div layout="row" layout-align="center center" class="register-hint">
+        <div>* A abertura de conta corrente está sujeita à análise e à aprovação.</div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<div layout="column" ng-cloak class="email-codigo" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container flex-gt-sm="50" flex-gt-sm layout-xs="100">
+                <label>Código do E-mail</label>
+                <input ng-model="vm.filter.EM055_CD_CODEMAIL">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="50" layout-xs="100">
+                <label>Descrição</label>
+                <input ng-model="vm.filter.EM055_DS_CODEMAIL">
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.emailCodigo.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Codigo</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.create()">
+                <md-icon>add</md-icon>
+                Adicionar
+            </md-button>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-accent md-hue-1" ng-show="vm.emailCodigo.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.emailCodigo.selected.length}} {{vm.emailCodigo.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="true" multiple="true" ng-model="vm.emailCodigo.selected" md-progress="vm.emailCodigo.promise">
+                <thead md-head md-order="vm.emailCodigo.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by="EM055_CD_CODEMAIL"><span>Código do E-mail</span></th>
+                        <th md-column md-order-by="EM055_DS_CODEMAIL"><span>Descrição</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.emailCodigo.data | orderBy: vm.emailCodigo.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                <md-icon>mode_edit</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.EM055_CD_CODEMAIL}}</td>
+                        <td md-cell>{{item.EM055_DS_CODEMAIL}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.emailCodigo.limit" md-page="vm.emailCodigo.page" md-total="{{vm.emailCodigo.total}}" md-page-select md-on-paginate="vm.emailCodigo.pagination"></md-table-pagination>
+</div>

@@ -1,0 +1,41 @@
+-- Configura View
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Apaga view
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[VW_CEP]'))
+DROP VIEW [dbo].[VW_CEP]
+GO
+
+-- Cria View
+CREATE VIEW [dbo].[VW_CEP]
+WITH ENCRYPTION
+AS
+  SELECT 
+  
+  BN012.BN012_NR_CEP 	AS cep,      
+  BN012.BN012_CD_ESTBR 	AS uf,
+  BN012.BN012_TP_LOGRAD AS logradouro_tipo,
+  BN012.BN012_NM_LOGRAD AS logradouro_nome,  
+  
+  
+  
+  BN010.BN010_NR_LOCALI AS localidade_id,
+  BN010.BN010_NM_LOCALI AS localidade_nome,
+   
+  BN011.BN011_NM_BAIRR 	AS bairro_nome
+  
+  
+                  
+  FROM BN012 AS BN012
+  
+             
+  INNER JOIN BN010 AS BN010
+  ON BN012.BN012_NR_LOCALI = BN010.BN010_NR_LOCALI
+
+  INNER JOIN BN011 AS BN011
+  ON BN012.BN012_NR_BAIRRI = BN011.BN011_NR_BAIRRO
+
+GO
+

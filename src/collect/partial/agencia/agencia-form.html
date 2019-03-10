@@ -1,0 +1,127 @@
+<div layout="column" ng-cloak class="agencia-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Banco / Agência)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Banco</label>
+                        <input name="banco" ng-model="vm.filter.banco.name" ng-readonly="true" placeholder="Selecionar banco" class="pointer" ng-click="vm.filterDialog('banco')" required>
+                        <div ng-messages="form.banco.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>CNPJ da agência</label>
+                        <input name="CB251_NR_CNPJ" ng-model="vm.agencia.CB251_NR_CNPJ" ui-br-cnpj-mask required>
+                        <div ng-messages="form.CB251_NR_CNPJ.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="cnpj">CNPJ inválido.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Número da agência</label>
+                        <input type="number" max="99999" name="CB251_NR_AGENC" ng-model="vm.agencia.CB251_NR_AGENC" required>
+                        <div ng-messages="form.CB251_NR_AGENC.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="max">Código não permitido</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Dígito da agência</label>
+                        <input type="number" name="CB251_NR_DGAGEN" ng-model="vm.agencia.CB251_NR_DGAGEN">
+                        <div ng-messages="form.CB251_NR_DGAGEN.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nome da agência</label>
+                        <input name="CB251_NM_AGENC" ng-model="vm.agencia.CB251_NM_AGENC" required maxlength="60">
+                        <div ng-messages="form.CB251_NM_AGENC.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container>
+                        <label>CEP</label>
+                        <input name="CB251_NR_CEP" ng-model="vm.agencia.CB251_NR_CEP" ui-br-cep-mask cep-search cep-search-event="vm.cepSearch(event)">
+                        <div ng-messages="form.CB251_NR_CEP.$error">
+                            <div ng-message="cep">CEP inválido.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Endereço</label>
+                        <input name="CB251_NM_END" ng-model="vm.agencia.CB251_NM_END">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="20">
+                        <label>Número</label>
+                        <input name="CB251_NR_END" ng-model="vm.agencia.CB251_NR_END">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Complemento</label>
+                        <input name="CB251_DS_COMPL" ng-model="vm.agencia.CB251_DS_COMPL">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Bairro</label>
+                        <input name="CB251_NM_BAIRRO" ng-model="vm.agencia.CB251_NM_BAIRRO">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Estado</label>
+                        <input name="CB251_SG_ESTADO" ng-model="vm.agencia.CB251_SG_ESTADO">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Cidade</label>
+                        <input name="CB251_NM_CIDADE" ng-model="vm.agencia.CB251_NM_CIDADE">
+                    </md-input-container>
+                </div>
+
+            </form>
+        </div>
+    </md-content>
+
+    <md-actions layout="row" layout-xs="column">
+
+        <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+            <i class="fa fa-times" aria-hidden="true"></i> Remover
+        </md-button>
+
+        <span flex></span>
+
+        <md-button ng-click="vm.cancel()">
+            <i class="" aria-hidden="true"></i> Cancelar
+        </md-button>
+
+        <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+            <i class="fa fa-check" aria-hidden="true"></i> Salvar
+        </md-button>
+    </md-actions>
+</div>

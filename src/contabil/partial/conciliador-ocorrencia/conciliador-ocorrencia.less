@@ -1,0 +1,61 @@
+.conciliador-correncia {    
+    height: 100%;
+    .filter {
+        padding-left: 5px;
+        padding-right: 5px;
+        /*background-color: #D7D5CD;*/
+        background-color: white;
+        /*border-bottom: #D7D5CD 1px solid;*/
+        h5 {
+            width: 100%;
+            text-align: center;
+            color: #8F8981;
+            margin-top: 5px;
+            margin-bottom: 0;
+        }
+        md-input-container {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+    .list {
+        height: 100%;
+    }
+    .content {
+        height: 100%;
+        .diferenca {
+            cursor: default;
+            position: relative;
+            display: inline-block;
+            font-weight: bold;            
+            span {
+                visibility: hidden;
+                background-color: #A94442;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 5px;
+                position: absolute;
+                z-index: 1;
+                top: -5px;
+                right: 130%;
+                opacity: 0;
+                transition: opacity 1s;
+            }
+            span:after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 100%;
+                margin-top: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent transparent transparent #A94442;
+            }
+        }
+        .diferenca:hover span {
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+}

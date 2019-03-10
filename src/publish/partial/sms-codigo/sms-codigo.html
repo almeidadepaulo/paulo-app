@@ -1,0 +1,65 @@
+<div layout="column" ng-cloak class="sms-codigo" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container flex-gt-sm="50" flex-gt-sm layout-xs="100">
+                <label>Código do SMS</label>
+                <input ng-model="vm.filter.MG055_CD_CODSMS">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="50" layout-xs="100">
+                <label>Descrição</label>
+                <input ng-model="vm.filter.MG055_DS_CODSMS">
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.smsCodigo.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Codigo</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.create()">
+                <md-icon>add</md-icon>
+                Adicionar
+            </md-button>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-accent md-hue-1" ng-show="vm.smsCodigo.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.smsCodigo.selected.length}} {{vm.smsCodigo.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="true" multiple="true" ng-model="vm.smsCodigo.selected" md-progress="vm.smsCodigo.promise">
+                <thead md-head md-order="vm.smsCodigo.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by="MG055_CD_CODSMS"><span>Código do SMS</span></th>
+                        <th md-column md-order-by="MG055_DS_CODSMS"><span>Descrição</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.smsCodigo.data | orderBy: vm.smsCodigo.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                <md-icon>mode_edit</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.MG055_CD_CODSMS}}</td>
+                        <td md-cell>{{item.MG055_DS_CODSMS}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.smsCodigo.limit" md-page="vm.smsCodigo.page" md-total="{{vm.smsCodigo.total}}" md-page-select md-on-paginate="vm.smsCodigo.pagination"></md-table-pagination>
+</div>

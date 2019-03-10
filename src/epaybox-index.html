@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="product" content="Seeaway">
+    <meta name="description" content="Seeaway">
+    <meta name="author" content="Seeaway">
+    <link href="epaybox-favicon.ico" rel="shortcut icon">
+    <title>Seeaway app</title>
+    <link href="epaybox-app.less" type="text/css" rel="stylesheet/less">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body ng-app="seeawayApp" layout="column" ng-cloak>
+    <div id="loading-bar-container"></div>
+    <div ui-view layout="column" class="seeawayApp-views"></div>
+    <!-- Livereload script for development only (stripped during dist build) -->
+    <script src="http://localhost:35729/livereload.js"></script>
+    <!-- htmlbuild:js -->
+    <!-- Libraries -->
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-animate/angular-animate.min.js"></script>
+    <script src="lib/angular-aria/angular-aria.min.js"></script>
+    <script src="lib/angular-messages/angular-messages.min.js"></script>
+    <script src="lib/angular-cookies/angular-cookies.min.js"></script>
+    <script src="lib/angular-i18n/angular-locale_pt-br.js"></script>
+    <script src="lib/angular-resource/angular-resource.min.js"></script>
+    <script src="lib/angular-input-masks/angular-input-masks-standalone.min.js"></script>
+    <script src="lib/angular-ui-mask/dist/mask.min.js"></script>
+    <script src="lib/less/dist/less.min.js"></script>
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/moment/min/moment-with-locales.min.js"></script>
+    <script src="lib/numeral/min/numeral.min.js"></script>
+    <script src="lib/numeral/min/languages/pt-br.min.js"></script>
+    <script src="lib/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="lib/px-module/dist/px-full/px-full.min.js"></script>
+    <script src="lib/jstree/dist/jstree.min.js"></script>
+    <script src="lib/angular-material/angular-material.min.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="lib/chart.js/dist/Chart.min.js"></script>
+    <script src="lib/angular-chart.js/dist/angular-chart.min.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="lib/material-calendar/dist/angular-material-calendar.min.js"></script>
+    <script src="lib/angular-loading-bar/build/loading-bar.min.js"></script>
+    <!-- Your application bootstrap  -->
+    <script src="epaybox-app.js"></script>
+    <!-- controllers -->
+    <script src="main/partial/login/login.controller.js"></script>
+    <script src="epaybox/partial/home/home.controller.js"></script>
+    <script src="main/partial/404/404.controller.js"></script>
+    <script src="main/partial/example/example.controller.js"></script>
+    <script src="main/partial/example/example-form.controller.js"></script>
+    <script src="epaybox/partial/dashboard/dashboard.controller.js"></script>
+    <script src="epaybox/partial/2via/2via.controller.js"></script>
+    <script src="epaybox/partial/agenda/agenda.controller.js"></script>
+    <!-- routes -->
+    <script src="main/partial/login/login.route.js"></script>
+    <script src="main/partial/404/404.route.js"></script>
+    <script src="main/partial/home/home.route.js"></script>
+    <script src="main/partial/example/example.route.js"></script>
+    <script src="main/partial/example/example-form.route.js"></script>
+    <script src="epaybox/partial/dashboard/dashboard.route.js"></script>
+    <script src="epaybox/partial/2via/2via.route.js"></script>
+    <script src="epaybox/partial/agenda/agenda.route.js"></script>
+    <!-- directives -->
+    <script src="main/directive/seeaway-view-header/seeaway-view-header.js"></script>
+    <!-- services -->
+    <script src="main/service/login.service.js"></script>
+    <script src="main/service/user.service.js"></script>
+    <script src="main/service/example.service.js"></script>
+    <script src="epaybox/service/dashboard.service.js"></script>
+    <script src="epaybox/service/2via.service.js"></script>
+    <script src="epaybox/service/agenda.service.js"></script>
+    <!-- constants -->
+    <script src="main/constant/example.constant.js"></script>
+    <!-- endbuild -->
+</body>
+
+</html>

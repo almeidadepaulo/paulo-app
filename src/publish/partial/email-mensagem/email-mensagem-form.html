@@ -1,0 +1,126 @@
+<div layout="column" class="email-mensagem-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Mensagem e-mail)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <!-- <md-content layout="column" layout-padding class="content"> -->
+    <md-content layout="row" class="content">
+        <div class="variaveis" layout="column">
+            <md-button ng-click="vm.getVariavelSms()">Variáveis</md-button>
+            <md-input-container class="variavel-pesquisa">
+                <label>Pesquisar variável</label>
+                <input name="EM061_CD_CODEMAIL" ng-model="vm.pesquisarVariavel"></input>
+            </md-input-container>
+
+            <md-content>
+                <md-list-item class="md-3-line" ng-repeat="variavel in vm.variaveis | filter:vm.pesquisarVariavel" ng-click="variavelClick($event, variavel.EM060_CD_VAR)">
+                    <div class="md-list-item-text" layout="column">
+                        <h4>{{variavel.EM060_CD_VAR}}</h4>
+                        <p ng-if="variavel.EM060_QT_CARAC > 0">{{variavel.EM060_DS_VAR}} ({{variavel.EM060_QT_CARAC}})</p>
+                        <p ng-if="!variavel.EM060_QT_CARAC > 0">{{variavel.EM060_DS_VAR}}</p>
+                    </div>
+                </md-list-item>
+            </md-content>
+            <md-divider></md-divider>
+            <md-content class="content" flow-init="vm.initFlow()" flow-file-added="vm.fileAdded( $file, $event, $flow )" flow-file-success="vm.fileSuccess( $file, $message, $flow )">
+                <div layout="row" layout-align="center center">
+                    <md-button flow-btn ng-disabled="$flow.isUploading()">
+                        <md-icon class="material-icons">image</md-icon>
+                        Adicionar imagem
+                    </md-button>
+                </div>
+                <md-progress-linear md-mode="indeterminate" ng-show="$flow.isUploading()"></md-progress-linear>
+            </md-content>
+        </div>
+        <span flex="5"></span>
+        <div flex>
+            <md-content>
+                <form name="form">
+                    <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+                        <md-tab label="Código do e-mail">
+                            <div layout-gt-sm="row" layout-align="center center" layout-padding>
+                                <md-checkbox ng-model="vm.mensagem.EM061_ID_STATUS" ng-true-value="1" ng-false-value="0">
+                                    Mensagem ativa
+                                </md-checkbox>
+                            </div>
+
+                            <!--
+                            <div layout-gt-sm="row" class="codigo">
+                                <md-input-container class="md-block" flex-gt-sm="">
+                                    <label>Código</label>
+                                    <input name="EM061_CD_CODEMAIL" ng-model="vm.mensagem.EM055_DS_CODEMAIL" ng-readonly="true" required placeholder="Clique aqui para selecionar um código" class="pointer" ng-click="vm.codigoDialog($event)">
+                                    <div ng-messages="form.EM055_DS_CODEMAIL.$error">
+                                        <div ng-message="required">Campo obrigatório.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            -->
+                            <div layout-gt-sm="row">
+                                <md-input-container class="md-block" flex-gt-sm="">
+                                    <label>Código</label>
+                                    <input type="number" name="EM061_CD_CODEMAIL" ng-model="vm.mensagem.EM061_CD_CODEMAIL" required max="99999">
+                                    <div ng-messages="vm.form.EM061_CD_CODEMAIL.$error">
+                                        <div ng-message="required">Campo obrigatório.</div>
+                                        <div ng-message="required">Código inválido.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div layout-gt-sm="row">
+                                <md-input-container class="md-block" flex-gt-sm="">
+                                    <label>Tipo</label>
+                                    <input name="EM055_DS_CODEMAIL" ng-model="vm.mensagem.EM055_DS_CODEMAIL" required maxlength="40">
+                                    <div type="text" ng-messages="vm.form.EM055_DS_CODEMAIL.$error">
+                                        <div ng-message="required">Campo obrigatório.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                        </md-tab>
+
+                        <md-tab label="Corpo do e-mail">
+
+                            <md-radio-group ng-model="vm.type" layout="row" layout-align="center center" layout-padding>
+                                <md-radio-button value="simples" class="md-primary">Edição Simples</md-radio-button>
+                                <md-radio-button value="html"> Edição em HTML </md-radio-button>
+                            </md-radio-group>
+
+
+                            <div flex="100">
+                                <div ng-show="vm.type === 'simples'">
+                                    <md-content class="md-padding">
+                                        <ng-quill-editor id="mensagem" name="mensagem" callback="editorCallback(editor, name)" ng-model="vm.mensagem.EM061_DS_TEXTO" translations="translations" toolbar="true" show-toolbar="showToolbar" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image"
+                                            editor-required="true" required="" error-class="input-error" fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions" ng-click="mensagemClick($event)"></ng-quill-editor>
+                                    </md-content>
+                                </div>
+                                <md-content ng-show="vm.type === 'html'">
+                                    <textarea id="mensagemHtml" class="mensagemHtml" ng-model="vm.mensagem.EM061_DS_TEXTO"></textarea>
+                                </md-content>
+                            </div>
+                        </md-tab>
+                    </md-tabs>
+                </form>
+
+                <md-actions layout="row" layout-xs="column" layout-align="">
+                    <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+                        <i class="fa fa-times" aria-hidden="true"></i> Remover
+                    </md-button>
+
+                    <span flex></span>
+
+                    <md-button ng-click="vm.cancel()">
+                        <i class="" aria-hidden="true"></i> Cancelar
+                    </md-button>
+
+                    <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+                        <i class="fa fa-check" aria-hidden="true"></i> Salvar
+                    </md-button>
+                </md-actions>
+            </md-content>
+        </div>
+    </md-content>
+    <!-- </md-content> -->
+</div>

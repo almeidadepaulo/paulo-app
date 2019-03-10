@@ -1,0 +1,99 @@
+.seeaway-view-header {
+	hr {
+		display: none;
+		height: 1px;
+		border: 0;
+		padding-top: 0;
+		margin-top: 1px;
+		margin-bottom: 0;
+		border: 0;
+		height: 0;
+		/* Firefox... */
+		box-shadow: 0 0 1px 1px @accent-color;
+		width: 90%
+	}
+	hr.selected-item {
+		display: block;
+	}
+	.current {
+		font-weight: bold;
+		color: @accent-color;
+	}
+	md-autocomplete{
+		margin-right: 10px;
+		min-width: 180px;		
+		max-width: 200px;
+		/*input{
+			font-size: 17px;			
+		}*/		
+	}
+	/*.invalid{
+		border: 2px solid #A94442;
+	}*/
+	 .md-autocomplete-icon-search md-autocomplete-wrap:before {
+        font-family: "FontAwesome";
+        content: "\f002";
+        line-height: 1;
+        padding: 8px 0px 0px 8px;
+        font-weight: normal;
+        font-size: 1em;
+        color:#929292;
+		cursor: pointer;
+    }
+	/*.search {
+		padding-left: 20px;
+	}*/
+	label {
+		color: #A94442 !important;
+	}
+	.md-input {
+		color: #A94442 !important;
+		border-color: #A94442 !important;
+		font-size: 13px;
+	}
+	::-webkit-input-placeholder {
+		/* WebKit, Blink, Edge */
+		color: #A94442 !important;
+	}
+	:-moz-placeholder {
+		/* Mozilla Firefox 4 to 18 */
+		color: #A94442 !important;
+		opacity: 1;
+	}
+	::-moz-placeholder {
+		/* Mozilla Firefox 19+ */
+		color: #A94442 !important;
+		opacity: 1;
+	}
+	:-ms-input-placeholder {
+		/* Internet Explorer 10-11 */
+		color: #A94442 !important;
+	}
+	.portal {
+		padding-left: 18px;
+		a {
+			font-size: 11px;
+			font-weight: normal;
+		}
+	}
+	.cedente-label {
+		/*margin-left: 5px;*/
+		/*padding-left: 5px;*/
+		/*border-left: 2px solid white;*/
+		font-weight: bold;
+		color: white;
+		font-size: 16px;
+	}
+	.more {
+		color: white;
+	}
+	.info {
+		span {
+			color: white;
+			font-size: 14px;
+		}
+	}
+	.more{
+		margin-left: -5px;
+	}
+}

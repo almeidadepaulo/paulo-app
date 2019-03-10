@@ -1,0 +1,107 @@
+<div layout="column" ng-cloak class="sms-codigo-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Codigo)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+
+                <div layout-gt-sm="row" layout-align="space-around center">
+                    <md-checkbox ng-model="vm.codigo.MG055_ID_ATIVO" ng-true-value="1" ng-false-value="0">
+                        SMS ativo
+                    </md-checkbox>
+                    <md-checkbox ng-model="vm.codigo.MG055_TP_CATEG" ng-true-value="1" ng-false-value="0">
+                        SMS promocional
+                    </md-checkbox>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Código</label>
+                        <input type="number" max="99999" name="MG055_CD_CODSMS" ng-model="vm.codigo.MG055_CD_CODSMS" required required ng-pattern="/^[0-9]+$/">
+                        <div ng-messages="form.MG055_CD_CODSMS.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="max">Código não permitido</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Descrição</label>
+                        <input name="MG055_DS_CODSMS" ng-model="vm.codigo.MG055_DS_CODSMS" required maxlength="40">
+                        <div ng-messages="form.MG055_DS_CODSMS.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.smsCodigoPacote.selected.length">
+                    <div class="md-toolbar-tools">
+                        <span>Pacotes que este SMS faz parte</span>
+                        <span flex></span>
+                        <md-button class="md-primary" ng-click="vm.saveCodigoPacote()">
+                            <md-icon>add</md-icon>
+                            Vincular pacote
+                        </md-button>
+                        <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                            <md-icon>refresh</md-icon>
+                            Atualizar listagem
+                        </md-button>
+                    </div>
+                </md-toolbar>
+
+                <md-toolbar class="md-accent md-hue-1" ng-show="vm.smsCodigoPacote.selected.length">
+                    <div class="md-toolbar-tools">
+                        <span>{{vm.smsCodigoPacote.selected.length}} {{vm.smsCodigoPacote.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+                        <span flex></span>
+                        <md-button class="md-primary" ng-click="vm.removeCodigoPacote()">
+                            <md-icon>delete</md-icon>
+                            Desvincular pacote
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <md-content class="content" flex>
+                    <md-table-container>
+                        <table md-table md-row-select="true" multiple="true" ng-model="vm.smsCodigoPacote.selected" md-progress="vm.smsCodigoPacote.promise">
+                            <thead md-head md-order="vm.smsCodigoPacote.order">
+                                <tr md-row>
+                                    <th md-column md-order-by=""><span>Código do pacote</span></th>
+                                    <th md-column md-order-by=""><span>Nome do pacotes</span></th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.smsCodigoPacote.data | orderBy: vm.smsCodigoPacote.order | limitTo: vm.smsCodigoPacote.limit: (vm.smsCodigoPacote.page - 1) * vm.smsCodigoPacote.limit">
+                                    <td md-cell>{{item.MG070_NR_PACOTE}}</td>
+                                    <td md-cell>{{item.MG070_NM_PACOTE}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-content>
+                <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.smsCodigoPacote.limit" md-page="vm.smsCodigoPacote.page" md-total="{{vm.smsCodigoPacote.total}}" md-page-select></md-table-pagination>
+            </form>
+        </div>
+
+        <md-actions layout="row" layout-xs="column">
+
+            <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+                <i class="fa fa-times" aria-hidden="true"></i> Remover
+            </md-button>
+
+            <span flex></span>
+
+            <md-button ng-click="vm.cancel()">
+                <i class="" aria-hidden="true"></i> Cancelar
+            </md-button>
+
+            <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+                <i class="fa fa-check" aria-hidden="true"></i> Salvar
+            </md-button>
+        </md-actions>
+    </md-content>
+</div>

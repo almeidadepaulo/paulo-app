@@ -1,0 +1,97 @@
+<div layout="column" ng-cloak class="perfil-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Perfil de usuário)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="20">
+                        <label>Status</label>
+                        <md-select ng-model="vm.perfil.statusSelected">
+                            <md-option ng-repeat="option in vm.status" ng-value="option.id">
+                                {{option.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nome</label>
+                        <input name="nome" ng-model="vm.perfil.nome" required>
+                        <div ng-messages="form.nome.$error">
+                            <div ng-message="required">Campo obrigatório</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </form>
+
+            <md-tabs md-center-tabs="true" md-border-bottom md-autoselect md-selected="0" md-stretch-tabs="always" class="tabs">
+                <!--
+                <md-tab>
+                    <md-tab-label><i class="fa fa-sitemap" aria-hidden="true"></i>Cedentes</md-tab-label>
+                    <md-tab-body>
+                        <md-content class="content">
+                            <div id="jstreeCedente"></div>
+                        </md-content>
+                    </md-tab-body>
+                </md-tab>
+                -->
+                <!--
+                <md-tab>
+                    <md-tab-label><i class="fa fa-user" aria-hidden="true"></i>Usuários</md-tab-label>
+                    <md-tab-body>
+                        [usuario]
+                    </md-tab-body>
+                </md-tab>
+                -->
+                <md-tab>
+                    <md-tab-label>
+                        <i class="fa fa-tag" aria-hidden="true"></i>Contas COSIF</md-tab-label>
+                    <md-tab-body>
+                        <div layout="row" layout-sm="column" layout-align="space-between center" layout-wrap>
+                            <md-button class="md-warn" ng-click="vm.remove()">
+                                <i class="fa fa-times" aria-hidden="true"></i> Remover conta
+                            </md-button>
+
+                            <md-button class="" ng-click="vm.getData()">
+                                <i ng-class="vm.dgCosifControl.working | dataGridRefresh" aria-hidden="true"></i> Atualizar contas
+                            </md-button>
+
+                            <md-button class="md-primary" ng-click="vm.create()">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Adicionar conta
+                            </md-button>
+                        </div>
+
+                        <px-data-grid id="dgCosif" class="table-striped table-bordered" px-debug="true" px-control="vm.dgCosifControl" px-init="vm.dgCosifInit(event)" px-config="{{vm.dgCosifConfig}}" px-check="true" px-item-click="vm.itemClick(event)" px-label-function="vm.dgCosifLabel(event)">
+                        </px-data-grid>
+
+                    </md-tab-body>
+                </md-tab>
+            </md-tabs>
+
+        </div>
+
+        <md-divider></md-divider>
+
+        <div class="md-actions" layout="row" layout-xs="column">
+
+            <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+                <i class="fa fa-times" aria-hidden="true"></i> Remover perfil
+            </md-button>
+
+            <span flex></span>
+
+            <md-button ng-click="vm.cancel()">
+                <i class="" aria-hidden="true"></i> Cancelar
+            </md-button>
+
+            <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+                <i class="fa fa-check" aria-hidden="true"></i> Salvar perfil
+            </md-button>
+        </div>
+    </md-content>
+</div>

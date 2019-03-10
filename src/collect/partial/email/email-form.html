@@ -1,0 +1,130 @@
+<div layout="column" ng-cloak class="email-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>E-mail</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content class="content" flow-init="vm.initFlow()" flow-file-added="vm.fileAdded( $file, $event, $flow )" flow-file-success="vm.fileSuccess( $file, $message, $flow )" layout-padding>
+        <div>
+            <form name="form">
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Sacado</label>
+                        <input name="sacado" ng-model="vm.filter.sacado.name" ng-readonly="true" placeholder="Selecionar sacado" class="pointer" ng-click="vm.filterDialog('sacado')" required>
+                        <div ng-messages="form.sacado.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>E-mail</label>
+                        <input type="email" required name="email" ng-model="vm.email.email"> </input>
+
+                        <div ng-messages="form.email.$error" ng-if="!showHints">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="email">E-mail inválido.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout="row" layout-align="center center">
+                    <md-button ng-click="vm.cancel()">
+                        <i class="" aria-hidden="true"></i> Cancelar
+                    </md-button>
+
+                    <span flex></span>
+
+                    <md-button flow-btn>
+                        <md-icon class="material-icons">attach_file</md-icon>
+                        Anexar
+                    </md-button>
+
+                    <md-button class="md-raised md-primary" ng-click="vm.send(vm.example)" ng-disabled="form.$invalid">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i> Enviar
+                    </md-button>
+                </div>
+
+                <div layout="row" layout-align="center center" class="action" ng-show="false">
+                    <md-button class="md-raised md-primary" ng-click="vm.setFlowOptions($flow);">Iniciar upload</md-button>
+                    <md-button class="md-raised" ng-click="$flow.pause()">Pausar</md-button>
+                    <md-button class="md-warn" ng-click="$flow.cancel()">Cancelar</md-button>
+                    <div flex></div>
+                    <md-whiteframe>
+                        <span>Tamanho: {{vm.numeral($flow.getSize()).format('0.0b')}}</span>
+                    </md-whiteframe>
+                </div>
+                <md-progress-linear md-mode="indeterminate" ng-show="$flow.isUploading()"></md-progress-linear>
+
+                <md-table-container flow-transfers>
+                    <table md-table md-row-select="false">
+                        <thead md-head>
+                            <tr md-row>
+                                <th md-column>#</th>
+                                <th md-column>Nome</th>
+                                <th md-column>Tamanho</th>
+                                <!-- <th md-column>Relative Path</th> -->
+                                <!--<th md-column>Unique Identifier</th> -->
+                                <!--<th md-column>#Chunks</th> -->
+                                <th md-column class="center">Status (%)</th>
+                                <!-- <th md-column>Paused</th> -->
+                                <!-- <th md-column>Uploading</th> -->
+                                <!--  <th md-column>Completed</th> -->
+                                <th md-column class="center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="file in transfers">
+                                <td md-cell>
+                                    {{$index+1}}
+                                    <div ng-if="file.finished" ng-init="vm.removeSuccessLine($event, $index, file, transfers)"></div>
+                                </td>
+                                <td md-cell>{{file.name}}</td>
+                                <td md-cell>{{vm.numeral(file.size).format('0.0b')}}</td>
+                                <!-- <td md-cell>{{file.relativePath}}</td> -->
+                                <!-- <td md-cell>{{file.uniqueIdentifier}}</td> -->
+                                <!-- <td md-cell>{{file.chunks.length}}</td> -->
+                                <td md-cell class="center">
+                                    <div ng-hide="file.error">{{vm.getProgress(file.progress(), $index)}}%</div>
+                                    <div class="error" ng-show="file.error">Erro!</div>
+                                </td>
+                                <!-- <td md-cell>{{file.paused}}</td> -->
+                                <!-- <td md-cell>{{file.isUploading()}}</td> -->
+                                <!-- <td md-cell>{{file.isComplete()}}</td> -->
+                                <td md-cell class="center">
+                                    <div ng-hide="file.progress() === 1">
+                                        <md-button class="md-icon-button" ng-click="file.cancel()">
+                                            <md-icon>delete</md-icon>
+                                        </md-button>
+                                    </div>
+                                    <md-button class="md-raised md-primary" ng-click="file.retry()" ng-show="file.error">Tentar novamente</md-button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+
+                <md-radio-group ng-model="vm.type" layout="row" layout-align="center center" layout-padding ng-show="false">
+                    <md-radio-button value="simples" class="md-primary">Edição Simples</md-radio-button>
+                    <md-radio-button value="html"> Edição em HTML </md-radio-button>
+                </md-radio-group>
+
+                <div flex="100">
+                    <div ng-show="vm.type === 'simples'">
+                        <md-content class="md-padding">
+                            <ng-quill-editor id="mensagem" name="mensagem" callback="editorCallback(editor, name)" ng-model="vm.mensagem.EM061_DS_TEXTO" translations="translations" toolbar="true" show-toolbar="showToolbar" link-tooltip="true" image-tooltip="true" toolbar-entries="font size bold list bullet italic underline strike align color background link image"
+                                editor-required="true" required="" error-class="input-error" fontsize-options="fontsizeOptions" fontfamily-options="fontfamilyOptions" ng-click="mensagemClick($event)"></ng-quill-editor>
+                        </md-content>
+                    </div>
+                    <md-content ng-show="vm.type === 'html'">
+                        <textarea id="mensagemHtml" class="mensagemHtml" ng-model="vm.mensagem.EM061_DS_TEXTO"></textarea>
+                    </md-content>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</div>

@@ -1,0 +1,73 @@
+<div layout="column" ng-cloak class="contrato" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container flex-gt-sm="33" flex-gt-sm layout-xs="100">
+                <label>Contrato</label>
+                <input ng-model="vm.filter.CB213_NR_CONTRA">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="33" flex-gt-sm layout-xs="100">
+                <label>Cliente</label>
+                <input ng-model="vm.filter.CB213_NM_CLIENT">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="33" layout-xs="100">
+                <label>CPF</label>
+                <input name="CB213_NR_CPFCNPJ" ng-model="vm.filter.CB213_NR_CPFCNPJ" ui-br-cpf-mask>
+                <div ng-messages="formSearch.CB213_NR_CPFCNPJ.$error" multiple md-auto-hide="false">
+                    <div ng-message="cpf">CPF inválido.</div>
+                </div>
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.contrato.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Contrato</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <!--<md-toolbar class="md-accent md-hue-1" ng-show="vm.contrato.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.contrato.selected.length}} {{vm.contrato.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>-->
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="false" ng-model="vm.contrato.selected" md-progress="vm.contrato.promise">
+                <thead md-head md-order="vm.contrato.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by="CB213_NR_CONTRA"><span>Contrato</span></th>
+                        <th md-column md-order-by="CB213_NR_CPFCNPJ"><span>CPF</span></th>
+                        <th md-column md-order-by="CB213_NM_CLIENT"><span>Cliente</span></th>
+                        <th md-column md-order-by="CB255_DS_PRODR"><span>Produto</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.contrato.data | orderBy: vm.contrato.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                <md-icon>search</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.CB213_NR_CONTRA}}</td>
+                        <td md-cell>{{item.CB213_NR_CPFCNPJ | padLeft : '00000000000' | brCpf}}</td>
+                        <td md-cell>{{item.CB213_NM_CLIENT}}</td>
+                        <td md-cell>{{item.CB255_DS_PRODR}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.contrato.limit" md-page="vm.contrato.page" md-total="{{vm.contrato.total}}" md-page-select md-on-paginate="vm.contrato.pagination"></md-table-pagination>
+</div>

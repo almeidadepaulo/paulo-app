@@ -1,0 +1,22 @@
+<div layout="column" ng-cloak class="capa" ng-init="vm.init()">
+
+    <form name="formSearch" class="" layout="row" layout-align="center center">
+        <div flex="70" layout="row" layout-align="space-between center" layout-wrap>
+            <md-input-container>
+                <label>Data</label>
+                <md-datepicker ng-model="vm.filter.data"></md-datepicker>
+                <div class="hint-datepicker">DD/MM/YYYY</div>
+            </md-input-container>
+            <div>
+                <md-button class="md-raised md-primary" ng-click="vm.capaPdf()">
+                    <i class="fa fa-files-o" aria-hidden="true"></i> Gerar capas de lotes
+                </md-button>
+            </div>
+        </div>
+    </form>
+    <md-content flex class="content" layout="column" layout-align="center center">
+        <!-- <md-progress-linear md-mode="indeterminate" ng-show="vm.loading"></md-progress-linear> -->
+        <md-progress-circular md-mode="indeterminate" ng-show="vm.loading"></md-progress-circular>
+        <iframe flex id="" src="{{vm.pdfPath}}" ng-show="!vm.loading"></iframe>
+    </md-content>
+</div>

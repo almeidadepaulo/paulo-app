@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="product" content="Seeaway">
+    <meta name="description" content="Seeaway">
+    <meta name="author" content="Seeaway">
+    <link href="favicon.ico" rel="shortcut icon">
+    <title>Seeaway | Collect</title>
+    <link href="collect-app.less" type="text/css" rel="stylesheet/less">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body ng-app="seeawayApp" layout="column" ng-cloak>
+    <div id="loading-bar-container"></div>
+    <div ui-view layout="column" class="seeawayApp-views"></div>
+    <!-- Livereload script for development only (stripped during dist build) -->
+    <script src="http://localhost:35729/livereload.js"></script>
+    <!-- htmlbuild:js -->
+    <!-- Libraries -->
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-animate/angular-animate.min.js"></script>
+    <script src="lib/angular-aria/angular-aria.min.js"></script>
+    <script src="lib/angular-messages/angular-messages.min.js"></script>
+    <script src="lib/angular-cookies/angular-cookies.min.js"></script>
+    <script src="lib/angular-i18n/angular-locale_pt-br.js"></script>
+    <script src="lib/angular-resource/angular-resource.min.js"></script>
+    <script src="lib/angular-input-masks/angular-input-masks-standalone.min.js"></script>
+    <script src="lib/angular-br-filters/release/angular-br-filters.min.js"></script>
+    <script src="lib/angular-ui-mask/dist/mask.min.js"></script>
+    <script src="lib/less/dist/less.min.js"></script>
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/moment/min/moment-with-locales.min.js"></script>
+    <script src="lib/numeral/min/numeral.min.js"></script>
+    <script src="lib/numeral/min/languages/pt-br.min.js"></script>
+    <script src="lib/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="lib/px-module/dist/px-full/px-full.min.js"></script>
+    <script src="lib/angular-material-data-table/dist/md-data-table.min.js"></script>
+    <script src="lib/jstree/dist/jstree.min.js"></script>
+    <script src="lib/angular-material/angular-material.min.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="lib/material-calendar/dist/angular-material-calendar.min.js"></script>
+    <script src="lib/jstree/dist/jstree.min.js"></script>
+    <script src="lib/angular-loading-bar/build/loading-bar.min.js"></script>
+    <script src="lib/ng-flow/dist/ng-flow-standalone.min.js"></script>
+    <script src="lib/chart.js/dist/Chart.min.js"></script>
+    <script src="lib/angular-chart.js/dist/angular-chart.min.js"></script>
+    <script src="lib/ng-currency/dist/ng-currency.js"></script>
+    <script src="lib/smDateTimeRangePicker/src/picker.js"></script>
+    <script src="publish/assets/external/quill/dist/quill.min.js"></script>
+    <script src="publish/assets/external/ngQuill/src/ng-quill.min.js"></script>
+
+    <!-- Your application bootstrap  -->
+    <script src="collect-app.js"></script>
+    <!-- controllers -->
+    <script src="main/partial/login/login.controller.js"></script>
+    <script src="main/partial/home/home.controller.js"></script>
+    <script src="main/partial/perfil-usuario/perfil-usuario.controller.js"></script>
+    <script src="main/partial/perfil-usuario/cedente.controller.js"></script>
+    <script src="main/partial/perfil-usuario/cedente-form.controller.js"></script>
+    <script src="main/partial/perfil-usuario/perfil.controller.js"></script>
+    <script src="main/partial/perfil-usuario/perfil-form.controller.js"></script>
+    <script src="main/partial/perfil-usuario/perfil-dialog.controller.js"></script>
+    <script src="main/partial/perfil-usuario/perfil-acesso-dialog.controller.js"></script>
+    <script src="main/partial/perfil-usuario/usuario.controller.js"></script>
+    <script src="main/partial/perfil-usuario/usuario-form.controller.js"></script>
+    <script src="main/partial/cedente/cedente-dialog.controller.js"></script>
+    <script src="main/partial/404/404.controller.js"></script>
+    <script src="main/partial/example/example.controller.js"></script>
+    <script src="main/partial/example/example-form.controller.js"></script>
+    <script src="main/partial/menu/menu.controller.js"></script>
+
+    <!-- controllers collect-->
+    <script src="collect/partial/contrato/contrato.controller.js"></script>
+    <script src="collect/partial/contrato/contrato-form.controller.js"></script>
+    <script src="collect/partial/sacado/sacado.controller.js"></script>
+    <script src="collect/partial/sacado/sacado-dialog.controller.js"></script>
+    <script src="collect/partial/2via/2via.controller.js"></script>
+    <script src="collect/partial/2via/2via-form.controller.js"></script>
+    <script src="collect/partial/pagamento/pagamento.controller.js"></script>
+    <script src="collect/partial/pagamento/pagamento-form.controller.js"></script>
+    <script src="collect/partial/pagamento/pagamento-pdf-dialog.controller.js"></script>
+    <script src="collect/partial/banco/banco-dialog.controller.js"></script>
+    <script src="collect/partial/agencia/agencia-dialog.controller.js"></script>
+    <script src="collect/partial/conta/conta.controller.js"></script>
+    <script src="collect/partial/conta/conta-form.controller.js"></script>
+    <script src="collect/partial/conta/conta-dialog.controller.js"></script>
+    <script src="collect/partial/carteira/carteira.controller.js"></script>
+    <script src="collect/partial/carteira/carteira-form.controller.js"></script>
+    <script src="collect/partial/carteira/carteira-dialog.controller.js"></script>
+    <script src="collect/partial/produto/produto.controller.js"></script>
+    <script src="collect/partial/produto/produto-form.controller.js"></script>
+    <script src="collect/partial/produto/produto-dialog.controller.js"></script>
+    <script src="collect/partial/balancete/balancete.controller.js"></script>
+    <script src="collect/partial/entrada-relatorio/entrada-relatorio.controller.js"></script>
+    <script src="collect/partial/pagamento-relatorio/pagamento-relatorio.controller.js"></script>
+    <script src="collect/partial/titulo-vencido/titulo-vencido.controller.js"></script>
+    <script src="collect/partial/fluxo-vencimento/fluxo-vencimento.controller.js"></script>
+    <script src="collect/partial/carteira-relatorio/carteira-relatorio.controller.js"></script>
+    <script src="collect/partial/tarifa-bancaria/tarifa-bancaria.controller.js"></script>
+    <script src="collect/partial/resumo/resumo.controller.js"></script>
+    <script src="collect/partial/updownload/updownload.controller.js"></script>
+    <script src="collect/partial/extrato/extrato.controller.js"></script>
+    <script src="collect/partial/notificacao/notificacao.controller.js"></script>
+    <script src="collect/partial/notificacao/notificacao-form.controller.js"></script>
+    <script src="collect/partial/sms/sms-form.controller.js"></script>
+    <script src="collect/partial/email/email-form.controller.js"></script>
+    <script src="collect/partial/banco/banco.controller.js"></script>
+    <script src="collect/partial/banco/banco-form.controller.js"></script>
+
+    <!-- controllers publish -->
+    <script src="publish/partial/sms-codigo/sms-codigo-dialog.controller.js"></script>
+
+    <!-- routes -->
+    <script src="main/partial/login/login.route.js"></script>
+    <script src="main/partial/404/404.route.js"></script>
+    <script src="main/partial/home/home.route.js"></script>
+    <script src="main/partial/perfil-usuario/perfil-usuario.route.js"></script>
+    <script src="main/partial/perfil-usuario/cedente-form.route.js"></script>
+    <script src="main/partial/perfil-usuario/perfil-form.route.js"></script>
+    <script src="main/partial/perfil-usuario/usuario-form.route.js"></script>
+    <script src="main/partial/example/example.route.js"></script>
+    <script src="main/partial/example/example-form.route.js"></script>
+    <script src="main/partial/menu/menu.route.js"></script>
+
+    <!-- routes collect -->
+    <script src="collect/partial/contrato/contrato.route.js"></script>
+    <script src="collect/partial/contrato/contrato-form.route.js"></script>
+    <script src="collect/partial/sacado/sacado.route.js"></script>
+    <script src="collect/partial/pagamento/pagamento.route.js"></script>
+    <script src="collect/partial/pagamento/pagamento-form.route.js"></script>
+    <script src="collect/partial/2via/2via.route.js"></script>
+    <script src="collect/partial/2via/2via-form.route.js"></script>
+    <script src="collect/partial/conta/conta.route.js"></script>
+    <script src="collect/partial/conta/conta-form.route.js"></script>
+    <script src="collect/partial/produto/produto.route.js"></script>
+    <script src="collect/partial/produto/produto-form.route.js"></script>
+    <script src="collect/partial/carteira/carteira.route.js"></script>
+    <script src="collect/partial/carteira/carteira-form.route.js"></script>
+    <script src="collect/partial/balancete/balancete.route.js"></script>
+    <script src="collect/partial/entrada-relatorio/entrada-relatorio.route.js"></script>
+    <script src="collect/partial/pagamento-relatorio/pagamento-relatorio.route.js"></script>
+    <script src="collect/partial/titulo-vencido/titulo-vencido.route.js"></script>
+    <script src="collect/partial/fluxo-vencimento/fluxo-vencimento.route.js"></script>
+    <script src="collect/partial/carteira-relatorio/carteira-relatorio.route.js"></script>
+    <script src="collect/partial/tarifa-bancaria/tarifa-bancaria.route.js"></script>
+    <script src="collect/partial/resumo/resumo.route.js"></script>
+    <script src="collect/partial/updownload/updownload.route.js"></script>
+    <script src="collect/partial/extrato/extrato.route.js"></script>
+    <script src="collect/partial/notificacao/notificacao.route.js"></script>
+    <script src="collect/partial/notificacao/notificacao-form.route.js"></script>
+    <script src="collect/partial/sms/sms-form.route.js"></script>
+    <script src="collect/partial/email/email-form.route.js"></script>
+    <script src="collect/partial/banco/banco.route.js"></script>
+    <script src="collect/partial/banco/banco-form.route.js"></script>
+
+    <!-- directives -->
+    <script src="main/directive/seeaway-view-header/seeaway-view-header.js"></script>
+    <script src="main/directive/compare-to/compare-to.js"></script>
+    <script src="main/directive/cep-search/cep-search.js"></script>
+
+    <!-- filters -->
+    <script src="main/filter/pad-left.js"></script>
+    <script src="main/filter/number-to-date.js"></script>
+    <script src="collect/filter/pagamento.js"></script>
+    <script src="collect/filter/resumo-contabil.js"></script>
+
+    <!-- services -->
+    <script src="main/service/login.service.js"></script>
+    <script src="main/service/home.service.js"></script>
+    <script src="main/service/toast.service.js"></script>
+    <script src="main/service/user.service.js"></script>
+    <script src="main/service/perfil.service.js"></script>
+    <script src="main/service/usuario.service.js"></script>
+    <script src="main/service/cedente.service.js"></script>
+    <script src="main/service/cep.service.js"></script>
+    <script src="main/service/string-util.service.js"></script>
+    <script src="main/service/example.service.js"></script>
+
+    <!-- services collect -->
+    <script src="collect/service/banco.service.js"></script>
+    <script src="collect/service/agencia.service.js"></script>
+    <script src="collect/service/conta.service.js"></script>
+    <script src="collect/service/carteira.service.js"></script>
+    <script src="collect/service/produto.service.js"></script>
+    <script src="collect/service/contrato.service.js"></script>
+    <script src="collect/service/sacado.service.js"></script>
+    <script src="collect/service/pagamento.service.js"></script>
+    <script src="collect/service/2via.service.js"></script>
+    <script src="collect/service/entrada-relatorio.service.js"></script>
+    <script src="collect/service/pagamento-relatorio.service.js"></script>
+    <script src="collect/service/balancete.service.js"></script>
+    <script src="collect/service/titulo-vencido.service.js"></script>
+    <script src="collect/service/fluxo-vencimento.service.js"></script>
+    <script src="collect/service/carteira-relatorio.service.js"></script>
+    <script src="collect/service/tarifa-bancaria.service.js"></script>
+    <script src="collect/service/resumo.service.js"></script>
+    <script src="collect/service/extrato.service.js"></script>
+    <script src="collect/service/notificacao.service.js"></script>
+    <script src="collect/service/banco.service.js"></script>
+
+    <!-- services publish -->
+    <script src="publish/service/sms-codigo.service.js"></script>
+
+    <!-- constants -->
+    <script src="main/constant/example.js"></script>
+    <script src="main/constant/perfil.js"></script>
+    <script src="main/constant/usuario.js"></script>
+
+    <!-- constants collect -->
+    <script src="collect/constant/pagamento.js"></script>
+    <script src="collect/constant/resumo-contabil.js"></script>
+
+    <!-- endbuild -->
+</body>
+
+</html>

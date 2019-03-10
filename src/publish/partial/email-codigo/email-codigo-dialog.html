@@ -1,0 +1,74 @@
+<md-dialog ng-cloak flex="70" aria-label="" ng-init="vm.init()" class="email-código-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Selecione uma mensagem</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+        <form name="formSearch" class="filter">
+            <h5>Utilize o campo abaixo para filtrar a listagem.</h5>
+            <div layout-gt-sm="row">
+                <md-input-container flex-gt-sm="50" flex-gt-sm layout-xs="100">
+                    <label>Código do E-mail</label>
+                    <input ng-model="vm.filter.EM055_CD_CODEMAIL">
+                </md-input-container>
+
+                <md-input-container flex-gt-sm="50" layout-xs="100">
+                    <label>Descrição</label>
+                    <input ng-model="vm.filter.EM055_DS_CODEMAIL">
+                </md-input-container>
+            </div>
+        </form>
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.emailCodigo.selected.length">
+            <div class="md-toolbar-tools">
+                <span>Código</span>
+                <span flex></span>
+                <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                    <md-icon>refresh</md-icon>
+                    Atualizar listagem
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-toolbar class="md-accent md-hue-1" ng-show="vm.emailCodigo.selected.length">
+            <div class="md-toolbar-tools">
+                <span>{{vm.emailCodigo.selected.length}} {{vm.emailCodigo.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.remove()">
+                    <md-icon>delete</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div>
+            <md-table-container>
+                <table md-table md-row-select="false" multiple="false" ng-model="vm.emailCodigo.selected" md-progress="vm.emailCodigo.promise">
+                    <thead md-head md-order="vm.emailCodigo.order">
+                        <tr md-row>
+                            <th md-column md-order-by="EM055_CD_CODEMAIL"><span>Código do E-mail</span></th>
+                            <th md-column md-order-by="EM055_DS_CODEMAIL"><span>Descrição</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.emailCodigo.data | orderBy: vm.emailCodigo.order" class="pointer" ng-click="vm.itemClick(item)">
+                            <td md-cell>{{item.EM055_CD_CODEMAIL}}</td>
+                            <td md-cell>{{item.EM055_DS_CODEMAIL}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.emailCodigo.limit" md-page="vm.emailCodigo.page" md-total="{{vm.emailCodigo.total}}" md-page-select md-on-paginate="vm.emailCodigo.pagination"></md-table-pagination>
+        </div>
+        <md-actions layout="row" layout-xs="column">
+
+            <span flex></span>
+
+            <md-button class="md-raised md-primary" ng-click="vm.itemClick(vm.emailCodigo.selected)" ng-disabled="vm.emailCodigo.selected.length === 0">
+                <i class="fa fa-check" aria-hidden="true"></i> Vincular
+            </md-button>
+        </md-actions>
+    </md-dialog-content>
+</md-dialog>

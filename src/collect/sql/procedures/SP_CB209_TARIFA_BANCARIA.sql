@@ -1,0 +1,448 @@
+IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id('dbo.SP_CB209_TARIFA_BANCARIA'))
+  DROP PROCEDURE dbo.SP_CB209_TARIFA_BANCARIA
+GO
+CREATE PROCEDURE dbo.SP_CB209_TARIFA_BANCARIA
+/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  :: EMPRESA    : Publish                                                      ::
+  :: SISTEMA    : Publish cobran�a                                             ::
+  :: M�DULO     : Gest�o de tarifas bancarias                                  ::
+  :: UTILIZ. POR: F03SF05U                                                     ::
+  :: OBSERVA��O :                                                              ::
+  ::---------------------------------------------------------------------------::
+  :: PROGRAMADOR:                                                              ::
+  :: DATA       :                                              VERS�O SP:      ::
+  :: ALTERA��O  :                                                              ::
+  ::---------------------------------------------------------------------------::
+  :: PROGRAMADOR: Felipe Cesarini                                              ::
+  :: DATA       : 05/05/2011                                   VERS�O SP:    1 ::
+  :: ALTERA��O  : Primeira vers�o                                              ::
+  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+  /*-------------------------------------------------------------------------------
+  DESCRI��O DA FUNCIONALIDADE:
+
+  Gest�o de tarifas bancarias di�rio
+  -------------------------------------------------------------------------------*/
+  @ENT_NR_VRS    VARCHAR(4)   ,       /* ENTRADA DA VERSAO DO MODULO             */
+  @ENT_NR_INST   NUMERIC(5,0) ,       /* Nr. institui��o                         */
+  @ENT_CD_EMIEMP NUMERIC(5,0) ,       /* Nr. emissor/empresa                     */
+  @ENT_CD_COMPSC NUMERIC(5,0) ,       /* Nr. banco                               */
+  @ENT_NR_AGENC  NUMERIC(5,0) ,       /* Nr. agênci                              */
+  @ENT_NR_CONTA  NUMERIC(9,0) ,       /* Nr. conta                               */
+  @ENT_NR_PRODUT NUMERIC(5,0) ,       /* Nr. Produto                             */
+  @ENT_CD_CART   NUMERIC(5,0) ,       /* Nr. carteira                            */
+  @ENT_DT_INI    NUMERIC(8,0) ,       /* Dt. Movto. Ini.                         */
+  @ENT_DT_FIM    NUMERIC(8,0) ,       /* Dt. Movto. Fim.                         */
+  @ENT_DT_MES    NUMERIC(6)           /* M�s de referencia                       */
+  WITH ENCRYPTION
+AS
+/*--------------------------------------------------------------------------*/
+/* Verifica se a vers�o do M�dulo � diferente da vers�o da Stored Procedure */
+/*--------------------------------------------------------------------------*/
+DECLARE @LOC_NR_RTCODE INTEGER
+EXECUTE @LOC_NR_RTCODE = SP_CD0100002 @ENT_NR_VRS, '1', 'SP_CB0305021'
+IF @LOC_NR_RTCODE = 99999 RETURN 99999
+/*--------------------------------------------------------------------------*/
+SET QUOTED_IDENTIFIER ON
+SET ANSI_NULLS OFF
+
+CREATE TABLE #TB05021 (
+  CB209_NR_OPERADOR	  NUMERIC(5,0) ,
+  CB209_NR_CEDENTE	NUMERIC(5,0) ,
+  CB209_CD_COMPSC	NUMERIC(5,0) ,
+  CB209_NR_AGENC	NUMERIC(5,0) ,
+  CB209_NR_CONTA	NUMERIC(12)  ,
+  CB209_NR_PRODUT	NUMERIC(5)   ,
+  CB209_CD_CART	  NUMERIC(5,0) ,
+  CB209_DT_MOVTO	NUMERIC(8,0) ,
+  CB209_ID_TIPOAC	NUMERIC(3,0) ,
+  CB209_VL_VALOR	NUMERIC(17,2),
+  CB209_VL_ATRASO	NUMERIC(17,2),
+  CB209_VL_ACRE	  NUMERIC(17,2),
+  CB209_VL_DESC	  NUMERIC(17,2),
+  CB209_VL_ABATI	NUMERIC(17,2),
+  CB209_VL_IOF	  NUMERIC(17,2),
+  CB209_VL_PAGO	  NUMERIC(17,2),
+  CB209_VL_DIFLIQ	NUMERIC(17,2),
+  CB209_VL_PREPAG	NUMERIC(17,2),
+  CB209_VL_INFORM	NUMERIC(17,2),
+  CB209_VL_PREATR	NUMERIC(17,2),
+  CB209_VL_TAFATR	NUMERIC(17,2),
+  CB209_QT_TOTAL	NUMERIC(9)   ,
+  CB209_QT_ATRASA	NUMERIC(9)
+)  
+
+IF @ENT_DT_MES = 1
+BEGIN
+  /* LIQUIDADO */
+  INSERT INTO #TB05021 (
+    CB209_NR_OPERADOR	 ,
+    CB209_NR_CEDENTE,
+    CB209_CD_COMPSC,
+    CB209_NR_AGENC ,
+    CB209_NR_CONTA ,
+    CB209_NR_PRODUT,
+    CB209_CD_CART	 ,
+    CB209_DT_MOVTO ,
+    CB209_ID_TIPOAC,
+    CB209_VL_VALOR ,
+    CB209_VL_ATRASO,
+    CB209_VL_ACRE	 ,
+    CB209_VL_DESC	 ,
+    CB209_VL_ABATI ,
+    CB209_VL_IOF	 ,
+    CB209_VL_PAGO	 ,
+    CB209_VL_DIFLIQ,
+    CB209_VL_PREPAG,
+    CB209_VL_INFORM,
+    CB209_VL_PREATR,
+    CB209_VL_TAFATR,
+    CB209_QT_TOTAL ,
+    CB209_QT_ATRASA
+  )
+  SELECT
+    CB209_NR_OPERADOR	 ,
+    CB209_NR_CEDENTE,
+    CB209_CD_COMPSC,
+    CB209_NR_AGENC ,
+    CB209_NR_CONTA ,
+    CB209_NR_PRODUT,
+    CB209_CD_CART	 ,
+    CB209_DT_MOVTO ,
+    CB209_ID_TIPOAC,
+    CB209_VL_VALOR ,
+    CB209_VL_ATRASO,
+    CB209_VL_ACRE	 ,
+    CB209_VL_DESC	 ,
+    CB209_VL_ABATI ,
+    CB209_VL_IOF	 ,
+    CB209_VL_PAGO	 ,
+    CB209_VL_DIFLIQ,
+    CB209_VL_PREPAG,
+    CB209_VL_INFORM,
+    CB209_VL_PREATR,
+    CB209_VL_TAFATR,
+    CB209_QT_TOTAL ,
+    CB209_QT_ATRASA
+  FROM
+    CB209
+  WHERE
+      (@ENT_NR_INST   IS NULL OR CB209_NR_OPERADOR   = @ENT_NR_INST)
+  AND (@ENT_CD_EMIEMP IS NULL OR CB209_NR_CEDENTE = @ENT_CD_EMIEMP)
+  AND (@ENT_CD_COMPSC IS NULL OR CB209_CD_COMPSC = @ENT_CD_COMPSC)
+  AND (@ENT_NR_AGENC IS NULL OR CB209_NR_AGENC = @ENT_NR_AGENC)
+  AND (@ENT_NR_CONTA IS NULL OR CB209_NR_CONTA = @ENT_NR_CONTA)
+  AND (@ENT_NR_PRODUT IS NULL OR CB209_NR_PRODUT = @ENT_NR_PRODUT)
+  AND (@ENT_CD_CART   IS NULL OR CB209_CD_CART   = @ENT_CD_CART)
+  AND (@ENT_DT_INI    IS NULL OR CB209_DT_MOVTO BETWEEN @ENT_DT_INI AND @ENT_DT_FIM)   
+  AND CB209_ID_TIPOAC = 3
+  ORDER BY
+    CB209_DT_MOVTO 
+
+  /* BAIXADOS */
+  INSERT INTO #TB05021 (
+    CB209_NR_OPERADOR	 ,
+    CB209_NR_CEDENTE,
+    CB209_CD_COMPSC,
+    CB209_NR_AGENC ,
+    CB209_NR_CONTA ,
+    CB209_NR_PRODUT,
+    CB209_CD_CART	 ,
+    CB209_DT_MOVTO ,
+    CB209_ID_TIPOAC,
+    CB209_VL_VALOR ,
+    CB209_VL_ATRASO,
+    CB209_VL_ACRE	 ,
+    CB209_VL_DESC	 ,
+    CB209_VL_ABATI ,
+    CB209_VL_IOF	 ,
+    CB209_VL_PAGO	 ,
+    CB209_VL_DIFLIQ,
+    CB209_VL_PREPAG,
+    CB209_VL_INFORM,
+    CB209_VL_PREATR,
+    CB209_VL_TAFATR,
+    CB209_QT_TOTAL ,
+    CB209_QT_ATRASA
+  )
+  SELECT
+    CB209_NR_OPERADOR	 ,
+    CB209_NR_CEDENTE,
+    CB209_CD_COMPSC,
+    CB209_NR_AGENC ,
+    CB209_NR_CONTA ,
+    CB209_NR_PRODUT,
+    CB209_CD_CART	 ,
+    CB209_DT_MOVTO ,
+    CB209_ID_TIPOAC,
+    CB209_VL_VALOR ,
+    CB209_VL_ATRASO,
+    CB209_VL_ACRE	 ,
+    CB209_VL_DESC	 ,
+    CB209_VL_ABATI ,
+    CB209_VL_IOF	 ,
+    CB209_VL_PAGO	 ,
+    CB209_VL_DIFLIQ,
+    CB209_VL_PREPAG,
+    CB209_VL_INFORM,
+    CB209_VL_PREATR,
+    CB209_VL_TAFATR,
+    CB209_QT_TOTAL ,
+    CB209_QT_ATRASA
+  FROM
+    CB209
+  WHERE
+      (@ENT_NR_INST   IS NULL OR CB209_NR_OPERADOR   = @ENT_NR_INST)
+  AND (@ENT_CD_EMIEMP IS NULL OR CB209_NR_CEDENTE = @ENT_CD_EMIEMP)
+  AND (@ENT_CD_COMPSC IS NULL OR CB209_CD_COMPSC = @ENT_CD_COMPSC)
+  AND (@ENT_NR_AGENC IS NULL OR CB209_NR_AGENC = @ENT_NR_AGENC)
+  AND (@ENT_NR_CONTA IS NULL OR CB209_NR_CONTA = @ENT_NR_CONTA)
+  AND (@ENT_NR_PRODUT IS NULL OR CB209_NR_PRODUT = @ENT_NR_PRODUT)
+  AND (@ENT_CD_CART   IS NULL OR CB209_CD_CART   = @ENT_CD_CART)
+  AND (@ENT_DT_INI    IS NULL OR CB209_DT_MOVTO BETWEEN @ENT_DT_INI AND @ENT_DT_FIM)   
+  AND CB209_ID_TIPOAC = 4
+  ORDER BY
+    CB209_DT_MOVTO 
+    
+  /* RESULT SET */ 
+  SELECT
+    CB209_DT_MOVTO ,
+    CB209_ID_TIPOAC,
+    SUM(CB209_QT_TOTAL) CB209_QT_TOTAL,
+    SUM(CB209_VL_DIFLIQ) CB209_VL_DIFLIQ,
+    SUM(CB209_VL_PAGO) CB209_VL_PAGO,
+    (SUM(CB209_VL_PAGO) - SUM(CB209_VL_DIFLIQ)) CB209_VL_DIF,
+    SUM(CB209_QT_TOTAL) CB209_QT_TOTAL,
+    SUM(CB209_VL_PREPAG) CB209_VL_PREPAG,
+    SUM(CB209_VL_INFORM) CB209_VL_INFORM,
+    SUM(CB209_QT_ATRASA) CB209_QT_ATRASA,
+    SUM(CB209_VL_PREATR) CB209_VL_PREATR,
+    SUM(CB209_VL_TAFATR) CB209_VL_TAFATR,
+    SUM(CB209_VL_VALOR) CB209_VL_VALOR,
+    SUM(CB209_VL_ATRASO) CB209_VL_ATRASO,
+    SUM(CB209_VL_ACRE) CB209_VL_ACRE,
+    SUM(CB209_VL_DESC) CB209_VL_DESC,
+    SUM(CB209_VL_ABATI) CB209_VL_ABATI,
+    SUM(CB209_VL_IOF) CB209_VL_IOF,
+
+    CB255_DS_PRODR,
+	CB256_DS_CART
+  FROM
+    #TB05021
+
+  INNER JOIN CB255
+  ON CB255_NR_OPERADOR = CB209_NR_OPERADOR
+  AND CB255_NR_CEDENTE = CB209_NR_CEDENTE
+  AND CB255_CD_PROD = CB209_NR_PRODUT
+
+  INNER JOIN CB256
+  ON CB256_NR_OPERADOR = CB209_NR_OPERADOR
+  AND CB256_NR_CEDENTE = CB209_NR_CEDENTE
+  AND CB256_CD_CART = CB209_NR_PRODUT
+
+  GROUP BY 
+    CB209_DT_MOVTO ,
+    CB209_ID_TIPOAC,
+	CB255_DS_PRODR,
+	CB256_DS_CART
+  ORDER BY
+    CB209_DT_MOVTO ,
+    CB209_ID_TIPOAC,
+	CB255_DS_PRODR,
+	CB256_DS_CART
+END
+ELSE
+  BEGIN
+    /* LIQUIDADO */
+    INSERT INTO #TB05021 (
+      CB209_NR_OPERADOR	 ,
+      CB209_NR_CEDENTE,
+      CB209_CD_COMPSC,
+      CB209_NR_AGENC ,
+      CB209_NR_CONTA ,
+      CB209_NR_PRODUT,
+      CB209_CD_CART	 ,
+      CB209_DT_MOVTO ,
+      CB209_ID_TIPOAC,
+      CB209_VL_VALOR ,
+      CB209_VL_ATRASO,
+      CB209_VL_ACRE	 ,
+      CB209_VL_DESC	 ,
+      CB209_VL_ABATI ,
+      CB209_VL_IOF	 ,
+      CB209_VL_PAGO	 ,
+      CB209_VL_DIFLIQ,
+      CB209_VL_PREPAG,
+      CB209_VL_INFORM,
+      CB209_VL_PREATR,
+      CB209_VL_TAFATR,
+      CB209_QT_TOTAL ,
+      CB209_QT_ATRASA
+    )
+    SELECT
+      CB209_NR_OPERADOR	 ,
+      CB209_NR_CEDENTE,
+      CB209_CD_COMPSC,
+      CB209_NR_AGENC ,
+      CB209_NR_CONTA ,
+      CB209_NR_PRODUT,
+      CB209_CD_CART	 ,
+      CB209_DT_MOVTO ,
+      CB209_ID_TIPOAC,
+      CB209_VL_VALOR ,
+      CB209_VL_ATRASO,
+      CB209_VL_ACRE	 ,
+      CB209_VL_DESC	 ,
+      CB209_VL_ABATI ,
+      CB209_VL_IOF	 ,
+      CB209_VL_PAGO	 ,
+      CB209_VL_DIFLIQ,
+      CB209_VL_PREPAG,
+      CB209_VL_INFORM,
+      CB209_VL_PREATR,
+      CB209_VL_TAFATR,
+      CB209_QT_TOTAL ,
+      CB209_QT_ATRASA
+    FROM
+      CB209
+    WHERE
+        (@ENT_NR_INST   IS NULL OR CB209_NR_OPERADOR   = @ENT_NR_INST)
+    AND (@ENT_CD_EMIEMP IS NULL OR CB209_NR_CEDENTE = @ENT_CD_EMIEMP)
+    AND (@ENT_CD_COMPSC IS NULL OR CB209_CD_COMPSC = @ENT_CD_COMPSC)
+    AND (@ENT_NR_AGENC IS NULL OR CB209_NR_AGENC = @ENT_NR_AGENC)
+    AND (@ENT_NR_CONTA IS NULL OR CB209_NR_CONTA = @ENT_NR_CONTA)
+    AND (@ENT_NR_PRODUT IS NULL OR CB209_NR_PRODUT = @ENT_NR_PRODUT)
+    AND (@ENT_CD_CART   IS NULL OR CB209_CD_CART   = @ENT_CD_CART)
+    AND (@ENT_DT_MES   IS NULL OR FLOOR(CB209_DT_MOVTO / 100) = @ENT_DT_MES)
+    AND CB209_ID_TIPOAC = 3
+    ORDER BY
+      CB209_DT_MOVTO 
+
+    /* BAIXADOS */
+    INSERT INTO #TB05021 (
+      CB209_NR_OPERADOR	 ,
+      CB209_NR_CEDENTE,
+      CB209_CD_COMPSC,
+      CB209_NR_AGENC ,
+      CB209_NR_CONTA ,
+      CB209_NR_PRODUT,
+      CB209_CD_CART	 ,
+      CB209_DT_MOVTO ,
+      CB209_ID_TIPOAC,
+      CB209_VL_VALOR ,
+      CB209_VL_ATRASO,
+      CB209_VL_ACRE	 ,
+      CB209_VL_DESC	 ,
+      CB209_VL_ABATI ,
+      CB209_VL_IOF	 ,
+      CB209_VL_PAGO	 ,
+      CB209_VL_DIFLIQ,
+      CB209_VL_PREPAG,
+      CB209_VL_INFORM,
+      CB209_VL_PREATR,
+      CB209_VL_TAFATR,
+      CB209_QT_TOTAL ,
+      CB209_QT_ATRASA
+    )
+    SELECT
+      CB209_NR_OPERADOR	 ,
+      CB209_NR_CEDENTE,
+      CB209_CD_COMPSC,
+      CB209_NR_AGENC ,
+      CB209_NR_CONTA ,
+      CB209_NR_PRODUT,
+      CB209_CD_CART	 ,
+      CB209_DT_MOVTO ,
+      CB209_ID_TIPOAC,
+      CB209_VL_VALOR ,
+      CB209_VL_ATRASO,
+      CB209_VL_ACRE	 ,
+      CB209_VL_DESC	 ,
+      CB209_VL_ABATI ,
+      CB209_VL_IOF	 ,
+      CB209_VL_PAGO	 ,
+      CB209_VL_DIFLIQ,
+      CB209_VL_PREPAG,
+      CB209_VL_INFORM,
+      CB209_VL_PREATR,
+      CB209_VL_TAFATR,
+      CB209_QT_TOTAL ,
+      CB209_QT_ATRASA
+    FROM
+      CB209
+    WHERE
+        (@ENT_NR_INST   IS NULL OR CB209_NR_OPERADOR   = @ENT_NR_INST)
+    AND (@ENT_CD_EMIEMP IS NULL OR CB209_NR_CEDENTE = @ENT_CD_EMIEMP)
+    AND (@ENT_CD_COMPSC IS NULL OR CB209_CD_COMPSC = @ENT_CD_COMPSC)
+    AND (@ENT_NR_AGENC IS NULL OR CB209_NR_AGENC = @ENT_NR_AGENC)
+    AND (@ENT_NR_CONTA IS NULL OR CB209_NR_CONTA = @ENT_NR_CONTA)
+    AND (@ENT_NR_PRODUT IS NULL OR CB209_NR_PRODUT = @ENT_NR_PRODUT)
+    AND (@ENT_CD_CART   IS NULL OR CB209_CD_CART   = @ENT_CD_CART)
+    AND (@ENT_DT_MES  IS NULL OR FLOOR(CB209_DT_MOVTO / 100) = @ENT_DT_MES)
+    AND CB209_ID_TIPOAC = 4
+    ORDER BY
+      CB209_DT_MOVTO 
+      
+    /* RESULT SET */ 
+    SELECT
+      FLOOR(CB209_DT_MOVTO / 100) CB209_DT_MOVTO2,
+	  SUBSTRING(CONVERT(VARCHAR, FLOOR(CB209_DT_MOVTO / 100)), 5, 2) CB209_DT_MES,
+      FLOOR(CB209_DT_MOVTO / 10000) CB209_DT_ANO,
+      CB209_ID_TIPOAC,
+      SUM(CB209_QT_TOTAL) CB209_QT_TOTAL,
+      SUM(CB209_VL_DIFLIQ) CB209_VL_DIFLIQ,
+      SUM(CB209_VL_PAGO) CB209_VL_PAGO,
+      (SUM(CB209_VL_PAGO) - SUM(CB209_VL_DIFLIQ)) CB209_VL_DIF,
+      SUM(CB209_QT_TOTAL) CB209_QT_TOTAL,
+      SUM(CB209_VL_PREPAG) CB209_VL_PREPAG,
+      SUM(CB209_VL_INFORM) CB209_VL_INFORM,
+      SUM(CB209_QT_ATRASA) CB209_QT_ATRASA,
+      SUM(CB209_VL_PREATR) CB209_VL_PREATR,
+      SUM(CB209_VL_TAFATR) CB209_VL_TAFATR,
+      SUM(CB209_VL_VALOR) CB209_VL_VALOR,
+      SUM(CB209_VL_ATRASO) CB209_VL_ATRASO,
+      SUM(CB209_VL_ACRE) CB209_VL_ACRE,
+      SUM(CB209_VL_DESC) CB209_VL_DESC,
+      SUM(CB209_VL_ABATI) CB209_VL_ABATI,
+      SUM(CB209_VL_IOF) CB209_VL_IOF,
+
+	  CB255_DS_PRODR,
+	  CB256_DS_CART
+    FROM
+      #TB05021
+    
+	INNER JOIN CB255
+	ON CB255_NR_OPERADOR = CB209_NR_OPERADOR
+	AND CB255_NR_CEDENTE = CB209_NR_CEDENTE
+	AND CB255_CD_PROD = CB209_NR_PRODUT
+
+	 INNER JOIN CB256
+  ON CB256_NR_OPERADOR = CB209_NR_OPERADOR
+  AND CB256_NR_CEDENTE = CB209_NR_CEDENTE
+  AND CB256_CD_CART = CB209_NR_PRODUT
+
+    GROUP BY 
+      FLOOR(CB209_DT_MOVTO / 100),
+      SUBSTRING(CONVERT(VARCHAR, FLOOR(CB209_DT_MOVTO / 100)), 5, 2),
+      FLOOR(CB209_DT_MOVTO / 10000),
+      CB209_ID_TIPOAC,
+
+	  CB255_DS_PRODR,
+	  CB256_DS_CART
+    ORDER BY
+      FLOOR(CB209_DT_MOVTO / 100),
+      SUBSTRING(CONVERT(VARCHAR, FLOOR(CB209_DT_MOVTO / 100)), 5, 2),
+      FLOOR(CB209_DT_MOVTO / 10000),
+      CB209_ID_TIPOAC,
+	  CB255_DS_PRODR,
+	  CB256_DS_CART
+  END
+
+
+SET QUOTED_IDENTIFIER OFF
+SET ANSI_NULLS ON
+/*-------------------------------------------------------------------------------
+  RESULT SET:
+
+
+-------------------------------------------------------------------------------*/
+GO

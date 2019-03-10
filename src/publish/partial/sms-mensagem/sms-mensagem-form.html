@@ -1,0 +1,113 @@
+<div layout="column" ng-cloak class="sms-mensagem-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Mensagem SMS)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <md-content layout="row">
+            <div class="variaveis" layout="column">
+                <md-button ng-click="vm.getVariavelSms()">Variáveis</md-button>
+                <md-input-container class="variavel-pesquisa">
+                    <label>Pesquisar variável</label>
+                    <input name="MG061_CD_CODSMS" ng-model="vm.pesquisarVariavel"></input>
+                </md-input-container>
+
+                <md-content class="md-block" flex-gt-sm="">
+                    <md-list-item class="md-3-line" ng-repeat="variavel in vm.variaveis | filter:vm.pesquisarVariavel" ng-click="variavelClick($event, variavel.MG060_CD_VAR)">
+                        <div class="md-list-item-text" layout="column">
+                            <h4>{{variavel.MG060_CD_VAR}}</h4>
+                            <p ng-if="variavel.MG060_QT_CARAC > 0">{{variavel.MG060_DS_VAR}} ({{variavel.MG060_QT_CARAC}})</p>
+                            <p ng-if="!variavel.MG060_QT_CARAC > 0">{{variavel.MG060_DS_VAR}}</p>
+                        </div>
+                    </md-list-item>
+                </md-content>
+            </div>
+            <span flex="5"></span>
+            <div flex>
+                <form name="vm.form">
+                    <div layout-gt-sm="row" layout-align="center center">
+                        <!-- ng-disabled="!vm.aprovador" -->
+                        <md-checkbox ng-model="vm.mensagem.MG061_ID_STATUS" ng-true-value="1" ng-false-value="0">
+                            Mensagem ativa
+                        </md-checkbox>
+                    </div>
+
+                    <!--
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Código</label>
+                            <input md-autofocus name="MG061_CD_CODSMS" ng-model="vm.mensagem.MG055_DS_CODSMS" ng-readonly="true" required placeholder="Clique aqui para selecionar um código" class="pointer" ng-click="vm.codigoDialog($event)">
+                            <div ng-messages="vm.form.MG061_CD_CODSMS.$error">
+                                <div ng-message="required">Campo obrigatório.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    -->
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Código</label>
+                            <input type="number" name="MG061_CD_CODSMS" ng-model="vm.mensagem.MG061_CD_CODSMS" required max="99999">
+                            <div ng-messages="vm.form.MG061_CD_CODSMS.$error">
+                                <div ng-message="required">Campo obrigatório.</div>
+                                <div ng-message="required">Código inválido.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Tipo</label>
+                            <input name="MG055_DS_CODSMS" ng-model="vm.mensagem.MG055_DS_CODSMS" required maxlength="40">
+                            <div type="text" ng-messages="vm.form.MG055_DS_CODSMS.$error">
+                                <div ng-message="required">Campo obrigatório.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="column">
+                        <label>Texto (Caracteres: {{vm.mensagem.MG061_QT_CARACT}} / {{vm.MENSAGEM_MAX_LENGTH}})</label>
+                        <!--
+                        <div id="mensagem" class="mensagem" contenteditable="true" ng-keyup="vm.mensagem.setMensagem($event)" ng-blur="vm.mensagem.mensagemBlur($event)" ng-focus="vm.mensagem.mensagemFocus($event)"></div>
+                        <input type="text" id="MG061_DS_TEXTO" name="MG061_DS_TEXTO" ng-model="vm.mensagem.MG061_DS_TEXTO" class="form-control" required="true"></input>
+                        <input type="hidden" id="MG061_QT_CARACT" name="MG061_QT_CARACT" ng-model="MG061_QT_CARACT" class="form-control" required="true"></input>
+                        -->
+                        <div id="mensagem" class="mensagem" contenteditable="true" ng-keyup="setMensagem($event)" ng-blur="mensagemBlur($event)" ng-focus="mensagemFocus($event)" required></div>
+
+                        <input type="hidden" id="MG061_DS_TEXTO" name="MG061_DS_TEXTO" ng-model="vm.mensagem.MG061_DS_TEXTO" class="form-control" required="true"></input>
+
+                        <md-input-container class="md-block" flex-gt-sm="" style="margin: 0;">
+                            <input type="number" id="MG061_QT_CARACT" name="MG061_QT_CARACT" ng-model="vm.mensagem.MG061_QT_CARACT" class="form-control" required="true" max="{{vm.MENSAGEM_MAX_LENGTH}}" ng-show="false"></input>
+
+                            <div ng-messages="vm.form.MG061_QT_CARACT.$error">
+                                <div ng-message="required">Campo obrigatório.</div>
+                                <div ng-message="max">Quantidade de caracteres excede o permitido</div>
+                            </div>
+                        </md-input-container>
+
+                    </div>
+
+                    <md-actions layout="row" layout-xs="column" layout-align="">
+                        <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+                            <i class="fa fa-times" aria-hidden="true"></i> Remover
+                        </md-button>
+
+                        <span flex></span>
+
+                        <md-button ng-click="vm.cancel()">
+                            <i class="" aria-hidden="true"></i> Cancelar
+                        </md-button>
+
+                        <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="vm.form.$invalid">
+                            <i class="fa fa-check" aria-hidden="true"></i> Salvar
+                        </md-button>
+                    </md-actions>
+                </form>
+            </div>
+
+        </md-content>
+    </md-content>
+</div>

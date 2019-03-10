@@ -1,0 +1,86 @@
+<div layout="column" ng-cloak class="tarifas-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Tarifas)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Banco</label>
+                        <input name="banco" ng-model="vm.filter.banco.name" ng-readonly="true" placeholder="Selecionar banco" class="pointer" ng-click="vm.filterDialog('banco')" required>
+                        <div ng-messages="form.banco.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Código Tarifa</label>
+                        <input type="text" name="CB059_CD_TARIFA" ng-model="vm.tarifas.CB059_CD_TARIFA" required disabled>
+                        <div ng-messages="form.CB059_CD_TARIFA.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="max">Código não permitido</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nome Tarifa</label>
+                        <input name="CB059_DS_TARIFA" ng-model="vm.tarifas.CB059_DS_TARIFA" required maxlength="60">
+                        <div ng-messages="form.CB059_DS_TARIFA.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Tarifa Base</label>
+                        <input name="CB059_VL_TARBASE" ng-model="vm.tarifas.CB059_VL_TARBASE" required ng-currency>
+                        <div ng-messages="form.CB059_VL_TARBASE.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Unidade Cobrança</label>
+                        <input name="CB059_NM_UNICOBR" ng-model="vm.tarifas.CB059_NM_UNICOBR" required maxlength="40">
+                        <div ng-messages="form.CB059_NM_UNICOBR.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Identificação no Extrato</label>
+                        <input name="CB059_NM_IDEXTRA" ng-model="vm.tarifas.CB059_NM_IDEXTRA" required maxlength="60">
+                        <div ng-messages="form.CB059_NM_IDEXTRA.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+
+        <md-actions layout="row" layout-xs="column">
+
+            <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+                <i class="fa fa-times" aria-hidden="true"></i> Remover
+            </md-button>
+
+            <span flex></span>
+
+            <md-button ng-click="vm.cancel()">
+                <i class="" aria-hidden="true"></i> Cancelar
+            </md-button>
+
+            <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+                <i class="fa fa-check" aria-hidden="true"></i> Salvar
+            </md-button>
+        </md-actions>
+    </md-content>
+</div>

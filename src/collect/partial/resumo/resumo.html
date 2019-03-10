@@ -1,0 +1,70 @@
+<div layout="column" ng-cloak class="resumo" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <div>
+                <sm-range-picker-input fname="CB214_DT_MOVTO" label="Data de movimento" form="formSearch" ng-model="vm.filter.CB214_DT_MOVTO" flex-size="100" is-required="true" format="DD/MM/YYYY" divider="até">
+                </sm-range-picker-input>
+            </div>
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Banco</label>
+                <input name="banco" ng-model="vm.filter.banco.name" ng-readonly="true" placeholder="Selecionar banco" class="pointer" ng-click="vm.filterDialog('banco')">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('banco')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Agência</label>
+                <input name="agencia" ng-model="vm.filter.agencia.name" ng-readonly="true" placeholder="Selecionar agência" class="pointer" ng-click="vm.filterDialog('agencia')" ng-disabled="!vm.filter.banco.id">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('agencia')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Conta</label>
+                <input name="conta" ng-model="vm.filter.conta.name" ng-readonly="true" placeholder="Selecionar conta" class="pointer" ng-click="vm.filterDialog('conta')" ng-disabled="!vm.filter.agencia.id">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('conta')">close</md-icon>
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.resumo.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Resumo Financeiro</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})" ng-disabled="formSearch.$invalid">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="false" ng-model="vm.resumo.selected" md-progress="vm.resumo.promise">
+                <thead md-head md-order="vm.resumo.order">
+                    <tr md-row>
+                        <th md-column md-order-by=""><span>Data Movimento</span></th>
+                        <th md-column md-order-by=""><span>Data Crédito</span></th>
+                        <th md-column md-order-by="" class="right"><span>Valor Rejeitado</span></th>
+                        <th md-column md-order-by="" class="right"><span>Valor Crédito</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.resumo.data | orderBy: vm.resumo.order | limitTo: vm.resumo.limit: (vm.resumo.page - 1) * vm.resumo.limit">
+                        <td md-cell>{{item.CB214_DT_MOVTO | numberToDate | date : 'dd/MM/yyyy'}}</td>
+                        <td md-cell>{{item.CB214_DT_CRED | numberToDate | date : 'dd/MM/yyyy'}}</td>
+                        <td md-cell class="right">{{item.CB214_VL_PAGREJ | currency}}</td>
+                        <td md-cell class="right">{{item.CB214_VL_VALOR1 | currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.resumo.limit" md-page="vm.resumo.page" md-total="{{vm.resumo.total}}" md-page-select md-on-paginate="vm.resumo.pagination"></md-table-pagination>
+    </div>
+</div>

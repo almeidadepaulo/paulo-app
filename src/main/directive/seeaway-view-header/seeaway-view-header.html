@@ -1,0 +1,63 @@
+<md-toolbar class="seeaway-view-header">
+    <div class="md-toolbar-tools">
+
+        <div class="more">
+            <md-button class="md-icon-button" aria-label="Mais" ng-click="eventToggleClick($event)">
+                <md-icon class="material-icons more">menu</md-icon>
+            </md-button>
+        </div>
+
+        <md-autocomplete ng-show="cedenteShow" md-input-id="cedenteSearch" id="cedenteSearch" class="md-autocomplete-icon-search" md-no-cache="true" md-selected-item="selectedItem" md-search-text-change="searchTextChange(searchText)" md-search-text="searchText"
+            md-selected-item-change="selectedItemChange(item)" md-items="item in querySearch(searchText)" md-item-text="item.CB053_DS_EMIEMP" md-min-length="1" placeholder="Digite um cedente" md-clear-button="false" ng-blur="cedenteSearchBlur($event)" required>
+            <md-item-template>
+                <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.CB053_DS_EMIEMP}}</span>
+            </md-item-template>
+            <md-not-found>
+                Cedente não encontrado.
+            </md-not-found>
+        </md-autocomplete>
+
+        <!--
+        <div class="info" layout="column" layout-align="center center">
+            <md-button class="md-block cedente-label" ng-if="cedenteLabel !== ''" ng-click="eventCedenteClick($event)">
+                <md-tooltip md-direction="bottom">Cedente</md-tooltip>
+                {{cedenteLabel}}
+            </md-button>
+            <span>{{nome}}</span>
+        </div>
+        -->
+
+
+        <div ng-if="menuShow" ng-repeat="menu in menus">
+            <md-button ng-click="eventMenuClick($event, menu, $index)">
+                {{menu.MEN_NOME}}
+            </md-button>
+            <hr ng-class="menus[$index].class">
+        </div>
+
+        <!-- ADMIN
+        <div class="info" layout="column" layout-align="center start">
+            <div><b>Operador:</b> Banco Original</div>
+            <div><b>Usuário:</b> Paulo Almeida</div>
+        </div>-->
+
+        <div class="search" ng-show="false" md-theme="white" flex-gt-sm="20">
+            <md-input-container layout="row" layout-align="center center" md-no-float>
+                <input name="search" ng-model="search" placeholder="Pesquisar">
+                <!-- <md-icon md-ink-ripple ng-click="filterCodigoClean()">close</md-icon> -->
+            </md-input-container>
+        </div>
+
+        <span flex></span>
+
+
+        <div class="portal" layout="column" layout-align="center start">
+            <md-button class="md-block" ui-sref="menu">
+                <md-icon>home</md-icon>
+                {{portal}}
+            </md-button>
+        </div>
+
+        <img src="{{logo}}">
+    </div>
+</md-toolbar>

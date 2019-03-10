@@ -1,0 +1,56 @@
+<div layout="column" ng-cloak class="dashboard" ng-init="vm.init()">
+    <md-tabs md-center-tabs="true" md-dynamic-height md-border-bottom md-autoselect md-selected="0" md-stretch-tabs="always">
+        <md-tab>
+            <md-tab-label><i class="" aria-hidden="true"></i>Ocorrências</md-tab-label>
+            <md-tab-body>
+                <md-content class="content">
+
+                    <div layout="row" layout-aling="center stretch" class="charts">
+                        <div flex="50">
+                            <div layout="row" layout-align="space-between center" layout-padding>
+                                <div>
+                                    <h1>Número de ocorrências</h1>
+                                </div>
+                                <md-input-container class="md-block" flex-gt-sm="20">
+                                    <label>ANO</label>
+                                    <md-select ng-model="vm.filter.anoSelected" ng-change="vm.anoChange()">
+                                        <md-option ng-repeat="option in vm.filter.ano" ng-value="option">
+                                            {{option}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <canvas id="line" class="chart chart-line" chart-data="vm.line.data" chart-labels="vm.line.labels" chart-series="vm.line.series" chart-options="vm.line.options" chart-click="vm.lineOnClick"></canvas>
+                        </div>
+
+                        <div flex="50" layout="column" layout-align="center center">
+
+                            <div class="chartMes">
+                                <div layout="row" layout-align="space-between center" layout-padding>
+                                    <md-input-container class="md-block" flex-gt-sm>
+                                        <label>MÊS</label>
+                                        <md-select ng-model="vm.filter.mesSelected" ng-change="vm.mesChange()">
+                                            <md-option ng-repeat="option in vm.filter.mes" ng-value="option">
+                                                {{option}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                                <canvas id="pie" class="chart chart-pie" chart-data="vm.pie.data" chart-labels="vm.pie.labels" chart-options="vm.pie.options"></canvas>
+                                <div id="pie-tooltip"></div>
+                            </div>
+                        </div>
+                    </div>
+                </md-content>
+            </md-tab-body>
+        </md-tab>
+        <!--
+        <md-tab>
+            <md-tab-label><i class="fa " aria-hidden="true"></i></md-tab-label>
+            <md-tab-body>
+
+            </md-tab-body>
+        </md-tab>
+        -->
+    </md-tabs>
+</div>

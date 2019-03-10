@@ -1,0 +1,178 @@
+<div layout="column" ng-cloak class="conta-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Conta)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Carteira</label>
+                        <input name="carteira" ng-model="vm.filter.carteira.name" ng-readonly="true" placeholder="Selecionar carteira" class="pointer" ng-click="vm.filterDialog('carteira')" required>
+                        <div ng-messages="form.carteira.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Banco</label>
+                        <input name="banco" ng-model="vm.filter.banco.name" ng-readonly="true" placeholder="Selecionar banco" class="pointer" ng-click="vm.filterDialog('banco')" required>
+                        <div ng-messages="form.banco.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Agência</label>
+                        <input name="agencia" ng-model="vm.filter.agencia.name" ng-readonly="true" placeholder="Selecionar agência" class="pointer" ng-click="vm.filterDialog('agencia')" required ng-disabled="!vm.filter.banco.id">
+                        <div ng-messages="form.agencia.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nº Conta</label>
+                        <input type="number" max="999999" name="CB260_NR_CONTA" ng-model="vm.conta.CB260_NR_CONTA" required>
+                        <div ng-messages="form.CB260_NR_CONTA.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="max">Número de conta inválida.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Dígito</label>
+                        <input type="text" maxlength="1" name="CB260_NR_DGCONT" ng-model="vm.conta.CB260_NR_DGCONT" required>
+                        <div ng-messages="form.CB260_NR_DGCONT.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nome da conta</label>
+                        <input name="CB260_NM_CEDENT" ng-model="vm.conta.CB260_NM_CEDENT" required>
+                        <div ng-messages="form.CB260_NM_CEDENT.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <!--
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nosso número</label>
+                        <input type="number" name="CB260_NR_NOSNUM" ng-model="vm.conta.CB260_NR_NOSNUM" required>
+                        <div ng-messages="form.CB260_NR_NOSNUM.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="pattern">Digite apenas números</div>
+                        </div>
+                    </md-input-container>
+                    -->
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container>
+                        <label>CEP</label>
+                        <input name="CB260_NR_CEP" ng-model="vm.conta.CB260_NR_CEP" ui-br-cep-mask cep-search cep-search-event="vm.cepSearch(event)">
+                        <div ng-messages="form.CB260_NR_CEP.$error">
+                            <div ng-message="cep">CEP inválido.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Endereço</label>
+                        <input name="CB260_NM_END" ng-model="vm.conta.CB260_NM_END">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="20">
+                        <label>Número</label>
+                        <input name="CB260_NR_END" ng-model="vm.conta.CB260_NR_END">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Complemento</label>
+                        <input name="CB260_DS_COMPL" ng-model="vm.conta.CB260_DS_COMPL">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Bairro</label>
+                        <input name="CB260_NM_BAIRRO" ng-model="vm.conta.CB260_NM_BAIRRO">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Estado</label>
+                        <input name="CB260_SG_ESTADO" ng-model="vm.conta.CB260_SG_ESTADO">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Cidade</label>
+                        <input name="CB260_NM_CIDADE" ng-model="vm.conta.CB260_NM_CIDADE">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Tarifa liquidação</label>
+                        <input name="CB260_VL_LIQUID" ng-model="vm.conta.CB260_VL_LIQUID" required ng-currency>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Tarifa devolução</label>
+                        <input name="CB260_VL_DEVOL" ng-model="vm.conta.CB260_VL_DEVOL" required ng-currency>
+                        <div ng-messages="form.CB260_VL_DEVOL.$error">
+                            <div ng-message="pattern">Digite apenas números</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Tarifa atraso</label>
+                        <input name="CB260_VL_ACREAT" ng-model="vm.conta.CB260_VL_ACREAT" required ng-currency>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Tarifa entrada</label>
+                        <input name="CB260_VL_ENTRAD" ng-model="vm.conta.CB260_VL_ENTRAD" required ng-currency>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row" layout-align="space-around center">
+                    <md-checkbox ng-model="vm.conta.CB260_ID_INTECC" ng-true-value="1" ng-false-value="2">
+                        Possui vínculo com a conta corrente
+                    </md-checkbox>
+                </div>
+
+            </form>
+        </div>
+    </md-content>
+
+    <md-actions layout="row" layout-xs="column">
+        <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+            <i class="fa fa-times" aria-hidden="true"></i> Remover
+        </md-button>
+
+        <span flex></span>
+
+        <md-button ng-click="vm.cancel()">
+            <i class="" aria-hidden="true"></i> Cancelar
+        </md-button>
+
+        <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+            <i class="fa fa-check" aria-hidden="true"></i> Salvar
+        </md-button>
+    </md-actions>
+</div>

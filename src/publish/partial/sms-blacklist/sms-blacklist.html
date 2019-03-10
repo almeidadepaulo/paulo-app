@@ -1,0 +1,81 @@
+<div layout="column" ng-cloak class="sms-blacklist" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container flex-gt-sm="50" flex-gt-sm layout-xs="100">
+                <label>DDD</label>
+                <input type="number" ng-model="vm.filter.MG065_NR_DDD">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="50" layout-xs="100">
+                <label>Telefone</label>
+                <input type="number" ng-model="vm.filter.MG065_NR_CEL">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="50" layout-xs="100">
+                <label>CPF</label>
+                <input name="MG065_NR_CPFCNPJ" ng-model="vm.filter.MG065_NR_CPFCNPJ" ui-br-cpf-mask>
+                <div ng-messages="formSearch.MG065_NR_CPFCNPJ.$error">
+                    <div ng-message="cpf">CPF inválido.</div>
+                </div>
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.smsBlacklist.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Blacklist (SMS)</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.create()">
+                <md-icon>add</md-icon>
+                Adicionar
+            </md-button>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-accent md-hue-1" ng-show="vm.smsBlacklist.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.smsBlacklist.selected.length}} {{vm.smsBlacklist.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="true" multiple="true" ng-model="vm.smsBlacklist.selected" md-progress="vm.smsBlacklist.promise">
+                <thead md-head md-order="vm.smsBlacklist.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by="MG065_NR_CEL"><span>Telefone</span></th>
+                        <th md-column md-order-by="MG065_NR_CPFCNPJ"><span>CPF</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.smsBlacklist.data | orderBy: vm.smsBlacklist.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                <md-icon>mode_edit</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>({{item.MG065_NR_DDD}}) {{item.MG065_NR_CEL}}</td>
+                        <td md-cell>{{item.MG065_NR_CPFCNPJ | padLeft : '00000000000' | brCpf}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.smsBlacklist.limit" md-page="vm.smsBlacklist.page" md-total="{{vm.smsBlacklist.total}}" md-page-select md-on-paginate="vm.smsBlacklist.pagination"></md-table-pagination>
+    </div>
+</div>

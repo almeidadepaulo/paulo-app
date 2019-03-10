@@ -1,0 +1,76 @@
+<div layout="column" ng-cloak class="email-blacklist" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container flex-gt-sm="50" flex-gt-sm layout-xs="100">
+                <label>CPF</label>
+                <input name="EM065_NR_CPFCNPJ" ng-model="vm.filter.EM065_NR_CPFCNPJ" ui-br-cpf-mask>
+                <div ng-messages="formSearch.EM065_NR_CPFCNPJ.$error">
+                    <div ng-message="cpf">CPF inválido.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="50" layout-xs="100">
+                <label>E-Mail</label>
+                <input ng-model="vm.filter.EM065_DS_EMAIL">
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.emailBlacklist.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Blacklist (E-mail)</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.create()">
+                <md-icon>add</md-icon>
+                Adicionar
+            </md-button>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-accent md-hue-1" ng-show="vm.emailBlacklist.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.emailBlacklist.selected.length}} {{vm.emailBlacklist.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="true" multiple="true" ng-model="vm.emailBlacklist.selected" md-progress="vm.emailBlacklist.promise">
+                <thead md-head md-order="vm.emailBlacklist.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by="EM065_NR_CPFCNPJ"><span>CPF</span></th>
+                        <th md-column md-order-by="EM065_DS_EMAIL"><span>Email</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.emailBlacklist.data | orderBy: vm.emailBlacklist.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                <md-icon>mode_edit</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.EM065_NR_CPFCNPJ | brCpf}}</td>
+                        <td md-cell>{{item.EM065_DS_EMAIL}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.emailBlacklist.limit" md-page="vm.emailBlacklist.page" md-total="{{vm.emailBlacklist.total}}" md-page-select md-on-paginate="vm.emailBlacklist.pagination"></md-table-pagination>
+    </div>
+</div>

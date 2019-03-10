@@ -1,0 +1,28 @@
+<div layout="column" ng-cloak class="segunda-via">
+    <form name="formSearch" class="filter">
+        <h5 ng-show="false">Utilize os campos abaixo para filtra a listagem.</h5>
+        <div layout-gt-sm="row">
+
+            <md-input-container flex-gt-sm="25" layout-xs="100">
+                <label>Nome</label>
+                <input ng-model="vm.filter.nome" ng-disabled="true">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="25" layout-xs="100">
+                <label>CPF</label>
+                <input ng-model="vm.filter.cpf" ng-disabled="true">
+            </md-input-container>
+        </div>
+    </form>
+    <md-content class="content">
+        <div layout="row" layout-sm="column" layout-align="end center" layout-wrap>
+            <md-button class="md-raised" ng-click="vm.getData()">
+                <i ng-class="vm.dgExemploControl.working | dataGridRefresh" aria-hidden="true"></i> Atualizar
+            </md-button>
+        </div>
+        <div>
+            <px-data-grid id="dgExemplo" class="table-striped table-bordered" px-debug="true" px-control="vm.dgExemploControl" px-init="vm.dgExemploInit(event)" px-config="{{vm.dgExemploConfig}}" px-check="false" px-item-click="vm.itemClick(event)" px-label-function="vm.dgExemploLabel(event)">
+            </px-data-grid>
+        </div>
+    </md-content>
+</div>

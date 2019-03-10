@@ -1,0 +1,105 @@
+<div layout="column" ng-cloak class="carteira-aberto" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Status</label>
+                <md-select ng-model="vm.filter.TIPO">
+                    <md-option ng-repeat="status in vm.TIPO" ng-value="status.id">
+                        {{status.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container>
+                <label>Vencimento</label>
+                <md-datepicker name="CB210_DT_VCTO" ng-model="vm.filter.CB210_DT_VCTO"></md-datepicker>
+                <div ng-messages="formSearch.CB210_DT_VCTO.$error" multiple md-auto-hide="false">
+                    <div ng-message="valid">Data inválida.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="" layout-xs="100">
+                <label>CPF</label>
+                <input name="CB210_NR_CPFCNPJ" ng-model="vm.filter.CB210_NR_CPFCNPJ" ui-br-cpf-mask>
+                <div ng-messages="formSearch.CB210_NR_CPFCNPJ.$error" multiple md-auto-hide="false">
+                    <div ng-message="cpf">CPF inválido.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="" flex-gt-sm layout-xs="100">
+                <label>Título</label>
+                <input ng-model="vm.filter.CB210_NR_CONTRA">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="" flex-gt-sm layout-xs="100">
+                <label>Sacado</label>
+                <input ng-model="vm.filter.CB201_NM_NMSAC">
+            </md-input-container>
+
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.pagamento.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Carteira em aberto</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-toolbar class="md-accent md-hue-1" ng-show="vm.pagamento.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.pagamento.selected.length}} {{vm.pagamento.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.showPdf()">
+                <md-icon>picture_as_pdf</md-icon>
+                Gerar PDF
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="false" ng-model="vm.pagamento.selected" md-progress="vm.pagamento.promise">
+                <thead md-head md-order="vm.pagamento.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by="CB201_NM_NMSAC"><span>Sacado</span></th>
+                        <th md-column md-order-by="CB210_NR_CONTRA"><span>Título</span></th>
+                        <th md-column md-order-by="CB210_NR_CPFCNPJ"><span>CPF</span></th>
+                        <th md-column md-order-by="CB210_VL_VALOR"><span>Valor</span></th>
+                        <th md-column md-order-by="CB210_DT_VCTO"><span>Vencimento</span></th>
+                        <th md-column md-order-by="CB210_ID_SITPAG"><span>Situação</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.pagamento.data | orderBy: vm.pagamento.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                <md-icon>search</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.CB201_NM_NMSAC}}</td>
+                        <td md-cell>{{item.CB210_NR_CONTRA}}</td>
+                        <td md-cell>{{item.CB210_NR_CPFCNPJ | padLeft : '00000000000' | brCpf}}</td>
+                        <td md-cell>{{item.CB210_VL_VALOR | currency}}</td>
+                        <td md-cell>{{item.CB210_DT_VCTO | numberToDate | date : 'dd/MM/yyyy'}}</td>
+                        <td md-cell>{{item.CB210_ID_SITPAG | pagamentoSituacao}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.pagamento.limit" md-page="vm.pagamento.page" md-total="{{vm.pagamento.total}}" md-page-select md-on-paginate="vm.pagamento.pagination"></md-table-pagination>
+    </div>
+</div>

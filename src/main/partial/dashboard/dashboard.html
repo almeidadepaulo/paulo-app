@@ -1,0 +1,164 @@
+<div layout="column" ng-cloak class="dashboard" ng-init="vm.init()">
+
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <span>Painel de indicadores</span>
+
+            <span flex></span>
+
+            <form name="formSearch" class="filter">
+                <div layout-gt-sm="row" layout-align="start end">
+                    <md-input-container class="ano">
+                        <label>Ano</label>
+                        <input ng-model="vm.filter.ano" type="number">
+                    </md-input-container>
+                </div>
+            </form>
+
+            <md-button class="md-primary" ng-click="vm.getData()">
+                <md-icon>refresh</md-icon>
+                Atualizar informações
+            </md-button>
+        </div>
+        <md-divider></md-divider>
+    </md-toolbar>
+
+    <md-progress-linear md-mode="indeterminate" ng-show="vm.loading"></md-progress-linear>
+
+    <md-content>
+        <div layout="column">
+
+            <md-grid-list md-cols-xs="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="3" md-row-height-gt-md="5:1" md-row-height="4:2" md-gutter="12px" md-gutter-gt-sm="8px">
+
+                <md-grid-tile class="green">
+                    <md-grid-tile-header>
+                        <h3>
+                            <md-icon>settings</md-icon> TÍTULOS PROCESSADOS
+                        </h3>
+                    </md-grid-tile-header>
+
+                    <div class="tag" layout="row" layout-align="center end" layout-padding>
+                        <span class="number">{{vm.tags[0].value}}</span>
+                    </div>
+                </md-grid-tile>
+
+                <md-grid-tile class="yellow">
+                    <md-grid-tile-header>
+                        <h3>
+                            <md-icon>attach_money</md-icon> VALORES PROCESSADOS
+                        </h3>
+                    </md-grid-tile-header>
+
+                    <div class="tag" layout="row" layout-align="center end" layout-padding>
+                        <span class="number">{{vm.tags[1].value}}</span>
+                    </div>
+                </md-grid-tile>
+
+                <md-grid-tile class="red">
+                    <md-grid-tile-header>
+                        <h3>
+                            <md-icon>insert_drive_file</md-icon> BOLETOS GERADOS
+                        </h3>
+                    </md-grid-tile-header>
+
+                    <div class="tag" layout="row" layout-align="center end" layout-padding>
+                        <span class="number">{{vm.tags[2].value}}</span>
+                    </div>
+                </md-grid-tile>
+
+            </md-grid-list>
+
+
+            <md-grid-list md-cols-xs="1" md-cols-sm="3" md-cols-md="3" md-cols-gt-md="3" md-row-height-gt-md="1:1" md-row-height="2:2" md-gutter="12px" md-gutter-gt-sm="8px">
+
+                <md-grid-tile class="white" md-whiteframe="3" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
+                    <div class="chart-frame">
+                        <md-list>
+                            <md-list-item class="md-2-line">
+                                <div class="md-list-item-text" layout="column">
+                                    <h3>TÍTULOS (QUANTIDADE)</h3>
+                                    <p>Quantidade de títulos no ano de {{vm.filter.refresh.ano}}.</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+
+                        <md-divider></md-divider>
+
+                        <div layout="row" layout-align="center center">
+                            <div class="bar1">
+                                <canvas id="bar1" class="chart chart-bar" chart-data="vm.bar1.data" chart-labels="vm.bar1.labels" chart-series="vm.bar1.series" chart-colors="vm.bar1.colors" chart-options="vm.bar1.options"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+                </md-grid-tile>
+
+                <md-grid-tile class="white" md-whiteframe="3">
+
+                    <div class="chart-frame">
+                        <md-list>
+                            <md-list-item class="md-2-line">
+                                <div class="md-list-item-text" layout="column">
+                                    <h3>TÍTULOS POR CARTEIRA</h3>
+                                    <p>Quantidade de títulos por carteira em {{vm.filter.refresh.ano}}.</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+
+                        <md-divider></md-divider>
+
+                        <div layout="row" layout-align="center center">
+                            <div>
+                                <canvas id="pie1" class="chart chart-pie" chart-data="vm.pie1.data" chart-labels="vm.pie1.labels" chart-options="vm.pie1.options"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </md-grid-tile>
+
+                <md-grid-tile class="white" md-whiteframe="3" md-colspan="2" md-colspan-sm="1" md-colspan-xs="1">
+                    <div class="chart-frame">
+                        <md-list>
+                            <md-list-item class="md-2-line">
+                                <div class="md-list-item-text" layout="column">
+                                    <h3>TÍTULOS (VALOR)</h3>
+                                    <p>Valores de títulos no ano de {{vm.filter.refresh.ano}}.</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+
+                        <md-divider></md-divider>
+
+                        <div layout="row" layout-align="center center">
+                            <div class="bar2">
+                                <canvas id="bar2" class="chart chart-bar" chart-data="vm.bar2.data" chart-labels="vm.bar2.labels" chart-series="vm.bar2.series" chart-colors="vm.bar2.colors" chart-options="vm.bar2.options"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+                </md-grid-tile>
+
+                <md-grid-tile class="white" md-whiteframe="3">
+
+                    <div class="chart-frame">
+                        <md-list>
+                            <md-list-item class="md-2-line">
+                                <div class="md-list-item-text" layout="column">
+                                    <h3>VALORES DE TÍTULOS POR CARTEIRA</h3>
+                                    <p>Valores de títulos por carteira em {{vm.filter.refresh.ano}}.</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+
+                        <md-divider></md-divider>
+
+                        <div layout="row" layout-align="center center">
+                            <div>
+                                <canvas id="pie2" class="chart chart-pie" chart-data="vm.pie2.data" chart-labels="vm.pie2.labels" chart-options="vm.pie2.options"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </md-grid-tile>
+            </md-grid-list>
+        </div>
+    </md-content>
+</div>

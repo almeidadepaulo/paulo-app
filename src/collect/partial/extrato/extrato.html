@@ -1,0 +1,104 @@
+<div layout="column" ng-cloak class="extrato" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container>
+                <label>Mês</label>
+                <md-select ng-model="vm.filter.mes">
+                    <!-- <md-option ng-value="-1">
+                        <em>Todos</em>
+                    </md-option> -->
+                    <md-option ng-repeat="option in vm.filter.months" ng-value="$index">
+                        {{vm.filter.months[$index]}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container>
+                <label>Ano</label>
+                <input ng-model="vm.filter.ano" type="number">
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Banco</label>
+                <input name="banco" ng-model="vm.filter.banco.name" ng-readonly="true" placeholder="Selecionar banco" class="pointer" ng-click="vm.filterDialog('banco')" required>
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('banco')">close</md-icon>
+                <div ng-messages="formSearch.banco.$error">
+                    <div ng-message="required">Campo obrigatório.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Agência</label>
+                <input name="agencia" ng-model="vm.filter.agencia.name" ng-readonly="true" placeholder="Selecionar agência" class="pointer" ng-click="vm.filterDialog('agencia')" ng-disabled="!vm.filter.banco.id" required>
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('agencia')">close</md-icon>
+                <div ng-messages="formSearch.agencia.$error">
+                    <div ng-message="required">Campo obrigatório.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Conta</label>
+                <input name="conta" ng-model="vm.filter.conta.name" ng-readonly="true" placeholder="Selecionar conta" class="pointer" ng-click="vm.filterDialog('conta')" ng-disabled="!vm.filter.agencia.id" required>
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('conta')">close</md-icon>
+                <div ng-messages="formSearch.conta.$error">
+                    <div ng-message="required">Campo obrigatório.</div>
+                </div>
+            </md-input-container>
+
+            <!-- <md-input-container class="md-block" flex-gt-sm="">
+                <label>Produto</label>
+                <input name="produto" ng-model="vm.filter.produto.name" ng-readonly="true" placeholder="Selecionar produto" class="pointer" ng-click="vm.filterDialog('produto')">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('produto')">close</md-icon>
+            </md-input-container> -->
+        </div>
+    </form>
+
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.extrato.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Extrato</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})" ng-disabled="formSearch.$invalid">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="false" ng-model="vm.extrato.selected" md-progress="vm.extrato.promise">
+                <thead md-head md-order="vm.extrato.order">
+                    <tr md-row>
+                        <th md-column md-order-by=""><span>Data</span></th>
+                        <th md-column md-order-by=""><span>Histórico</span></th>
+                        <th md-column md-order-by=""><span>Complemento</span></th>
+                        <th md-column md-order-by="" class="right"><span>Débito</span></th>
+                        <th md-column md-order-by="" class="right"><span>Crédito</span></th>
+                        <th md-column md-order-by="" class="right"><span>Saldo</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.extrato.data | orderBy: vm.extrato.order">
+                        <td md-cell>{{item.CB306_DT_LANC | numberToDate | date : 'dd/MM/yyyy'}}</td>
+                        <td md-cell>{{item.CB307_NM_TPLANC}}</td>
+                        <td md-cell>{{item.CB306_DS_LANC}}</td>
+                        <td md-cell class="right debito">{{item.DEBITO | currency}} <span ng-if="item.DEBITO !== 'null'">D</span></td>
+                        <td md-cell class="right credito">{{item.CREDITO | currency}} <span ng-if="item.CREDITO !== 'null'">C</span></td>
+                        <td md-cell class="right">{{item.SALDO | currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <!-- <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.extrato.limit" md-page="vm.extrato.page" md-total="{{vm.extrato.total}}" md-page-select md-on-paginate="vm.extrato.pagination"></md-table-pagination> -->
+        <md-divider></md-divider>
+    </div>
+</div>

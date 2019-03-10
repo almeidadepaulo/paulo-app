@@ -1,0 +1,174 @@
+<div id="page" class="login">
+    <header id="header" role="banner">
+        <div class="container">
+            <h1 id="site-title"><a title="Seeaway | Publish" rel="home">Seeaway | Publish</a></h1>
+            <div class="clearfix"></div>
+        </div>
+    </header>
+    <!-- #branding -->
+    <div id="main" class="login">
+        <div id="primary">
+            <div id="content" role="main" class="container">
+                <form id="loginDiv" name="loginForm" role="form" ng-submit="vm.login()">
+                    <h2 class='h2'>Acesse sua conta</h2>
+                    <p>Por favor, entre com seu login e senha.</p>
+                    <!--<div class="hr"></div>-->
+                    <div class="animate-switch-container" ng-switch on="vm.selection">
+                        <div ng-switch-when="default" class="animate-switch">
+                            <fieldset>
+                                <md-input-container class="md-block" flex-gt-sm="">
+                                    <label>Usuário</label>
+                                    <input id="username" name="username" ng-model="vm.username" required>
+                                    <div ng-messages="loginForm.username.$error">
+                                        <div ng-message="required">Campo obrigatório</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container class="md-block" flex-gt-sm="">
+                                    <label>Senha</label>
+                                    <input name="password" ng-model="vm.password" required type="password">
+                                    <div ng-messages="loginForm.password.$error">
+                                        <div ng-message="required">Campo obrigatório</div>
+                                    </div>
+                                </md-input-container>
+                                <!-- <i class="fa fa-keyboard-o lg fa-lg"></i> -->
+                                <div id="loginControl" layout="column" layout-align="center center">
+                                    <div class="btn-group">
+                                        <md-button class="md-raised md-primary" type="submit" name="submit" value="Entrar" ng-disabled="loginForm.$invalid || vm.dataLoading" flex>Entrar</button>
+                                    </div>
+                                    <!--
+                                    <div>
+                                        <span ng-class="vm.dataLoading | loginWorking"></span>
+                                    </div>
+                                    -->
+                                    <div>
+                                        <a ng-click="vm.showRecover()" class="recover-link" ng-show="!vm.dataLoading">Esqueci minha senha</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <!-- <a ng-click="vm.showNewUser()" class="new-user-link" ng-show="!vm.dataLoading">Criar usuário</a> -->
+                        </div>
+                        <div ng-switch-when="recover" class="animate-switch">
+                            <fieldset>
+                                <md-input-container class="md-block" flex-gt-sm="">
+                                    <label>Usuário</label>
+                                    <input name="usernameRecover" ng-model="vm.usernameRecover" required>
+                                    <div ng-messages="loginForm.usernameRecover.$error">
+                                        <div ng-message="required">Campo obrigatório</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container class="md-block" flex-gt-sm="">
+                                    <label>E-mail</label>
+                                    <input name="email" ng-model="vm.email" required>
+                                    <div ng-messages="loginForm.email.$error">
+                                        <div ng-message="required">Campo obrigatório</div>
+                                    </div>
+                                </md-input-container>
+                                <div id="loginRecover" layout="row" layout-align="center center">
+                                    <div class="btn-group">
+                                        <md-button class="md-raised md-primary" type="submit" name="submit" value="Confirmar" ng-disabled="loginForm.$invalid || vm.dataLoading" ng-click="vm.recover()">Confirmar</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <a ng-click="vm.showLogin()" class="recover-link">LOGIN</a>
+                        </div>
+                        <div ng-switch-when="redefine" class="animate-switch">
+                            <fieldset>
+                                <div class="input-control text" data-role="input">
+                                    <input id="usu_senha_atual" name="usu_senha_atual" ng-model="vm.usu_senha_atual" class="form-control" type="password" placeholder="Senha atual" required ng-keyup="vm.redefineForm()" />
+                                    <!-- <button class="button helper-button clear"><span class="mif-cross"></span></button> -->
+                                    <small ng-show="loginForm.usu_senha_atual.$error.confirm" class="error">Senha atual incorreta</small>
+                                </div>
+                                <div class="input-control text" data-role="input">
+                                    <input id="usu_senha" name="usu_senha" ng-model="vm.usu_senha" class="form-control" type="password" placeholder="Nova senha" required ng-minlength="8" ng-keyup="vm.redefineForm()">
+                                    <!-- <button class="button helper-button clear"><span class="mif-cross"></span></button> -->
+                                    <small ng-show="loginForm.usu_senha.$error.minlength" class="error">A senha deve ter no mínimo 8 caracteres</small>
+                                    <small ng-show="loginForm.usu_senha.$error.equal" class="error">A senha deve diferente da atual</small>
+                                </div>
+                                <div class="input-control text" data-role="input">
+                                    <input id="usu_senha_confirmar" name="usu_senha_confirmar" ng-model="vm.usu_senha_confirmar" class="form-control" type="password" placeholder="Confirmar nova senha" required ng-minlength="8" ng-keyup="vm.redefineForm()">
+                                    <!-- <button class="button helper-button clear"><span class="mif-cross"></span></button> -->
+                                    <small ng-show="loginForm.usu_senha_confirmar.$error.confirm" class="error">Senha não confere</small>
+                                </div>
+                                <div id="loginredefinir" layout="row" layout-align="center center">
+                                    <div class="btn-group">
+                                        <button class="btn btn-default" type="submit" name="submit" value="Salvar" ng-disabled="loginForm.$invalid" ng-click="vm.redefine()">Salvar</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <a ng-click="vm.showLogin()" class="recover-link">Cancelar</a>
+                        </div>
+                        <div layout="row" layout-align="center center">
+                            <span class="login-message">{{vm.loginMessage}}</span>
+                        </div>
+                    </div>
+                    <!--<div class="hr"></div>-->
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+            <!-- #content -->
+        </div>
+        <!-- #primary -->
+    </div>
+    <!-- #main -->
+    <footer id="colophon" role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-item">
+                <div>
+                    <div class="footer-logo"></div>
+                    <div layout="column">
+                        <a href="http://seeaway.com.br/" rel="external">Sobre</a>
+                        <a href="#" ng-click="vm.showContato()" rel="external">Contato</a>
+                        <a href="http://suporte.seeaway.com.br/" rel="external">Ajuda</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-item">
+                <div layout="row" layout-align="space-around center">
+                    <a href="https://www.facebook.com/seeawaytec"><i id="social-fb" class="fa fa-facebook-square fa-2x social"></i></a>
+                    <a href="https://twitter.com/seeaway"><i id="social-tw" class="fa fa-twitter-square fa-2x social"></i></a>
+                    <a href="https://plus.google.com/seeaway"><i id="social-gp" class="fa fa-google-plus-square fa-2x social"></i></a>
+                    <a href="https://www.linkedin.com/company/seeaway-tecnologia-da-informa%C3%A7%C3%A3o-s.a."><i id="social-ld" class="fa fa-linkedin-square fa-2x social"></i></a>
+                    <!--<a href="mailto:contato@seeaway.com.br"><i id="social-em" class="fa fa-envelope-square fa-2x social"></i></a>-->
+                </div>
+            </div>
+            <div class="footer-item">
+                <div layout="column" layout-align="center center">
+                    <div>Banco Cetelem S.A. — CNPJ: 00.558.456/0001-71
+                        <br> Instituição financeira autorizada pelo BACEN
+                    </div>
+                    <div layout="row" class="contato">
+                        <i class="material-icons">local_phone</i>
+                        <span class="telefone">(11) 3080-6970</span>
+                        <i class="material-icons">mail</i>
+                        <a href="mailto:contato@seeaway.com.br">contato@seeaway.com.br</a>
+                    </div>
+                    <div layout="row" layout-align="start" class="contato">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div layout="row" layout-align="center center" class="copyright">
+            <a href="http://seeaway.com.br/">Copyright 2016 SeeAway | All Rights Reserved</a>
+        </div>
+        <!--
+        <div class="container">
+            <ul class="menu-rodape">
+                <li><a href="http://suporte.seeaway.com.br/" rel="external">Ajuda</a></li>
+                <li><a ng-click="vm.showContato()" rel="external" class="contato">Contato</a></li>
+                <div class="text-center center-block"></div>
+                <a href="https://www.facebook.com/seeaway"><i id="social-fb" class="fa fa-facebook-square fa-2x social"></i></a>
+                <a href="https://twitter.com/seeaway"><i id="social-tw" class="fa fa-twitter-square fa-2x social"></i></a>
+                <a href="https://plus.google.com/seeaway"><i id="social-gp" class="fa fa-google-plus-square fa-2x social"></i></a>
+                <a href="https://br.linkedin.com/seeaway"><i id="social-ld" class="fa fa-linkedin-square fa-2x social"></i></a>
+                <a href="mailto:contato@seeaway.com.br"><i id="social-em" class="fa fa-envelope-square fa-2x social"></i></a>
+            </ul>
+            
+        </div>
+        -->
+        <!-- .container -->
+    </footer>
+    <!-- #colophon -->
+</div>
+<!-- #page -->

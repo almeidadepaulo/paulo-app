@@ -1,0 +1,112 @@
+<div layout="column" ng-cloak class="segunda-via-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (2ª via)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Sacado</label>
+                        <input name="CB201_NM_NMSAC" ng-model="vm.segundaVia.CB201_NM_NMSAC" disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>CPF</label>
+                        <input name="CB210_NR_CPFCNPJ" ng-model="vm.segundaVia.CB210_NR_CPFCNPJ" disabled>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Data Emissão</label>
+                        <input name="CB203_DT_EMISS" ng-model="vm.segundaVia.CB203_DT_EMISS" disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Data Vencto</label>
+                        <input name="CB203_DT_VCTOT" ng-model="vm.segundaVia.CB203_DT_VCTOT" disabled>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Valor</label>
+                        <input name="CB203_VL_TITULO" ng-model="vm.segundaVia.CB203_VL_TITULO" ng-currency disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Juros/Mora</label>
+                        <input name="CB203_VL_JURMOR" ng-model="vm.segundaVia.CB203_VL_JURMOR" ng-currency disabled>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Valor Total</label>
+                        <input name="VL_TOTAL" ng-model="vm.segundaVia.VL_TOTAL" ng-currency disabled>
+                    </md-input-container>
+
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>CEP</label>
+                        <input name="CB201_NR_CEP" ng-model="vm.segundaVia.CB201_NR_CEP" disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Bairro</label>
+                        <input name="CB201_NM_BAIRRO" ng-model="vm.segundaVia.CB201_NM_BAIRRO" disabled>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Endereço</label>
+                        <input name="CB201_NM_END" ng-model="vm.segundaVia.CB201_NM_END" disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Número</label>
+                        <input name="CB201_NR_END" ng-model="vm.segundaVia.CB201_NR_END" disabled>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Complemento</label>
+                        <input name="CB201_DS_COMPL" ng-model="vm.segundaVia.CB201_DS_COMPL" disabled>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Cidade</label>
+                        <input name="CB201_NM_CIDADE" ng-model="vm.segundaVia.CB201_NM_CIDADE" disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Estado</label>
+                        <input name="CB201_SG_ESTADO" ng-model="vm.segundaVia.CB201_SG_ESTADO" disabled>
+                    </md-input-container>
+                </div>
+
+            </form>
+        </div>
+    </md-content>
+
+    <md-actions layout="row" layout-xs="column">
+        <span flex></span>
+
+        <md-button ng-click="vm.cancel()">
+            <i class="" aria-hidden="true"></i> Cancelar
+        </md-button>
+
+    </md-actions>
+</div>

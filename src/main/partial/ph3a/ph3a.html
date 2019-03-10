@@ -1,0 +1,80 @@
+<div layout="column" ng-cloak class="ph3a" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>PH3A (Integração - Demonstração)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+
+    <section layout="row" flex>
+        <md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="true" md-whiteframe="4">
+
+            <md-toolbar ng-show="false">
+                <h1 class="md-toolbar-tools">Sidenav Left</h1>
+            </md-toolbar>
+
+            <md-content layout-padding>
+                <form name="form">
+                    <div layout-gt-sm="column">
+                        <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Digite um CPF</label>
+                            <input name="cpf" ng-model="vm.ph3a.cpf" ui-br-cpf-mask required ng-change="vm.cpfChange()">
+
+                            <md-progress-linear ng-show="vm.loading" md-mode="indeterminate"></md-progress-linear>
+
+                            <div ng-messages="form.cpf.$error" multiple md-auto-hide="false">
+                                <div ng-message="required">Campo obrigatório.</div>
+                                <div ng-message="cpf">CPF inválido.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Nome</label>
+                            <textarea name="nome" ng-model="vm.ph3a.resultado.Person.FullName"></textarea>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Gênero</label>
+                            <textarea name="genero" ng-model="vm.ph3a.resultado.Person.AAAA"></textarea>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Score</label>
+                            <textarea name="score" ng-model="vm.ph3a.resultado.Score"></textarea>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Idade</label>
+                            <textarea name="idade" ng-model="vm.ph3a.resultado.Score"></textarea>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Nacionalidade</label>
+                            <textarea name="nacionalidade" ng-model="vm.ph3a.resultado.Score"></textarea>
+                        </md-input-container>
+
+                    </div>
+
+                    <!-- <input type="text" id="selected-node" ng-show="false"> -->
+                    <!-- <button type="button" id="btn-add-nodes">Add</button> -->
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Resultado</label>
+                            <textarea name="resultado" ng-model="vm.ph3a.resultado"></textarea>
+                        </md-input-container>
+                    </div>
+                </form>
+            </md-content>
+
+        </md-sidenav>
+
+        <md-content flex>
+            <div class="chart-progress" ng-show="vm.loading">
+                <md-progress-circular class="" md-mode="indeterminate" md-diameter="100"></md-progress-circular>
+            </div>
+            <div id="chart-container"></div>
+        </md-content>
+    </section>
+</div>

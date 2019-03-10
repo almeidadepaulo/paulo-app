@@ -1,0 +1,243 @@
+<div layout="column" ng-cloak class="sms-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Entrada de títulos</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-align="start stretch" layout-padding>
+
+        <md-tabs md-center-tabs="true" md-dynamic-height md-border-bottom md-autoselect md-stretch-tabs="always">
+            <md-tab label="Título">
+                <md-content class="md-padding">
+
+                    <form name="form">
+                        <div layout-gt-sm="row">
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Título</label>
+                                <input name="CB213_NR_CONTRA" ng-model="vm.contrato.CB213_NR_CONTRA" required>
+                                <div ng-messages="form.produto.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Produto</label>
+                                <input name="produto" ng-model="vm.filter.produto.name" ng-readonly="true" placeholder="Selecionar título" class="pointer" ng-click="vm.filterDialog('produto')" required>
+                                <div ng-messages="form.produto.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <div layout-gt-sm="row">
+                            <md-input-container>
+                                <label>Data</label>
+                                <md-datepicker name="CB210_DT_VCTO" ng-model="vm.contrato.CB210_DT_VCTO"></md-datepicker>
+                                <div ng-messages="form.CB210_DT_VCTO.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                    <div ng-message="valid">Data inválida.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Valor</label>
+                                <input type="text" name="CB262_VL_FINAM" ng-model="vm.contrato.CB262_VL_FINAM" required ng-currency>
+                                <div ng-messages="form.CB262_VL_FINAM.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <div layout-gt-sm="row">
+                            <md-input-container>
+                                <label>1ª Parcela</label>
+                                <md-datepicker name="primeira_parcela" ng-model="vm.contrato.primeira_parcela"></md-datepicker>
+                                <div ng-messages="form.primeira_parcela.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                    <div ng-message="valid">Data inválida.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Taxa</label>
+                                <input name="CB213_VL_TAXA" ng-model="vm.contrato.CB213_VL_TAXA" required ng-currency currency-symbol="" fraction="5">
+                                <div ng-messages="form.CB213_VL_TAXA.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <div layout-gt-sm="row">
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Qtde. de parcelas</label>
+                                <input type="number" name="CB262_QT_PARC" ng-model="vm.contrato.CB262_QT_PARC" required>
+                                <div ng-messages="form.CB262_QT_PARC.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>CPF</label>
+                                <input name="CB213_NR_CPFCNPJ" ng-model="vm.contrato.CB213_NR_CPFCNPJ" ui-br-cpf-mask required>
+                                <div ng-messages="form.CB213_NR_CPFCNPJ.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                    <div ng-message="cpf">CPF inválido.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <div layout-gt-sm="row">
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Cliente</label>
+                                <input name="CB213_NM_CLIENT" ng-model="vm.contrato.CB213_NM_CLIENT" required>
+                                <div ng-messages="form.CB213_NM_CLIENT.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Nascimento</label>
+                                <md-datepicker name="CB213_DT_NASC" ng-model="vm.contrato.CB213_DT_NASC"></md-datepicker>
+                                <div ng-messages="form.CB213_DT_NASC.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                    <div ng-message="valid">Data inválida.</div>
+                                </div>
+                            </md-input-container>
+                        </div>
+
+                        <div layout-gt-sm="row">
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Email</label>
+                                <input type="email" name="CB262_NM_EMAIL" ng-model="CB262_NM_EMAIL" required>
+                                <div ng-messages="form.CB262_NM_EMAIL.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                    <div ng-message="valid">Data inválida.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Telefone</label>
+                                <input name="CB213_NR_FONE1" ng-model="vm.contrato.CB213_NR_FONE1" ui-br-phone-number>
+                            </md-input-container>
+                        </div>
+
+                        <div layout-gt-sm="row">
+                            <md-input-container class="md-block" flex-gt-sm="30">
+                                <label>CEP</label>
+                                <input name="CB213_CD_CEP" ng-model="vm.contrato.CB213_CD_CEP" required ui-br-cep-mask cep-search cep-search-event="vm.cepSearch(event)">
+                                <div ng-messages="form.CB213_CD_CEP.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Endereço</label>
+                                <input name="CB213_DS_LOGRAD" ng-model="vm.contrato.CB213_DS_LOGRAD" required>
+                            </md-input-container>
+
+                            <md-input-container flex-gt-sm="15">
+                                <label>Nº</label>
+                                <input name="CB213_NR_LOGRAD" ng-model="vm.contrato.CB213_NR_LOGRAD" required>
+                            </md-input-container>
+                        </div>
+
+                        <div layout-gt-sm="row">
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Bairro</label>
+                                <input name="CB213_DS_BAIRRO" ng-model="vm.contrato.CB213_DS_BAIRRO" required>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Cidade</label>
+                                <input name="CB213_NM_CIDADE" ng-model="vm.contrato.CB213_NM_CIDADE" required>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="15">
+                                <label>Estado</label>
+                                <input name="CB213_SG_UF" ng-model="vm.contrato.CB213_SG_UF" required>
+                            </md-input-container>
+                        </div>
+                    </form>
+
+                </md-content>
+            </md-tab>
+            <md-tab label="Parcelas">
+                <md-content class="md-padding">
+                    <div>
+                        <md-toolbar class="md-table-toolbar md-default">
+                            <div class="md-toolbar-tools" layout="row" layout-align="center center">
+                                <span>Parcelas deste Título</span>
+                            </div>
+                        </md-toolbar>
+
+                        <form name="formParcela" layout="row" layout-align="center center" style="background-color: #EEEEEE">
+                            <div layout="row">
+                                <md-input-container class="md-block" flex-gt-sm="">
+                                    <label>Nº</label>
+                                    <input type="number" min="1" name="parcelaValor" ng-model="vm.parcela.parcelaNumero" required>
+                                </md-input-container>
+
+                                <md-input-container class="md-block" flex-gt-sm="">
+                                    <label>Valor</label>
+                                    <input type="text" name="parcelaValor" ng-model="vm.parcela.parcelaValor" required ng-currency>
+                                </md-input-container>
+                            </div>
+
+                            <div layout="row" layout-align="center center">
+                                <md-button class="md-primary" ng-click="vm.parcelaAdd()">
+                                    <md-icon>add</md-icon>
+                                    Adicionar parcela
+                                </md-button>
+                            </div>
+                        </form>
+
+                        <md-toolbar class="md-accent md-hue-1" ng-show="vm.contratoParcela.selected.length">
+                            <div class="md-toolbar-tools">
+                                <span>{{vm.contratoParcela.selected.length}} {{vm.contratoParcela.selected.length > 1 ? 'parcelas selecionadas' : 'parcela selecionada'}} </span>
+                                <span flex></span>
+                                <md-button class="md-primary" ng-click="vm.parcelaRemove()">
+                                    <md-icon>delete</md-icon>
+                                </md-button>
+                            </div>
+                        </md-toolbar>
+
+                        <md-table-container>
+                            <table md-table md-row-select="true" multiple="true" ng-model="vm.contratoParcela.selected" md-progress="vm.contratoParcela.promise">
+                                <thead md-head md-order="vm.contratoParcela.order">
+                                    <tr md-row>
+                                        <th md-column md-order-by=""><span>Nº</span></th>
+                                        <th md-column md-order-by=""><span>Valor</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody md-body>
+                                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.contratoParcela.data | orderBy: vm.contratoParcela.order | limitTo: vm.contratoParcela.limit: (vm.contratoParcela.page - 1) * vm.contratoParcela.limit">
+                                        <td md-cell>{{item.parcelaNumero}}</td>
+                                        <td md-cell>{{item.parcelaValor | currency}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </md-table-container>
+
+                        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.contratoParcela.limit" md-page="vm.contratoParcela.page" md-total="{{vm.contratoParcela.data.length}}" md-page-select md-on-paginate="vm.contratoParcela.pagination"></md-table-pagination>
+                    </div>
+
+                </md-content>
+            </md-tab>
+        </md-tabs>
+
+    </md-content>
+    <md-actions layout="row" layout-xs="column">
+
+        <span flex></span>
+
+        <md-button ng-click="vm.cancel()">
+            <i class="" aria-hidden="true"></i> Cancelar
+        </md-button>
+
+        <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+            <i class="fa fa-check" aria-hidden="true"></i> Salvar
+        </md-button>
+    </md-actions>
+</div>

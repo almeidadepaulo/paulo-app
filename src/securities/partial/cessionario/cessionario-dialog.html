@@ -1,0 +1,65 @@
+<md-dialog ng-cloak flex="70" aria-label="" ng-init="vm.init()" class="cessionario-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Selecione um cessionário</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+        <form name="formSearch" class="filter">
+            <h5>Utilize o campo abaixo para filtrar a listagem.</h5>
+            <div layout-gt-sm="row">
+                <md-input-container flex-gt-sm="100" layout-xs="100">
+                    <label>Código do cessionário</label>
+                    <input ng-model="vm.filter.cessionario_id">
+                </md-input-container>
+                <md-input-container flex-gt-sm="100" layout-xs="100">
+                    <label>Nome do cessionário</label>
+                    <input ng-model="vm.filter.cessionario_nome">
+                </md-input-container>
+            </div>
+        </form>
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.cessionario.selected.length">
+            <div class="md-toolbar-tools">
+                <span>Cessionário</span>
+                <span flex></span>
+                <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                    <md-icon>refresh</md-icon>
+                    Atualizar
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-toolbar class="md-accent md-hue-1" ng-show="vm.cessionario.selected.length">
+            <div class="md-toolbar-tools">
+                <span>{{vm.cessionario.selected.length}} {{vm.cessionario.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.remove()">
+                    <md-icon>delete</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div>
+            <md-table-container>
+                <table md-table md-row-select="false" multiple="false" ng-model="vm.cessionario.selected" md-progress="vm.cessionario.promise">
+                    <thead md-head md-order="vm.cessionario.order">
+                        <tr md-row>
+                            <th md-column md-order-by=""><span>Código do cessionário</span></th>
+                            <th md-column md-order-by=""><span>Nome do cessionário</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row md-select="item" md-select-id="PER_ID" md-auto-select ng-repeat="item in vm.cessionario.data | orderBy: vm.cessionario.order" ng-click="vm.itemClick(item)">
+                            <td md-cell>{{item.CEDENTE_ID}}</td>
+                            <td md-cell>{{item.CEDENTE_NOME}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.cessionario.limit" md-page="vm.cessionario.page" md-total="{{vm.cessionario.total}}" md-page-select md-on-paginate="vm.cessionario.pagination"></md-table-pagination>
+        </div>
+    </md-dialog-content>
+</md-dialog>

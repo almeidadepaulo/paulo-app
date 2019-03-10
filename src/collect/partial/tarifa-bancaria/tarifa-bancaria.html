@@ -1,0 +1,105 @@
+<div layout="column" ng-cloak class="tarifa-bancaria" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+
+            <div>
+                <sm-range-picker-input fname="CB209_DT_MOVTO" label="Data de movimento" form="formSearch" ng-model="vm.filter.CB209_DT_MOVTO" flex-size="100" is-required="true" format="DD/MM/YYYY" divider="até">
+                </sm-range-picker-input>
+            </div>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Produto</label>
+                <input name="produto" ng-model="vm.filter.produto.name" ng-readonly="true" placeholder="Selecionar produto" class="pointer" ng-click="vm.filterDialog('produto')">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('produto')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Carteira</label>
+                <input name="carteira" ng-model="vm.filter.carteira.name" ng-readonly="true" placeholder="Selecionar carteira" class="pointer" ng-click="vm.filterDialog('carteira')">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('carteira')">close</md-icon>
+            </md-input-container>
+
+            <!--
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Banco</label>
+                <input name="banco" ng-model="vm.filter.banco.name" ng-readonly="true" placeholder="Selecionar banco" class="pointer" ng-click="vm.filterDialog('banco')">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('banco')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Agência</label>
+                <input name="agencia" ng-model="vm.filter.agencia.name" ng-readonly="true" placeholder="Selecionar agência" class="pointer" ng-click="vm.filterDialog('agencia')" ng-disabled="!vm.filter.banco.id">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('agencia')">close</md-icon>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm="">
+                <label>Conta</label>
+                <input name="conta" ng-model="vm.filter.conta.name" ng-readonly="true" placeholder="Selecionar conta" class="pointer" ng-click="vm.filterDialog('conta')" ng-disabled="!vm.filter.agencia.id">
+                <md-icon class="pointer icon-grey" md-ink-ripple ng-click="vm.filterClean('conta')">close</md-icon>
+            </md-input-container>
+            -->
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.tarifaBancaria.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Tarifa Bancária</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})" ng-disabled="formSearch.$invalid">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="false" ng-model="vm.tarifaBancaria.selected" md-progress="vm.tarifaBancaria.promise">
+                <thead md-head md-order="vm.tarifaBancaria.order">
+                    <tr md-row>
+                        <th md-column md-order-by=""><span>Data</span></th>
+                        <th md-column md-order-by="" class="right"><span>Produto</span></th>
+                        <th md-column md-order-by="" class="right"><span>Carteira</span></th>
+                        <th md-column md-order-by="" class="right"><span>Quantidade</span></th>
+                        <th md-column md-order-by="" class="right"><span>Devido</span></th>
+                        <th md-column md-order-by="" class="right"><span>Recebido</span></th>
+                        <th md-column md-order-by="" class="right"><span>Diferença</span></th>
+                        <!-- <th md-column md-order-by="" class="right"><span>Trf.Qtde</span></th>
+                        <th md-column md-order-by="" class="right"><span>Trf.Previsto</span></th>
+                        <th md-column md-order-by="" class="right"><span>Trf.Informado</span></th>
+                        <th md-column md-order-by="" class="right"><span>Atr.Qtde</span></th>
+                        <th md-column md-order-by="" class="right"><span>Atr.Previsto</span></th>
+                        <th md-column md-order-by="" class="right"><span>Atr.Informado</span></th> -->
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.tarifaBancaria.data | orderBy: vm.tarifaBancaria.order | limitTo: vm.tarifaBancaria.limit: (vm.tarifaBancaria.page - 1) * vm.tarifaBancaria.limit">
+                        <td md-cell class="right">{{item.CB209_DT_MOVTO | numberToDate | date : 'dd/MM/yyyy'}}</td>
+                        <td md-cell class="right">{{item.CB255_DS_PRODR}}</td>
+                        <td md-cell class="right">{{item.CB256_DS_CART}}</td>
+                        <td md-cell class="right">{{item.CB209_QT_TOTAL | number}}</td>
+                        <td md-cell class="right">{{item.CB209_VL_DIFLIQ | currency}}</td>
+                        <td md-cell class="right">{{item.CB209_VL_PAGO | number}}</td>
+                        <td md-cell class="right">{{item.CB209_VL_DIF | currency}}</td>
+                        <!-- <td md-cell class="right">{{item.CB209_QT_TOTAL | number}}</td>
+                        <td md-cell class="right">{{item.CB209_VL_PREPAG | currency}}</td>
+                        <td md-cell class="right">{{item.CB209_VL_INFORM | number}}</td>
+                        <td md-cell class="right">{{item.CB209_QT_ATRASA | currency}}</td>
+                        <td md-cell class="right">{{item.CB209_VL_PREATR | number}}</td>
+                        <td md-cell class="right">{{item.CB209_VL_TAFATR | currency}}</td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.tarifaBancaria.limit" md-page="vm.tarifaBancaria.page" md-total="{{vm.tarifaBancaria.total}}" md-page-select md-on-paginate="vm.tarifaBancaria.pagination"></md-table-pagination>
+    </div>
+</div>

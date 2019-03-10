@@ -1,0 +1,69 @@
+<md-dialog ng-cloak flex="70" aria-label="" ng-init="vm.init()" class="roteiro-contabil-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Selecione os roteiros desejados</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+        <form name="formSearch" class="filter">
+            <h5>Utilize o campo abaixo para filtrar a listagem.</h5>
+            <div layout-gt-sm="row">
+                <md-input-container flex-gt-sm="100" layout-xs="100">
+                    <label>Nome do roteiro</label>
+                    <input ng-model="vm.filter.nome">
+                </md-input-container>
+            </div>
+        </form>
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.roteiroContabil.selected.length">
+            <div class="md-toolbar-tools">
+                <span>Roteiro Contabil</span>
+                <span flex></span>
+                <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                    <md-icon>refresh</md-icon>
+                    Atualizar listagem
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-toolbar class="md-accent md-hue-1" ng-show="vm.roteiroContabil.selected.length">
+            <div class="md-toolbar-tools">
+                <span>{{vm.roteiroContabil.selected.length}} {{vm.roteiroContabil.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.remove()">
+                    <md-icon>delete</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div>
+            <md-table-container>
+                <table md-table md-row-select="true" multiple="true" ng-model="vm.roteiroContabil.selected" md-progress="vm.roteiroContabil.promise">
+                    <thead md-head md-order="vm.roteiroContabil.order">
+                        <tr md-row>
+                            <th md-column md-order-by="BKN509_CD_ROTCT"><span>Código</span></th>
+                            <th md-column md-order-by="BKN509_NM_EVENTO"><span>Nome</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.roteiroContabil.data | orderBy: vm.roteiroContabil.order">
+                            <td md-cell>{{item.BKN509_CD_ROTCT}}</td>
+                            <td md-cell>{{item.BKN509_NM_EVENTO}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.roteiroContabil.limit" md-page="vm.roteiroContabil.page" md-total="{{vm.roteiroContabil.total}}" md-page-select md-on-paginate="vm.roteiroContabil.pagination"></md-table-pagination>
+        </div>
+        <md-actions layout="row" layout-xs="column">
+
+            <span flex></span>
+
+            <md-button class="md-raised md-primary" ng-click="vm.itemClick(vm.roteiroContabil.selected)" ng-disabled="vm.roteiroContabil.selected.length === 0">
+                <i class="fa fa-check" aria-hidden="true"></i> Vincular
+            </md-button>
+        </md-actions>
+    </md-dialog-content>
+</md-dialog>

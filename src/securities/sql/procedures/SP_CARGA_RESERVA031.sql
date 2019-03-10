@@ -1,0 +1,465 @@
+-- Configura Procedure
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Apaga Procedure
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP_CARGA_RESERVA031]') AND type in (N'P', N'PC'))
+DROP PROCEDURE  [dbo].[SP_CARGA_RESERVA031]
+GO
+
+-- Cria Procedure
+CREATE PROCEDURE [dbo].[SP_CARGA_RESERVA031]
+/*::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  :: EMPRESA    : IMSTECH														::
+  :: SISTEMA    : CF															::
+  :: MÓDULO     : Carga de Reservas     										::
+  :: OBSERVAÇÃO :	IMPORTA XML E CARREGA TABELAS								::
+  ::				BN217,BN218,BN219, BN220									::
+  ::----------------------------------------------------------------------------::
+  :: PROGRAMADOR: Fábio Bernardo												::
+  :: DATA       : 24/12/2013													::
+  :: ALTERAÇÃO  : Transformado Script em Procedure				VERSÃO SP:   1	::
+  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+  /*------------------------------------------------------------------------------
+  DADOS DE ENTRADA
+  ------------------------------------------------------------------------------*/
+	@ENT_NM_ARQUIVO		VARCHAR(100)	-- Nome do arquivo a Importar
+  WITH ENCRYPTION
+AS
+BEGIN TRY -- TRATAMENTO DE ERRO
+
+DECLARE
+		 @DT_ATUAL					DATETIME		= GETDATE()  -- DATA ATUAL 
+		,@NM_PROG					VARCHAR(200)	= 'SP_CARGA_RESERVA031' -- NOME DO PROGRAMA PARA O LOG
+		,@NM_CAMINHO				VARCHAR(200)	= '\\192.168.10.31\pdf\xml\' -- CAMINHO DO ARQUIVO
+		,@NM_COMPLETO				VARCHAR(200)	
+		
+		
+SET @NM_COMPLETO = @NM_CAMINHO + @ENT_NM_ARQUIVO		
+		
+
+
+-- APAGA DADOS DAS TABELAS ANTES DE INSERIR
+DELETE FROM BN217 WHERE BN217_NM_ARQ = @ENT_NM_ARQUIVO
+DELETE FROM BN218 WHERE BN218_NM_ARQ = @ENT_NM_ARQUIVO
+DELETE FROM BN219 WHERE BN219_NM_ARQ = @ENT_NM_ARQUIVO
+DELETE FROM BN220 WHERE BN220_NM_ARQ = @ENT_NM_ARQUIVO
+
+
+--RAISERROR('Nome Incorreto',11,1)  
+
+
+-- LE XML
+DROP TABLE XMLwithOpenXML
+CREATE TABLE XMLwithOpenXML
+(
+	Id				INT IDENTITY PRIMARY KEY,
+	XMLData			XML,
+	LoadedDateTime	DATETIME
+)
+
+
+
+
+
+DECLARE @SQL NVARCHAR(4000); --= 'BULK INSERT #TXT1 FROM ''' + @ENT_NM_ARQUIVO + ''' WITH ( FIELDTERMINATOR ='';'', FIRSTROW = 2 )';
+
+
+SET @SQL = 'INSERT INTO XMLwithOpenXML(XMLData, LoadedDateTime)
+SELECT CONVERT(XML, BulkColumn) AS BulkColumn, GETDATE() 
+FROM OPENROWSET(BULK '''+@NM_COMPLETO+''', SINGLE_BLOB) AS x;
+'
+EXEC(@SQL);
+-- SELECT TOP 100 * FROM XMLwithOpenXML
+
+
+DECLARE @XML AS XML, @hDoc AS INT
+SELECT @XML = XMLData FROM XMLwithOpenXML
+EXEC sp_xml_preparedocument @hDoc OUTPUT, @XML
+
+-- GERA BN217  $217 $BN217
+INSERT INTO BN217 (
+   BN217_NM_ARQ
+  ,BN217_NR_CNPJPA
+  ,BN217_NR_CORES
+  ,BN217_NR_RESC3
+  ,BN217_NR_INDRES
+  ,BN217_TP_SITRES
+  ,BN217_TP_COOB
+  ,BN217_NR_OPESIS
+  ,BN217_DT_INCSIS
+  ,BN217_DT_ATUSIS
+)
+
+SELECT  
+   BN217_NM_ARQ=@ENT_NM_ARQUIVO
+  ,BN217_NR_CNPJPA
+  ,BN217_NR_CORES
+  ,BN217_NR_RESC3
+  ,BN217_NR_INDRES
+  ,BN217_TP_SITRES
+  ,BN217_TP_COOB
+  ,BN217_NR_OPESIS=0
+  ,BN217_DT_INCSIS=GETDATE()
+  ,BN217_DT_ATUSIS=GETDATE()
+FROM OPENXML(@hDoc, '/ACCCDOC/SISARQ/ACCC031/Grupo_ACCC031_SitRes') -- TESTE COMPLETO
+WITH 
+(
+	 BN217_NR_CNPJPA	[char](8)		'IdentdPartAdmdo'
+	,BN217_NR_CORES		[char](40)		'NumCtrlIFRes'
+	,BN217_NR_RESC3		[char](21)		'NURes'
+	,BN217_NR_INDRES	[char](10)		'NumIdentdRes'
+	,BN217_TP_SITRES	[numeric](3)	'SitRes'
+	,BN217_TP_COOB		[char](1)		'IndrCoobr'
+)
+
+
+
+
+
+
+
+
+
+
+-- GERA BN218  $218 $BN218
+INSERT INTO BN218 (
+	 BN218_NM_ARQ   
+	,BN218_TP_CONTRA
+	,BN218_NR_CORES 
+	,BN218_NR_CONC3 
+	,BN218_NR_CONTOR
+	,BN218_NR_CNPJOR
+	,BN218_TP_CLIENTE
+	,BN218_NR_CNPJCPF
+	,BN218_TP_CONDIC
+	,BN218_DT_COGAR 
+	,BN218_VL_FINCO 
+	,BN218_QT_PARCOR
+	,BN218_NR_CNPJCO
+	,BN218_NR_COCON 
+	,BN218_NR_BENCON
+	,BN218_NR_MATCON
+	,BN218_NR_PRIDES
+	,BN218_NR_GARAG 
+	,BN218_TP_MENREC
+	,BN218_TP_NEGPA      
+	,BN218_NR_OPESIS
+	,BN218_DT_INCSIS
+	,BN218_DT_ATUSIS
+)
+
+SELECT  
+	 BN218_NM_ARQ=@ENT_NM_ARQUIVO
+	,BN218_TP_CONTRA='A'
+	,BN218_NR_CORES 
+	,BN218_NR_CONC3 
+	,BN218_NR_CONTOR
+	,BN218_NR_CNPJOR
+	,BN218_TP_CLIENTE
+	,BN218_NR_CNPJCPF
+	,BN218_TP_CONDIC
+	,BN218_DT_COGAR 
+	,BN218_VL_FINCO 
+	,BN218_QT_PARCOR
+	,BN218_NR_CNPJCO
+	,BN218_NR_COCON 
+	,BN218_NR_BENCON
+	,BN218_NR_MATCON
+	,BN218_NR_PRIDES
+	,BN218_NR_GARAG 
+	,BN218_TP_MENREC
+	,BN218_TP_NEGPA      
+	,BN218_NR_OPESIS=0
+	,BN218_DT_INCSIS=GETDATE()
+	,BN218_DT_ATUSIS=GETDATE()
+FROM OPENXML(@hDoc, '/ACCCDOC/SISARQ/ACCC031/Grupo_ACCC031_SitRes/Grupo_ACCC031_ContrtoActo') -- TESTE COMPLETO
+WITH 
+(
+	 BN218_NR_CORES		[varchar](40)	'NumCtrlIFContrto'
+	,BN218_NR_CONC3		[char](21)		'NUContrto'
+	,BN218_NR_CONTOR	[varchar](40)	'Grupo_Identd_Contrto/CodContrtoOr'
+	,BN218_NR_CNPJOR	[char](8)		'Grupo_Identd_Contrto/CNPJBase_IFOrContrto'
+	,BN218_TP_CLIENTE	[char](1)		'Grupo_Identd_Contrto/TpCli'
+	,BN218_NR_CNPJCPF	[varchar](14)	'Grupo_Identd_Contrto/CNPJ_CPFCli'
+	,BN218_TP_CONDIC	[char](4)		'Grupo_Identd_Contrto/TpContrto'
+	,BN218_DT_COGAR		[char](10)		'Grupo_ACCC031_Gar/DtContr'
+	,BN218_VL_FINCO		[numeric](17,2)	'Grupo_ACCC031_Gar/VlrFinancContrto'
+	,BN218_QT_PARCOR	[numeric](9)	'Grupo_ACCC031_Gar/QtdParclsOrigmntContrda'
+	,BN218_NR_CNPJCO	[char](8)		'Grupo_ACCC031_Gar/CNPJBase_EnteCons'
+	,BN218_NR_COCON		[char](20)		'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/NumContrtoEnteCons'
+	,BN218_NR_BENCON	[numeric](10)	'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/NumBenfcEnteCons'
+	,BN218_NR_MATCON	[numeric](20)	'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/NumMatriclEnteCons'
+	,BN218_NR_PRIDES	[char](7)		'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/AnoMesComptcPrimroDesct'
+	,BN218_NR_GARAG		[char](13)		'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/SitGarAgtValiddr'
+	,BN218_TP_MENREC	[numeric](1)	'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/SitMenslddRecup'
+	,BN218_TP_NEGPA     [char](1)		'IndrContrtoParcial'  
+)
+
+
+
+
+
+
+
+
+-- GERA BN218  $218 $BN218
+INSERT INTO BN218 (
+	 BN218_NM_ARQ   
+	,BN218_TP_CONTRA
+	,BN218_NR_CORES 
+	,BN218_NR_CONC3 
+	,BN218_NR_CONTOR
+	,BN218_NR_CNPJOR
+	,BN218_TP_CLIENTE
+	,BN218_NR_CNPJCPF
+	,BN218_TP_CONDIC
+	,BN218_DT_COGAR 
+	,BN218_VL_FINCO 
+	,BN218_QT_PARCOR
+	,BN218_NR_CNPJCO
+	,BN218_NR_COCON 
+	,BN218_NR_BENCON
+	,BN218_NR_MATCON
+	,BN218_NR_PRIDES
+	,BN218_NR_GARAG 
+	,BN218_TP_MENREC
+	,BN218_TP_NEGPA     
+	,BN218_NR_OPESIS
+	,BN218_DT_INCSIS
+	,BN218_DT_ATUSIS
+)
+
+SELECT  
+	 BN218_NM_ARQ=@ENT_NM_ARQUIVO
+	,BN218_TP_CONTRA='R'
+	,BN218_NR_CORES 
+	,BN218_NR_CONC3 
+	,BN218_NR_CONTOR
+	,BN218_NR_CNPJOR
+	,BN218_TP_CLIENTE
+	,BN218_NR_CNPJCPF
+	,BN218_TP_CONDIC
+	,BN218_DT_COGAR 
+	,BN218_VL_FINCO 
+	,BN218_QT_PARCOR
+	,BN218_NR_CNPJCO
+	,BN218_NR_COCON 
+	,BN218_NR_BENCON
+	,BN218_NR_MATCON
+	,BN218_NR_PRIDES
+	,BN218_NR_GARAG 
+	,BN218_TP_MENREC
+	,BN218_TP_NEGPA     
+	,BN218_NR_OPESIS=0
+	,BN218_DT_INCSIS=GETDATE()
+	,BN218_DT_ATUSIS=GETDATE()
+FROM OPENXML(@hDoc, '/ACCCDOC/SISARQ/ACCC031/Grupo_ACCC031_SitRes/Grupo_ACCC031_ContrtoRecsdo') -- TESTE COMPLETO
+WITH 
+(
+	 BN218_NR_CORES		[varchar](40)	'NumCtrlIFContrto'
+	,BN218_NR_CONC3		[char](21)		'NUContrto'
+	,BN218_NR_CONTOR	[varchar](40)	'Grupo_Identd_Contrto/CodContrtoOr'
+	,BN218_NR_CNPJOR	[char](8)		'Grupo_Identd_Contrto/CNPJBase_IFOrContrto'
+	,BN218_TP_CLIENTE	[char](1)		'Grupo_Identd_Contrto/TpCli'
+	,BN218_NR_CNPJCPF	[varchar](14)	'Grupo_Identd_Contrto/CNPJ_CPFCli'
+	,BN218_TP_CONDIC	[char](4)		'Grupo_Identd_Contrto/TpContrto'
+	,BN218_DT_COGAR		[char](10)		'Grupo_ACCC031_Gar/DtContr'
+	,BN218_VL_FINCO		[numeric](17,2)	'Grupo_ACCC031_Gar/VlrFinancContrto'
+	,BN218_QT_PARCOR	[numeric](9)	'Grupo_ACCC031_Gar/QtdParclsOrigmntContrda'
+	,BN218_NR_CNPJCO	[char](8)		'Grupo_ACCC031_Gar/CNPJBase_EnteCons'
+	,BN218_NR_COCON		[char](20)		'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/NumContrtoEnteCons'
+	,BN218_NR_BENCON	[numeric](10)	'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/NumBenfcEnteCons'
+	,BN218_NR_MATCON	[numeric](20)	'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/NumMatriclEnteCons'
+	,BN218_NR_PRIDES	[char](7)		'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/AnoMesComptcPrimroDesct'
+	,BN218_NR_GARAG		[char](13)		'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/SitGarAgtValiddr'
+	,BN218_TP_MENREC	[numeric](1)	'Grupo_ACCC031_Gar/Grupo_ACCC031_Consig/SitMenslddRecup'
+	,BN218_TP_NEGPA     [char](1)		'IndrContrtoParcial'  
+)
+
+
+
+
+
+
+
+
+
+
+
+
+-- GERA BN219  $219 $BN219
+INSERT INTO BN219 (
+   BN219_NM_ARQ
+  ,BN219_TP_CONTRA
+  ,BN219_NR_CONC3
+  ,BN219_NR_CORES
+  ,BN219_NR_RESC3
+  ,BN219_DT_VENPAR
+  ,BN219_VL_PARCON
+  ,BN219_NR_SEQPAR
+  ,BN219_TP_CARESP
+  ,BN219_NR_OPESIS
+  ,BN219_DT_INCSIS
+  ,BN219_DT_ATUSIS
+)
+SELECT  
+   BN219_NM_ARQ=@ENT_NM_ARQUIVO
+  ,BN219_TP_CONTRA='A'
+  ,BN219_NR_CONC3
+  ,BN219_NR_CORES
+  ,BN219_NR_RESC3
+  ,BN219_DT_VENPAR
+  ,BN219_VL_PARCON
+  ,BN219_NR_SEQPAR
+  ,BN219_TP_CARESP
+  ,BN219_NR_OPESIS=0
+  ,BN219_DT_INCSIS=GETDATE()
+  ,BN219_DT_ATUSIS=GETDATE()
+FROM OPENXML(@hDoc, '/ACCCDOC/SISARQ/ACCC031/Grupo_ACCC031_SitRes/Grupo_ACCC031_ContrtoActo/Grupo_ACCC031_ParclActo') -- TESTE COMPLETO
+WITH 
+(
+   BN219_NR_CONC3      [char]    ( 21)      '../NUContrto'
+  ,BN219_NR_CORES      [char]    ( 40)      'NumCtrlIFParcl'
+  ,BN219_NR_RESC3      [char]    ( 21)      'NUParcl'
+  ,BN219_DT_VENPAR     [char]    ( 10)      'DtVencParcl'
+  ,BN219_VL_PARCON     [numeric] ( 17, 2)   'VlrParcl'
+  ,BN219_NR_SEQPAR     [numeric] (  3, 0)   'SeqParcl'
+  ,BN219_TP_CARESP     [char]    (  1)      'ParclCarEspclEstoque'
+)
+
+
+
+INSERT INTO BN219 (
+   BN219_NM_ARQ
+  ,BN219_TP_CONTRA
+  ,BN219_NR_CONC3
+  ,BN219_NR_CORES
+  ,BN219_NR_RESC3
+  ,BN219_DT_VENPAR
+  ,BN219_VL_PARCON
+  ,BN219_NR_SEQPAR
+  ,BN219_TP_CARESP
+  ,BN219_NR_OPESIS
+  ,BN219_DT_INCSIS
+  ,BN219_DT_ATUSIS
+)
+SELECT  
+   BN219_NM_ARQ=@ENT_NM_ARQUIVO
+  ,BN219_TP_CONTRA='R'
+  ,BN219_NR_CONC3
+  ,BN219_NR_CORES
+  ,BN219_NR_RESC3
+  ,BN219_DT_VENPAR
+  ,BN219_VL_PARCON
+  ,BN219_NR_SEQPAR
+  ,BN219_TP_CARESP
+  ,BN219_NR_OPESIS=0
+  ,BN219_DT_INCSIS=GETDATE()
+  ,BN219_DT_ATUSIS=GETDATE()
+FROM OPENXML(@hDoc, '/ACCCDOC/SISARQ/ACCC031/Grupo_ACCC031_SitRes/Grupo_ACCC031_ContrtoRecsdo/Grupo_ACCC031_ParclRecsdo') -- TESTE COMPLETO
+WITH 
+(
+   BN219_NR_CONC3      [char]    ( 21)      '../NUContrto'
+  ,BN219_NR_CORES      [char]    ( 40)      'NumCtrlIFParcl'
+  ,BN219_NR_RESC3      [char]    ( 21)      'NUParcl'
+  ,BN219_DT_VENPAR     [char]    ( 10)      'DtVencParcl'
+  ,BN219_VL_PARCON     [numeric] ( 17, 2)   'VlrParcl'
+  ,BN219_NR_SEQPAR     [numeric] (  3, 0)   'SeqParcl'
+  ,BN219_TP_CARESP     [char]    (  1)      'ParclCarEspclEstoque'
+)
+
+
+
+
+
+
+
+
+--SELECT * FROM OPENXML(@hDoc, '/ACCCDOC/SISARQ/ACCC031/Grupo_ACCC031_SitRes/Grupo_ACCC031_ContrtoActo/Grupo_ACCC031_Gar/Grupo_ACCC031_Chassi/IdentdChassi') -- TESTE COMPLETO
+
+-- GERA BN220  $220 $BN220
+INSERT INTO BN220 (
+   BN220_NM_ARQ
+  ,BN220_NR_CONC3
+  ,BN220_NR_CHASSI
+  ,BN220_NR_GARAG
+  ,BN220_NR_VALPAR
+  ,BN220_NR_ANOVEI
+  ,BN220_NR_CNPJBA
+  ,BN220_TP_TAVEIC
+  ,BN220_TP_VEIC
+  ,BN220_NM_VEIC
+  ,BN220_NR_OPESIS
+  ,BN220_DT_INCSIS
+  ,BN220_DT_ATUSIS
+)
+
+SELECT  
+   BN220_NM_ARQ=@ENT_NM_ARQUIVO
+  ,BN220_NR_CONC3
+  ,ISNULL(BN220_NR_CHASSI, ' ')
+  ,BN220_NR_GARAG
+  ,BN220_NR_VALPAR
+  ,BN220_NR_ANOVEI
+  ,BN220_NR_CNPJBA
+  ,BN220_TP_TAVEIC
+  ,BN220_TP_VEIC
+  ,BN220_NM_VEIC
+  ,BN220_NR_OPESIS=0
+  ,BN220_DT_INCSIS=GETDATE()
+  ,BN220_DT_ATUSIS=GETDATE()  
+FROM OPENXML(@hDoc, '/ACCCDOC/SISARQ/ACCC031/Grupo_ACCC031_SitRes/Grupo_ACCC031_ContrtoActo') -- TESTE COMPLETO
+WITH 
+(
+   BN220_NR_CONC3      [char]    ( 21)    'NUContrto'
+  ,BN220_NR_CHASSI     [char]    ( 17)    'Grupo_ACCC031_Gar/Grupo_ACCC031_Chassi/IdentdChassi'
+  ,BN220_NR_GARAG      [char]    ( 13)    'Grupo_ACCC031_Gar/Grupo_ACCC031_Chassi/SitGarAgtValiddr'
+  ,BN220_NR_VALPAR     [numeric] (  3, 0) 'Grupo_ACCC031_Gar/Grupo_ACCC031_Chassi/SitValidcParcl'
+  ,BN220_NR_ANOVEI     [numeric] (  4, 0) 'Grupo_ACCC031_Gar/Grupo_ACCC031_Chassi/AnoModlVeicl'
+  ,BN220_NR_CNPJBA     [char]    (  8)    'Grupo_ACCC031_Gar/Grupo_ACCC031_Chassi/CNPJBaseBenfcrioCriv'
+  ,BN220_TP_TAVEIC     [char]    (  1)    'Grupo_ACCC031_Gar/Grupo_ACCC031_Chassi/TpTabVeicl' 
+  ,BN220_TP_VEIC       [numeric] (  6, 0) 'Grupo_ACCC031_Gar/Grupo_ACCC031_Chassi/TpVeicl' 
+  ,BN220_NM_VEIC       [char]    ( 80)    'Grupo_ACCC031_Gar/Grupo_ACCC031_Chassi/DescVeicl' 
+)
+
+DELETE FROM BN220 WHERE BN220_NM_ARQ = @ENT_NM_ARQUIVO AND BN220_NR_CHASSI='    ' -- LIMPA CHASSIS EM BRANCO
+
+
+
+
+
+
+
+
+
+SELECT  COD_ERRO=0,DESCRICAO_ERRO='SEM ERROS'
+
+
+
+END TRY -- TRATAMENTO DE ERRO
+BEGIN CATCH
+	SELECT  COD_ERRO=ERROR_NUMBER(),DESCRICAO_ERRO='Linha '+CONVERT(VARCHAR(30),ERROR_LINE())+': '+ERROR_MESSAGE()
+		
+	RETURN 
+END CATCH
+
+-- RODAR ATE AQUI
+
+	
+/* TESTE
+
+INSERT INTO XMLwithOpenXML(XMLData, LoadedDateTime)
+SELECT CONVERT(XML, BulkColumn) AS BulkColumn, GETDATE() 
+FROM OPENROWSET(BULK '\\192.168.10.31\pdf\xml\ACCC031_00954288_20131223_00002.xml', SINGLE_BLOB) AS x;
+--FROM OPENROWSET(BULK '\\192.168.10.31\pdf\xml\teste2.xml', SINGLE_BLOB) AS x;
+SELECT TOP 100 * FROM XMLwithOpenXML
+
+
+
+
+	
+	
+*/
+

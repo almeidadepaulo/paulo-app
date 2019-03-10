@@ -1,0 +1,88 @@
+<div layout="column" ng-cloak class="notificacao-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Notificação)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <md-select ng-model="vm.notificacao.CB261_CD_PUBLIC" placeholder="Tipo" required ng-change="vm.tipoChange()">
+                            <md-option value="1">SMS</md-option>
+                            <md-option value="2">E-mail</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="" ng-show="vm.notificacao.CB261_CD_PUBLIC">
+                        <label>Mensagem</label>
+                        <input name="mensagem" ng-model="vm.notificacao.CB261_NM_MSG" ng-readonly="true" placeholder="Selecionar mensagem" class="pointer" ng-click="vm.filterDialog('mensagem')" required>
+                        <div ng-messages="form.mensagem.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Descrição</label>
+                        <input name="CB261_NM_REGRA" ng-model="vm.notificacao.CB261_NM_REGRA" required>
+                        <div ng-messages="form.CB261_NM_REGRA.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <md-select ng-model="vm.notificacao.CB261_TP_ACAO" placeholder="Ação" required>
+                            <md-option value="1">Inicial</md-option>
+                            <md-option value="2">Final</md-option>
+                            <md-option value="3">Dias a vencer</md-option>
+                            <md-option value="4">Dias vencido</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container ng-if="vm.notificacao.CB261_TP_ACAO === '3' || vm.notificacao.CB261_TP_ACAO === '4'" flex-gt-sm="50">
+                        <label>Dias</label>
+                        <input name="CB261_NR_DIAS" ng-model="vm.notificacao.CB261_NR_DIAS" ng-required="vm.notificacao.CB261_TP_ACAO === '3' || vm.notificacao.CB261_TP_ACAO === '4'">
+                        <div ng-messages="form.CB261_NR_DIAS.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row" layout-align="space-around center">
+                    <md-checkbox ng-model="vm.notificacao.CB261_ID_STATUS" ng-true-value="1" ng-false-value="0">
+                        Regra Ativa
+                    </md-checkbox>
+
+                    <md-checkbox ng-if="vm.notificacao.CB261_CD_PUBLIC === '2'" ng-model="vm.notificacao.CB261_ID_ANEXO" ng-true-value="1" ng-false-value="0">
+                        Anexar documento
+                    </md-checkbox>
+                </div>
+            </form>
+        </div>
+    </md-content>
+    <md-actions layout="row" layout-xs="column">
+        <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+            <i class="fa fa-times" aria-hidden="true"></i> Remover
+        </md-button>
+
+        <span flex></span>
+
+        <md-button ng-click="vm.cancel()">
+            <i class="" aria-hidden="true"></i> Cancelar
+        </md-button>
+
+        <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+            <i class="fa fa-check" aria-hidden="true"></i> Salvar
+        </md-button>
+    </md-actions>
+</div>

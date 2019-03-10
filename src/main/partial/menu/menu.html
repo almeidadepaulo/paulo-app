@@ -1,0 +1,236 @@
+<div layout="column" ng-cloak class="menu">
+    <md-content class="content" ng-init="initMenu($event)" layout="row" ng-show="vm.menuComplete">
+        <!--
+            CADASTRO 
+        -->
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone1.items.length">
+            <md-list>
+                <md-list-item ng-click="vm.expand(vm.menus.menuZone1)">
+                    <p class="md-primary expand-label">
+                        <md-icon class="md-primary fa" ng-class="{'fa-chevron-down': vm.menus.menuZone1.open, 'fa-chevron-right': !vm.menus.menuZone1.open}"></md-icon>
+                        CONFIGURAÇÃO DO SISTEMA
+                    </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-list-item ng-show="vm.menus.menuZone1.open" class="md-2-line stuff-to-show" ng-repeat="item in vm.menus.menuZone1.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone11.items.length">
+            <md-list>
+                <md-list-item ng-click="vm.expand(vm.menus.menuZone11)">
+                    <p class="md-primary expand-label">
+                        <md-icon class="md-primary fa" ng-class="{'fa-chevron-down': vm.menus.menuZone11.open, 'fa-chevron-right': !vm.menus.menuZone11.open}"></md-icon>
+                        POLÍTICAS DE CRÉDITO/FORMALIZAÇÃO
+                    </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-list-item ng-show="vm.menus.menuZone11.open" class="md-2-line" ng-repeat="item in vm.menus.menuZone11.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone2.items.length">
+            <md-list>
+                <md-list-item ng-click="vm.expand(vm.menus.menuZone2)">
+                    <p class="md-primary expand-label">
+                        <md-icon class="md-primary fa" ng-class="{'fa-chevron-down': vm.menus.menuZone2.open, 'fa-chevron-right': !vm.menus.menuZone2.open}"></md-icon>
+                        CONFIGURAÇÃO DE COMUNICAÇÃO
+                    </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-list-item ng-show="vm.menus.menuZone2.open" class="md-2-line" ng-repeat="item in vm.menus.menuZone2.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone3.items.length">
+            <md-list>
+                <md-subheader class="md-no-sticky"></md-subheader>
+                <md-divider></md-divider>
+                <md-list-item class="md-2-line" ng-repeat="item in vm.menus.menuZone3.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+
+        <!--
+            ARQUIVO 
+        -->
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone4.items.length">
+            <md-list>
+                <md-list-item ng-click="vm.expand(vm.menus.menuZone4)">
+                    <p class="md-primary expand-label">
+                        <md-icon class="md-primary fa" ng-class="{'fa-chevron-down': vm.menus.menuZone4.open, 'fa-chevron-right': !vm.menus.menuZone4.open}"></md-icon>
+                        ENVIAR ARQUIVO
+                    </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-list-item ng-show="vm.menus.menuZone4.open" class="md-2-line" ng-repeat="item in vm.menus.menuZone4.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone5.items.length">
+            <md-list>
+                <md-list-item ng-click="vm.expand(vm.menus.menuZone5)">
+                    <p class="md-primary expand-label">
+                        <md-icon class="md-primary fa" ng-class="{'fa-chevron-down': vm.menus.menuZone5.open, 'fa-chevron-right': !vm.menus.menuZone5.open}"></md-icon>
+                        RECEBER ARQUIVO
+                    </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-list-item ng-show="vm.menus.menuZone5.open" class="md-2-line" ng-repeat="item in vm.menus.menuZone5.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone6.items.length">
+            <md-list>
+                <md-list-item ng-click="vm.expand(vm.menus.menuZone6)">
+                    <p class="md-primary expand-label">
+                        <md-icon class="md-primary fa" ng-class="{'fa-chevron-down': vm.menus.menuZone6.open, 'fa-chevron-right': !vm.menus.menuZone6.open}"></md-icon>
+                        HISTÓRICO DE PROCESSAMENTO
+                    </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-list-item ng-show="vm.menus.menuZone6.open" class="md-2-line" ng-repeat="item in vm.menus.menuZone6.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+
+        <!--
+            GESTÃO 
+        -->
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone7.items.length">
+            <md-list>
+                <md-list-item ng-click="vm.expand(vm.menus.menuZone7)">
+                    <p class="md-primary expand-label">
+                        <md-icon class="md-primary fa" ng-class="{'fa-chevron-down': vm.menus.menuZone7.open, 'fa-chevron-right': !vm.menus.menuZone7.open}"></md-icon>
+                        TÍTULOS
+                    </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-list-item ng-show="vm.menus.menuZone7.open" class="md-2-line" ng-repeat="item in vm.menus.menuZone7.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone8.items.length">
+            <md-list>
+                <md-list-item ng-click="vm.expand(vm.menus.menuZone8)">
+                    <p class="md-primary expand-label">
+                        <md-icon class="md-primary fa" ng-class="{'fa-chevron-down': vm.menus.menuZone8.open, 'fa-chevron-right': !vm.menus.menuZone8.open}"></md-icon>
+                        CARTEIRA
+                    </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-list-item ng-show="vm.menus.menuZone8.open" class="md-2-line stuff-to-show" ng-repeat="item in vm.menus.menuZone8.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone9.items.length">
+            <md-list>
+                <md-list-item ng-click="vm.expand(vm.menus.menuZone9)">
+                    <p class="md-primary expand-label">
+                        <md-icon class="md-primary fa" ng-class="{'fa-chevron-down': vm.menus.menuZone9.open, 'fa-chevron-right': !vm.menus.menuZone9.open}"></md-icon>
+                        SERVIÇOS
+                    </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-list-item ng-show="vm.menus.menuZone9.open" class="md-2-line" ng-repeat="item in vm.menus.menuZone9.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+
+        <div flex="50" layout="column" layout-padding ng-show="vm.menus.menuZone10.items.length">
+            <md-list>
+                <md-list-item ng-click="vm.expand(vm.menus.menuZone10)">
+                    <p class="md-primary expand-label">
+                        <md-icon class="md-primary fa" ng-class="{'fa-chevron-down': vm.menus.menuZone10.open, 'fa-chevron-right': !vm.menus.menuZone10.open}"></md-icon>
+                        COMUNICAÇÃO
+                    </p>
+                </md-list-item>
+
+                <md-divider></md-divider>
+
+                <md-list-item ng-show="vm.menus.menuZone10.open" class="md-2-line" ng-repeat="item in vm.menus.menuZone10.items" ng-click="vm.itemClick(item)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.notes }}</p>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </div>
+    </md-content>
+</div>

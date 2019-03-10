@@ -1,0 +1,80 @@
+<div layout="column" ng-cloak class="sms-pacote" ng-init="vm.init()" ng-show="vm.complete">
+    <form name="formSearch" class="filter">
+        <h5>Utilize o campo abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container flex-gt-sm="33" layout-xs="100">
+                <label>Código</label>
+                <input type="number" ng-model="vm.filter.CB053_CD_EMIEMP">
+            </md-input-container>
+            <md-input-container flex-gt-sm="33" layout-xs="100">
+                <label>Nome</label>
+                <input ng-model="vm.filter.CB053_DS_EMIEMP">
+            </md-input-container>
+            <md-input-container flex-gt-sm="33" layout-xs="100">
+                <label>CNPJ</label>
+                <input name="CB053_NR_CPFCNPJ" ng-model="vm.filter.CB053_NR_CPFCNPJ" ui-br-cnpj-mask>
+                <div ng-messages="formUsuarioSearch.CB053_NR_CPFCNPJ.$error" multiple md-auto-hide="false">
+                    <div ng-message="cnpj">CNPJ inválido.</div>
+                </div>
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.cedente.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Cedente</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.create()">
+                <md-icon>add</md-icon>
+                Adicionar
+            </md-button>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-accent md-hue-1" ng-show="vm.cedente.selected.length">
+        <div class="md-toolbar-tools">
+            <span>{{vm.cedente.selected.length}} {{vm.cedente.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.remove()">
+                <md-icon>delete</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="vm.perfilTipo === '0'" multiple="vm.perfilTipo === '0'" ng-model="vm.cedente.selected" md-progress="vm.cedente.promise">
+                <thead md-head md-order="vm.cedente.order">
+                    <tr md-row>
+                        <th md-column><span></span></th>
+                        <th md-column md-order-by=""><span>Código</span></th>
+                        <th md-column md-order-by=""><span>Nome</span></th>
+                        <th md-column md-order-by=""><span>CNPJ</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.cedente.data | orderBy: vm.cedente.order">
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                <md-icon>mode_edit</md-icon>
+                            </md-button>
+                        </td>
+                        <td md-cell>{{item.CB053_CD_EMIEMP}}</td>
+                        <td md-cell>{{item.CB053_DS_EMIEMP}}</td>
+                        <td md-cell>{{item.CB053_NR_CPFCNPJ | padLeft : '00000000000000' | brCnpj}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.cedente.limit" md-page="vm.cedente.page" md-total="{{vm.cedente.total}}" md-page-select md-on-paginate="vm.cedente.pagination"></md-table-pagination>
+    </div>
+</div>

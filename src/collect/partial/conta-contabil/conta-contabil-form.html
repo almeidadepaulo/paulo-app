@@ -1,0 +1,98 @@
+<div layout="column" ng-cloak class="conta-contabil-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>aaFormulário (Conta Contábil)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Código</label>
+                        <input name="codigo" ng-model="vm.example.codigo" required ng-pattern="/^[0-9]+$/">
+                        <div ng-messages="form.codigo.$error">
+                            <div ng-message="required">Campo obrigatório</div>
+                            <div ng-message="pattern">Digite apenas números</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Descrição</label>
+                        <input name="descricao" ng-model="vm.example.descricao" required>
+                        <div ng-messages="form.descricao.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Tipo</label>
+                        <md-select ng-model="vm.example.tipoco">
+                            <md-option ng-value="1">
+                                Patrimonial
+                            </md-option>
+                            <md-option ng-value="2">
+                                Resultado
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Classificaçã<o></o></label>
+                        <md-select ng-model="vm.example.classco">
+                            <md-option ng-value="1">
+                                Despesa
+                            </md-option>
+                            <md-option ng-value="2">
+                                Despesa
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Natureza</label>
+                        <md-select ng-model="vm.example.naturez">
+                            <md-option ng-value="1">
+                                Credora
+                            </md-option>
+                            <md-option ng-value="2">
+                                Credora
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- <md-divider></md-divider> -->
+
+        <div class="md-actions" layout="row" layout-xs="column">
+
+            <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+                <i class="fa fa-times" aria-hidden="true"></i> Remover
+            </md-button>
+
+            <span flex></span>
+
+            <md-button ng-click="vm.cancel()">
+                <i class="" aria-hidden="true"></i> Cancelar
+            </md-button>
+
+            <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+                <i class="fa fa-check" aria-hidden="true"></i> Salvar
+            </md-button>
+        </div>
+    </md-content>
+</div>

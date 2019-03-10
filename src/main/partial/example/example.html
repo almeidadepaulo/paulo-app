@@ -1,0 +1,36 @@
+<div layout="column" ng-cloak class="example">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container flex-gt-sm="10" flex-gt-sm layout-xs="100">
+                <label>ID</label>
+                <input ng-model="vm.filter.id">
+            </md-input-container>
+
+            <md-input-container flex-gt-sm="25" layout-xs="100">
+                <label>Nome</label>
+                <input ng-model="vm.filter.nome">
+            </md-input-container>
+        </div>
+    </form>
+    <md-content class="content">
+        <section layout="row" layout-sm="column" layout-align="end center" layout-wrap>
+
+            <md-button class="md-raised md-primary" ng-click="vm.create()">
+                <i class="fa fa-plus" aria-hidden="true"></i> Adicionar
+            </md-button>
+
+            <md-button class="md-raised md-warn" ng-click="vm.remove()">
+                <i class="fa fa-times" aria-hidden="true"></i> Remover
+            </md-button>
+
+            <md-button class="md-raised" ng-click="vm.getData()">
+                <i ng-class="vm.dgExemploControl.working | dataGridRefresh" aria-hidden="true"></i> Atualizar
+            </md-button>
+        </section>
+        <div>
+            <px-data-grid id="dgExemplo" class="table-striped table-bordered" px-debug="true" px-control="vm.dgExemploControl" px-init="vm.dgExemploInit(event)" px-config="{{vm.dgExemploConfig}}" px-check="true" px-item-click="vm.itemClick(event)" px-label-function="vm.dgExemploLabel(event)">
+            </px-data-grid>
+        </div>
+    </md-content>
+</div>

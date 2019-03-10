@@ -1,0 +1,16 @@
+<md-dialog flex="70" aria-label="" ng-cloak ng-controller="UploadDialogCtrl as vm">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Log de processamento</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.close()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <px-data-grid id="dgExemplo" px-debug="false" class="table-striped table-bordered" px-control="vm.dgExemploControl" px-init="vm.dgExemploInit()" px-config="{{vm.dgExemploConfig}}" px-check="false" px-edit="false">
+            </px-data-grid>
+    </md-dialog-content>
+</md-dialog>

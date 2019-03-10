@@ -1,0 +1,81 @@
+<div layout="column" ng-cloak class="upload">
+    <md-content class="content" flow-init="vm.initFlow()" flow-file-added="vm.fileAdded( $file, $event, $flow )" flow-file-success="vm.fileSuccess( $file, $message, $flow )">
+        <div layout="column" layout-align="center center">
+            <h3>Enviar arquivo(s) </h3>
+            <h4 class="requirements">Envie arquivos de até 100MB.</h4>
+        </div>
+        <hr class="soften" />
+        <div layout="row" layout-align="center center">
+            <md-button flow-btn>
+                <md-icon class="material-icons">insert_drive_file</md-icon>
+                Upload (Arquivo(s))
+            </md-button>
+            <md-button flow-btn flow-directory ng-show="$flow.supportDirectory">
+                <md-icon class="material-icons">folder</md-icon>
+                Upload (Pasta)
+            </md-button>
+        </div>
+        <div class="alert" flow-drop flow-drag-enter="class='alert-success'" flow-drag-leave="class=''" ng-class="class">
+            Utilize os botões acima ou arraste e solte seu(s) arquivo(s) aqui.
+        </div>
+        <hr class="soften">
+        <div layout="row" layout-align="center center">
+            <h4>Áréa de transferência:</h4>
+        </div>
+        <div layout="row" layout-align="center center" class="action">
+            <md-button class="md-raised md-accent" ng-click="vm.setFlowOptions($flow);">Iniciar upload</md-button>
+            <md-button class="md-raised" ng-click="$flow.pause()">Pausar</md-button>
+            <md-button class="md-warn" ng-click="$flow.cancel()">Cancelar</md-button>
+            <div flex></div>
+            <md-whiteframe>
+                <span>Tamanho: {{vm.numeral($flow.getSize()).format('0.0b')}} bytes</span>
+            </md-whiteframe>
+        </div>
+        <md-progress-linear md-mode="indeterminate" ng-show="$flow.isUploading()"></md-progress-linear>
+        <table class="table table-hover table-bordered table-striped" flow-transfers>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Tamanho</th>
+                    <!-- <th>Relative Path</th> -->
+                    <!--<th>Unique Identifier</th> -->
+                    <!--<th>#Chunks</th> -->
+                    <th class="center">Status (%)</th>
+                    <!-- <th>Paused</th> -->
+                    <!-- <th>Uploading</th> -->
+                    <!--  <th>Completed</th> -->
+                    <th class="center">Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="file in transfers">
+                    <td>
+                        {{$index+1}}
+                        <div ng-if="file.finished" ng-init="vm.removeSuccessLine($event, $index, file, transfers)"></div>
+                    </td>
+                    <td>{{file.name}}</td>
+                    <td>{{vm.numeral(file.size).format('0.0b')}}</td>
+                    <!-- <td>{{file.relativePath}}</td> -->
+                    <!-- <td>{{file.uniqueIdentifier}}</td> -->
+                    <!-- <td>{{file.chunks.length}}</td> -->
+                    <td class="center">
+                        <div ng-hide="file.error">{{vm.getProgress(file.progress(), $index)}}%</div>
+                        <div class="error" ng-show="file.error">Erro!</div>
+                    </td>
+                    <!-- <td>{{file.paused}}</td> -->
+                    <!-- <td>{{file.isUploading()}}</td> -->
+                    <!-- <td>{{file.isComplete()}}</td> -->
+                    <td class="center">
+                        <div ng-hide="file.progress() === 1">
+                            <md-button class="md-raised mg-warn" ng-click="file.pause()" ng-hide="file.paused">Pausar</md-button>
+                            <md-button class="md-raised" ng-click="file.resume()" ng-show="file.paused">Continuar</md-button>
+                            <md-button class="md-raised md-accent" ng-click="file.cancel()">Cancelar</md-button>
+                        </div>
+                        <md-button class="md-raised md-primary" ng-click="file.retry()" ng-show="file.error">Tentar novamente</md-button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-content>
+</div>

@@ -1,0 +1,91 @@
+<div layout="column" ng-cloak class="sms-broker-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Broker SMS)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+                <div layout-gt-sm="row" layout-align="center center">
+                    <md-checkbox ng-model="vm.broker.MG050_ID_ATIVO" ng-true-value="1" ng-false-value="0">
+                        Broker ativo
+                    </md-checkbox>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Código</label>
+                        <input type="number" min="1" max="99999" name="MG050_NR_BROKER" ng-model="vm.broker.MG050_NR_BROKER" required ng-pattern="/^[0-9]+$/">
+                        <div ng-messages="form.MG050_NR_BROKER.$error">
+                            <div ng-message="required">Campo obrigatório.</div>
+                            <div ng-message="max">Código não permitido</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Nome</label>
+                        <input name="MG050_NM_BROKER" ng-model="vm.broker.MG050_NM_BROKER" required maxlength="60">
+                        <div ng-messages="form.MG050_NM_BROKER.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Tarifa</label>
+                        <input type="text" name="MG051_VL_CUSTO" ng-model="vm.broker.MG051_VL_CUSTO" required ng-currency maxlength="10">
+                        <div ng-messages="form.MG051_VL_CUSTO.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="50">
+                        <label>Usuário</label>
+                        <input name="MG052_NM_USER" ng-model="vm.broker.MG052_NM_USER" required maxlength="20">
+                        <div ng-messages="form.MG052_NM_USER.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="50">
+                        <label>Senha</label>
+                        <input type="{{vm.showSenha}}" name="MG052_NM_SENHA" ng-model="vm.broker.MG052_NM_SENHA" required maxlength="20">
+                        <div ng-messages="form.MG052_NM_SENHA.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">Campo obrigatório.</div>
+                        </div>
+                        <div layout="row" layout-align="center center" layout-padding>
+                            <md-checkbox ng-model="vm.showSenha" ng-true-value="'text'" ng-false-value="'password'">
+                                <small>Mostrar senha</small>
+                            </md-checkbox>
+                        </div>
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+
+        <md-actions layout="row" layout-xs="column">
+
+            <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+                <i class="fa fa-times" aria-hidden="true"></i> Remover
+            </md-button>
+
+            <span flex></span>
+
+            <md-button ng-click="vm.cancel()">
+                <i class="" aria-hidden="true"></i> Cancelar
+            </md-button>
+
+            <md-button class="md-raised md-primary" ng-click="vm.save()" ng-disabled="form.$invalid">
+                <i class="fa fa-check" aria-hidden="true"></i> Salvar
+            </md-button>
+        </md-actions>
+    </md-content>
+</div>

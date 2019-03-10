@@ -1,0 +1,36 @@
+ -- Configura View
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Apagar view
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[VW_EM050]'))
+DROP VIEW [dbo].VW_EM050
+GO
+
+-- Criar View da tela - EMAIL - Configurações -  Código EMAIL
+CREATE VIEW [dbo].VW_EM050
+WITH ENCRYPTION
+AS
+
+SELECT
+  EM050_NR_INST  ,
+  CB050_NM_INST  ,
+  EM050_NR_BROKER,
+  EM050_NM_BROKER,
+  EM050_ID_ATIVO ,
+  EM050_ID_ATIVO_label = CASE EM050_ID_ATIVO
+    WHEN 1 THEN 'Ativo'      
+    ELSE 'Inativo'
+  END,    
+  EM050_CD_OPESIS,
+  EM050_DT_INCSIS,
+  EM050_DT_ATUSIS
+FROM
+  EM050,
+  CB050
+WHERE
+  EM050_NR_INST = CB050_NR_INST
+
+  
+GO

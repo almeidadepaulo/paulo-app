@@ -1,0 +1,15 @@
+<div ng-if="vm.register.CL001_TP_PESSOA === 'F'">
+    <div layout-gt-sm="row">
+        <md-input-container class="md-block" flex-gt-sm="">
+            <label>Nome da mãe</label>
+            <input name="CL002_NM_MAE" ng-model="vm.cedente.CL002_NM_MAE">
+            <div ng-messages="form.CL002_NM_MAE.$error" multiple md-auto-hide="false">
+                <div ng-message="required">Campo obrigatório.</div>
+            </div>
+        </md-input-container>
+    </div>
+</div>
+
+<div ng-if="vm.register.CL001_TP_PESSOA === 'J'">
+    ?
+</div>

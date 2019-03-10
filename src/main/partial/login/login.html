@@ -1,0 +1,126 @@
+<div id="page" class="login" layout-fill>
+    <div id="main" class="login">
+        <div id="primary">
+            <div id="content" role="main" class="container" layout="column" layout-align="center center" md-whiteframe="3">
+                <md-toolbar class="logo" layout-padding>
+                    <div class="md-toolbar-tools" layout="row" layout-align="center center">
+                        <img src="main/assets/img/logo/smartbank-logo-login.png" />
+                    </div>
+                </md-toolbar>
+                <div style="width: 100%">
+                    <md-divider></md-divider>
+                </div>
+                <form id="loginDiv" name="loginForm" role="form" ng-submit="vm.login()">
+                    <!--<div class="hr"></div>-->
+                    <div class="animate-switch-container" ng-switch on="vm.selection">
+
+                        <div ng-switch-when="default" class="animate-switch">
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Usuário</label>
+                                <input id="username" name="username" ng-model="vm.username" required>
+                                <div ng-messages="loginForm.username.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Senha</label>
+                                <input name="password" ng-model="vm.password" required type="password">
+                                <div ng-messages="loginForm.password.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+                            <!-- <i class="fa fa-keyboard-o lg fa-lg"></i> -->
+                            <div id="loginControl" layout="column" layout-align="center">
+                                <div layout="row" layout-align="space-between center">
+                                    <md-button ng-click="vm.register()" class="md-raised md-primary" name="register" ng-disabled="vm.dataLoading">Criar conta</md-button>
+
+                                    <md-button class="md-raised md-primary" type="submit" name="submit" value="Entrar" ng-disabled="loginForm.$invalid || vm.dataLoading">Entrar</md-button>
+                                </div>
+                                <!--
+                                    <div>
+                                        <span ng-class="vm.dataLoading | loginWorking"></span>
+                                    </div>
+                                    -->
+                                <div>
+                                    <a ng-click="vm.showRecover()" class="recover-link" ng-show="!vm.dataLoading">Esqueci minha senha</a>
+                                </div>
+                            </div>
+
+
+                            <!-- <a ng-click="vm.register()" class="new-user-link" ng-show="!vm.dataLoading">Criar usuário</a> -->
+                        </div>
+                        <div ng-switch-when="recover" class="animate-switch">
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Usuário</label>
+                                <input name="usernameRecover" ng-model="vm.usernameRecover" required>
+                                <div ng-messages="loginForm.usernameRecover.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>E-mail</label>
+                                <input name="email" ng-model="vm.email" required>
+                                <div ng-messages="loginForm.email.$error">
+                                    <div ng-message="required">Campo obrigatório.</div>
+                                </div>
+                            </md-input-container>
+                            <div id="loginRecover" layout="row" layout-align="center center">
+                                <div class="btn-group">
+                                    <md-button class="md-raised md-primary" type="submit" name="submit" value="Confirmar" ng-disabled="loginForm.$invalid || vm.dataLoading" ng-click="vm.recover()">Confirmar</md-button>
+                                </div>
+                            </div>
+
+                            <a ng-click="vm.showLogin()" class="recover-link">LOGIN</a>
+                        </div>
+                        <div ng-switch-when="redefine" class="animate-switch">
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Senha atual</label>
+                                <input id="passwordOld" name="passwordOld" ng-model="vm.passwordOld" required type="password" ng-keyup="vm.redefineForm()">
+                                <div ng-messages="loginForm.passwordOld.$error" multiple md-auto-hide="false">
+                                    <div ng-message="confirm">Senha atual incorreta</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Nova Senha</label>
+                                <input id="usu_senha" name="passwordNew" ng-model="vm.passwordNew" required type="password" ng-keyup="vm.redefineForm()" minlength="8">
+                                <div ng-messages="loginForm.passwordNew.$error" multiple md-auto-hide="false">
+                                    <div ng-message="minlength">A senha deve ter no mínimo 8 caracteres</div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm="">
+                                <label>Confirmar nova senha</label>
+                                <input id="passwordNewConfirm" name="passwordNewConfirm" ng-model="vm.passwordNewConfirm" required type="password" ng-keyup="vm.redefineForm()" compare-to="vm.passwordNew">
+                                <div ng-messages="loginForm.passwordNewConfirm.$error" multiple md-auto-hide="false">
+                                    <div ng-message="compareTo">Digite a mesma senha</div>
+                                </div>
+                            </md-input-container>
+
+                            <div id="loginredefinir" layout="row" layout-align="center center">
+                                <div class="btn-group">
+                                    <md-button class="md-raised md-primary" type="submit" name="submit" value="Salvar" ng-disabled="loginForm.$invalid" ng-click="vm.redefine()">Salvar</md-button>
+                                </div>
+                            </div>
+
+                            <a ng-click="vm.showLogin()" class="recover-link">Cancelar</a>
+                        </div>
+                        <div layout="row" layout-align="center center" layout-padding>
+                            <small class="login-message">{{vm.loginMessage}}</small>
+                        </div>
+                    </div>
+                    <!--<div class="hr"></div>-->
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+            <!-- #content -->
+        </div>
+        <!-- #primary -->
+    </div>
+    <div layout="row" layout-align="center center" class="copyright" layout-padding>
+        <a href="http://seeaway.com.br/">Copyright 2017 SEEAWAY | All Rights Reserved</a>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<div layout-gt-sm="row">
+    <md-input-container class="md-block" flex-gt-sm="30">
+        <label>CEP</label>
+        <input name="CL001_NR_CEP" ng-model="vm.register.CL001_NR_CEP" required ui-br-cep-mask cep-search cep-search-event="vm.cepSearch(event)">
+        <div ng-messages="form.CL001_NR_CEP.$error">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex-gt-sm="">
+        <label>Endereço</label>
+        <input name="CL001_NM_END" ng-model="vm.register.CL001_NM_END" required>
+    </md-input-container>
+
+    <md-input-container flex-gt-sm="15">
+        <label>Nº</label>
+        <input type="number" name="CL001_NR_END" ng-model="vm.register.CL001_NR_END" required>
+    </md-input-container>
+</div>
+
+<div layout-gt-sm="row">
+    <md-input-container flex-gt-sm="">
+        <label>Complemento</label>
+        <input type="text" name="CL001_NM_COMPL" ng-model="vm.register.CL001_NM_COMPL">
+    </md-input-container>
+</div>
+
+<div layout-gt-sm="row">
+    <md-input-container class="md-block" flex-gt-sm="">
+        <label>Bairro</label>
+        <input name="CL001_NM_BAIRRO" ng-model="vm.register.CL001_NM_BAIRRO" required>
+        <div ng-messages="form.CL001_NM_BAIRRO.$error">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex-gt-sm="">
+        <label>Cidade</label>
+        <input name="CL001_NM_CIDADE" ng-model="vm.register.CL001_NM_CIDADE" required>
+        <div ng-messages="form.CL001_NM_CIDADE.$error">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex-gt-sm="15">
+        <label>Estado</label>
+        <input name="CL001_SG_ESTADO" ng-model="vm.register.CL001_SG_ESTADO" required>
+        <div ng-messages="form.CL001_SG_ESTADO.$error">
+            <div ng-message="required">Campo obrigatório.</div>
+        </div>
+    </md-input-container>
+</div>

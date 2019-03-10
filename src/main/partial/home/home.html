@@ -1,0 +1,64 @@
+<img id="watermark" src="main/assets/img/logo/smartbank-logo-side2-mini.png" />
+<seeaway-view-header logo="main\assets\img\logo\logo-header-paulista.png" menus="vm.toolbar.menus" item-click="vm.itemClick(event)" toggle-click="vm.toggleRight(event)" cedente-label="{{vm.cedente.nome}}" cedente-click="vm.cedenteDialog(event)" cedente-selected="vm.cedenteSelected(event)"
+    cedente-search-icon-click="vm.cedenteDialog()" search-text="{{vm.cedenteSearchText}}">
+</seeaway-view-header>
+
+<md-content class="home">
+    <div layout="column" layout-align="center center" ui-view class="container">
+    </div>
+</md-content>
+<!-- <div layout="row" layout-align="end center" layout-padding class="foooter">
+    <img src="main/assets/img/logo/smartbank-logo-side2-mini.png " />
+</div> -->
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" layout="column" layout-align="space-between stretch">
+
+    <div>
+        <md-toolbar class="" layout="row" layout-align="center center">
+            <!-- <h2 class="md-toolbar-tools"></h2> -->
+            <div layout="row" layout-align="center center">
+                <img src="main/assets/img/logo/seeaway-logo-side.png " />
+            </div>
+        </md-toolbar>
+
+        <md-content layout="column" layout-align="start stretch" layout-padding>
+            <form layout="column" layout-align="start stretch">
+                <md-input-container class=" md-block " flex-gt-sm=" " ng-if="vm.cedenteShow">
+                    <label ng-click="vm.cedenteDialog($event) ">CEDENTE</label>
+                    <textarea name="cedente " ng-model="vm.cedente.nome" ng-readonly="true " placeholder="- " ng-click="vm.cedenteDialog($event) " style="cursor: pointer; "></textarea>
+                </md-input-container>
+
+                <md-button class="md-raised md-block " aria-label="Learn More " layout-padding>
+                    <md-icon>person_outline</md-icon>{{vm.sideNav.nome}}
+                </md-button>
+
+                <md-button class="md-raised md-block " aria-label="Learn More " layout-padding ng-click="vm.settings() " ng-show="vm.settingsShow">
+                    <md-icon>settings</md-icon>
+                    </i>Sistema
+                </md-button>
+
+                <div class="md-block " flex-gt-sm=" " ng-show="false ">
+                    <md-autocomplete ng-disabled="vm.isDisabled " md-no-cache="vm.noCache " md-selected-item="vm.selectedItem " md-search-text-change="vm.searchTextChange(vm.searchText) " md-search-text="vm.searchText " md-selected-item-change="vm.selectedItemChange(item)
+            " md-items="item in vm.querySearch(vm.searchText) " md-item-text="item.display " md-min-length="0" placeholder="What is your favorite US state? ">
+                        <md-item-template>
+                            <span md-highlight-text="vm.searchText " md-highlight-flags="^i ">{{item.display}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No states matching "{{vm.searchText}} " were found.
+                            <a ng-click="vm.newState(vm.searchText) ">Create a new one!</a>
+                        </md-not-found>
+                    </md-autocomplete>
+                </div>
+
+                <md-button ng-click="vm.logout(); " class="md-primary md-block " layout-padding>
+                    Sair do sistema
+                </md-button>
+            </form>
+        </md-content>
+    </div>
+
+    <!-- 
+        <div layout="row" layout-align="center center" layout-padding>
+            <img src="main/assets/img/logo/smartbank-logo-side2.png " />
+        </div>
+    -->
+</md-sidenav>

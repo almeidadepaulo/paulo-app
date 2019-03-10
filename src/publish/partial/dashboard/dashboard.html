@@ -1,0 +1,39 @@
+<md-content class="dashboard" ng-init="vm.init()" layout="column">
+    <div layout="row" layout-align="center center" layout-padding>
+        <h2>SMS / E-mails enviados</h2>
+    </div>
+    <div layout="row" layout-aling="center center" class="charts">
+        <div flex="50">
+            <div layout="row" layout-align="space-between center" layout-padding>
+                <md-input-container class="md-block" flex-gt-sm="20">
+                    <label>ANO</label>
+                    <md-select ng-model="vm.filter.anoSelected" ng-change="vm.anoChange()">
+                        <md-option ng-repeat="option in vm.filter.ano" ng-value="option">
+                            {{option}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <canvas id="line" class="chart chart-line" chart-data="vm.line.data" chart-labels="vm.line.labels" chart-colors="vm.colors" chart-series="vm.line.series" chart-options="vm.line.options" chart-click="vm.lineOnClick"></canvas>
+        </div>
+
+        <div flex="50" layout="column" layout-align="start center">
+            <md-content class="chartDia">
+                <form name="formDia">
+                    <div layout="row" layout-align="space-between center" layout-padding class="chartDiaDiv">
+                        <md-input-container>
+                            <label>Dia</label>
+                            <md-datepicker id="date" name="date" ng-model="vm.filter.date" md-placeholder="Data" required="true" ng-change="vm.diaChange()"></md-datepicker>
+
+                            <div ng-messages="formDia.date.$error">
+                                <div ng-message="valid">Data inválida.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </form>
+                <canvas id="pie" class="chart chart-pie" chart-colors="vm.colors" chart-data="vm.pie.data" chart-labels="vm.pie.labels" chart-options="vm.pie.options"></canvas>
+                <div id="pie-tooltip"></div>
+            </md-content>
+        </div>
+    </div>
+</md-content>

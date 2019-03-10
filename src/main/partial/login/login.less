@@ -1,0 +1,159 @@
+@charset "utf-8";
+@link-color: #123456;
+.login {
+	/*background: url('./main/assets/img/wallpaper/original.jpg') no-repeat center center fixed;*/
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	background-color: @backgroud-color;
+	button {
+		width: 110px;
+	}
+	.logo {
+		background-color: white;
+		padding: 15px;
+	}
+	.container {
+		margin: 0 auto;
+		width: 900px;
+		/*opacity: 0.9;*/
+	}
+	h2, h3 {
+		color: @link-color;
+	}
+	.hr {
+		border-top: 1px solid #dadada;
+		position: relative;
+		height: 1px;
+		margin: 32px 0;
+		clear: both;
+	}
+	.hr:before {
+		border-top: 1px solid #fff;
+		position: absolute;
+		top: 0;
+		content: '';
+		display: block;
+		width: 100%;
+	}
+	#header {
+		background-color: #fcfcfc;
+		position: fixed;
+		z-index: 1;
+		width: 100%;
+		height: 94px;
+	}
+	#header .container {
+		padding: 12px 0 16px 0;
+	}
+	#site-title {
+		float: left;
+		margin: 0;
+	}
+	#site-title a {
+		background: url(main/assets/img/logo/logo-login.png) 0 0 no-repeat;
+		width: 121px;
+		height: 66px;
+		display: block;
+		border: 0;
+		text-indent: -999em;
+		overflow: hidden;
+		margin-right: 0px;
+	}
+	#main {
+		clear: both;
+		padding-top: 94px;
+	}
+	#content {
+		position: relative;
+		/*text-align: center;*/
+		width: 400px;
+		background-color: white;
+	}
+	#loginDiv {
+		margin: 0px auto;
+		width: 272px;
+	}
+	#loginDiv .recover-link {
+		width: 100%;
+		text-align: center;
+		color: @link-color;
+		font-weight: 400;
+		display: block;
+		margin-top: 50px;
+		cursor: pointer;
+	}
+	#loginDiv .working {
+		width: 100%;
+		text-align: center;
+		color: @link-color;
+		font-weight: 400;
+		display: block;
+		margin-top: 5px;
+	}
+	#loginDiv .new-user-link {
+		width: 100%;
+		text-align: center;
+		color: @link-color;
+		font-weight: 400;
+		display: block;
+		margin-top: 5px;
+		cursor: pointer;
+	}
+	.animate-switch-container {
+		position: relative;
+		height: 320px;
+		overflow: hidden;
+		padding-top: 25px;
+	}
+	.animate-switch {
+		padding: 0px;
+	}
+	.animate-switch.ng-animate {
+		transition: all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.7s;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+	.animate-switch.ng-leave.ng-leave-active, .animate-switch.ng-enter {
+		top: -260px;
+	}
+	.animate-switch.ng-leave, .animate-switch.ng-enter.ng-enter-active {
+		top: 0;
+	}
+	/*RODAPÉ*/
+	.copyright {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		background-color: #373435;
+		font-size: 11px;
+		letter-spacing: 1.1px;
+		height: 20px;
+	}
+	.copyright a {
+		display: inline-block;
+		color: #ffffff;
+	}
+	.login fieldset {
+		/*padding: .35em .625em .75em;*/
+		margin: 0 2px;
+		border: none;
+		background-color: white;
+	}
+	.login .input-control {
+		position: relative;
+		vertical-align: middle;
+		margin: .500rem 0;
+		line-height: 1;
+	}
+	.login-message {
+		color: #DD2C00;
+	}
+	a {
+		font-size: 14px;
+	}
+}

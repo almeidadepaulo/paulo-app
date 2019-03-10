@@ -1,0 +1,72 @@
+<md-dialog ng-cloak flex="70" aria-label="" ng-init="vm.init()" class="conta-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Selecione as contas desejados</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+        <form name="formSearch" class="filter">
+            <h5>Utilize o campo abaixo para filtrar a listagem.</h5>
+            <div layout-gt-sm="row">
+                <md-input-container flex-gt-sm="50" flex-gt-sm layout-xs="100">
+                    <label>Nº da Conta</label>
+                    <input type="number" ng-model="vm.filter.CB260_NR_CONTA">
+                </md-input-container>
+
+                <md-input-container flex-gt-sm="70" layout-xs="100">
+                    <label>Nome da conta</label>
+                    <input ng-model="vm.filter.CB260_NM_CEDENT">
+                </md-input-container>
+            </div>
+        </form>
+        <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.conta.selected.length">
+            <div class="md-toolbar-tools">
+                <span>Conta</span>
+                <span flex></span>
+                <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                    <md-icon>refresh</md-icon>
+                    Atualizar listagem
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-toolbar class="md-accent md-hue-1" ng-show="vm.conta.selected.length">
+            <div class="md-toolbar-tools">
+                <span>{{vm.conta.selected.length}} {{vm.conta.selected.length > 1 ? 'linhas selecionadas' : 'linha selecionada'}} </span>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.remove()">
+                    <md-icon>delete</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div>
+            <md-table-container>
+                <table md-table md-row-select="false" multiple="false" ng-model="vm.conta.selected" md-progress="vm.conta.promise">
+                    <thead md-head md-order="vm.conta.order">
+                        <tr md-row>
+                            <th md-column md-order-by="CB250_NM_BANCO"><span>Banco</span></th>
+                            <th md-column md-order-by="CB251_NR_DG_AGENC"><span>Agência</span></th>
+                            <th md-column md-order-by="CB260_NM_CEDENT"><span>Descrição</span></th>
+                            <th md-column md-order-by="CB260_NR_CONTA"><span>Nº da Conta</span></th>
+                            <th md-column md-order-by="CB260_NR_NOSNUM"><span>Nosso Nº</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.conta.data | orderBy: vm.conta.order" class="pointer" ng-click="vm.itemClick(item)">
+                            <td md-cell>{{item.CB250_NM_BANCO}}</td>
+                            <td md-cell>{{item.CB251_NR_DG_AGENC}}</td>
+                            <td md-cell>{{item.CB260_NM_CEDENT}}</td>
+                            <td md-cell>{{item.CB260_NR_CONTA}}</td>
+                            <td md-cell>{{item.CB260_NR_NOSNUM}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.conta.limit" md-page="vm.conta.page" md-total="{{vm.conta.total}}" md-page-select md-on-paginate="vm.conta.pagination"></md-table-pagination>
+        </div>
+    </md-dialog-content>
+</md-dialog>

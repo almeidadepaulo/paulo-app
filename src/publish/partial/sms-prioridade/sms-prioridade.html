@@ -1,0 +1,40 @@
+<div layout="column" ng-cloak class="sms-prioridade" ng-init="vm.init()">
+    <div layout="row" layout-align="center center" class="prioridade-title">
+        <div>
+            <p>Códigos de SMS</p>
+        </div>
+        <span flex></span>
+        <md-button class="md-raised" ng-click="vm.setPrioridadeSms($event)">Salvar</md-button>
+        <span flex></span>
+        <div>
+            <md-button class="md-icon-button" aria-label="More">
+                <md-icon class="md-secondary material-icons" ng-click="vm.moveUp($event)" aria-label="Mover para cima">arrow_drop_up</md-icon>
+            </md-button>
+        </div>
+        <div>
+            <md-button class="md-icon-button" aria-label="More">
+                <md-icon class="md-secondary material-icons" ng-click="vm.moveDown($event)" aria-label="Mover para baixo">arrow_drop_down</md-icon>
+            </md-button>
+        </div>
+    </div>
+    <md-divider></md-divider>
+    <md-content class="content" flex>
+        <md-list ng-cloak="" class="prioridade-list">
+            <md-content class="content" flex>
+
+                <md-list-item ng-repeat="variavel in vm.prioridade">
+                    <md-checkbox ng-model="variavel.selected" aria-label="Selecionar variável"></md-checkbox>
+                    <p style="width:100%">{{variavel.MG055_DS_CODSMS}}</p>
+                    <span flex></span>
+                    <p class="prioridade-old" ng-show="variavel.MG057_NR_SEQ_OLD !== variavel.MG057_NR_SEQ">{{variavel.MG057_NR_SEQ_OLD}}</p>
+                    <p class="prioridade-index">{{variavel.MG057_NR_SEQ}}</p>
+                    <!-- <i class="material-icons">arrow_drop_up</i>
+                <i class="material-icons">arrow_drop_down</i> -->
+                    <!--    
+                <md-icon class="md-secondary material-icons" ng-click="doSecondaryAction($event)" aria-label="Mover para cima">arrow_drop_up</md-icon>                
+                -->
+                </md-list-item>
+            </md-content>
+        </md-list>
+    </md-content>
+</div>

@@ -1,0 +1,55 @@
+<div layout="column" ng-cloak class="email-resumo" ng-init="vm.init()">
+    <form name="formSearch" class="filter">
+        <h5>Utilize os campos abaixo para filtrar a listagem.</h5>
+        <div layout-gt-sm="row">
+            <md-input-container>
+                <label>Movimento</label>
+                <md-datepicker ng-model="vm.filter.EM003_DT_MOVTO"></md-datepicker>
+            </md-input-container>
+        </div>
+    </form>
+    <md-toolbar class="md-table-toolbar md-default" ng-hide="vm.emailResumo.selected.length">
+        <div class="md-toolbar-tools">
+            <span>Resumo</span>
+            <span flex></span>
+            <md-button class="md-primary" ng-click="vm.getData({reset: true})">
+                <md-icon>refresh</md-icon>
+                Atualizar listagem
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content class="content" flex>
+        <md-table-container>
+            <table md-table md-row-select="false" multiple="true" ng-model="vm.emailResumo.selected" md-progress="vm.emailResumo.promise">
+                <thead md-head md-order="vm.emailResumo.order">
+                    <tr md-row>
+                        <th md-column md-order-by="EM003_DT_MOVTO"><span>Data do movimento</span></th>
+                        <th md-column md-order-by="EM003_TT_MENSO"><span>Qtde msg enviadas</span></th>
+                        <th md-column md-order-by="EM003_TT_MENSN"><span>Qtde msg recusadas</span></th>
+                        <th md-column md-order-by="EM003_TT_MENS"><span>Qtde msg total</span></th>
+                        <th md-column md-order-by="EM003_VL_VALOR"><span>Valor</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.emailResumo.data | orderBy: vm.emailResumo.order">
+                        <td md-cell>{{item.EM003_DT_MOVTO | numberToDate | date : 'dd/MM/yyyy'}}</td>
+                        <td md-cell>{{item.EM003_TT_MENSO | number}}</td>
+                        <td md-cell>{{item.EM003_TT_MENSN| number}}</td>
+                        <td md-cell>{{item.EM003_TT_MENS| number}}</td>
+                        <td md-cell>{{item.EM003_VL_VALOR | currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-content>
+    <div layout="row" layout-align="center center" class="back-pagination">
+        <span flex></span>
+        <md-button class="md-primary" ui-sref="menu()">
+            <md-tooltip md-direction="left">Voltar para o menu</md-tooltip>
+            <md-icon>arrow_back</md-icon>
+            Voltar
+        </md-button>
+        <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.emailResumo.limit" md-page="vm.emailResumo.page" md-total="{{vm.emailResumo.total}}" md-page-select md-on-paginate="vm.emailResumo.pagination"></md-table-pagination>
+    </div>
+</div>

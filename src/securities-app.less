@@ -1,0 +1,151 @@
+@import (inline) "lib/angular-loading-bar/build/loading-bar.min.css";
+@import "lib/angular-material/angular-material.min.css";
+@import "lib/font-awesome/less/font-awesome.less";
+@import (inline) "lib/angular-material-data-table/dist/md-data-table.min.css";
+@import (inline) "lib/material-calendar/dist/angular-material-calendar.min.css";
+@import (inline) "lib/smDateTimeRangePicker/src/picker.css";
+@fa-font-path: "lib/font-awesome/fonts";
+@icon-font-path: "lib/bootstrap/fonts/";
+@import "main/partial/login/login.less";
+@import "main/partial/home/home.less";
+@import "main/partial/menu/menu.less";
+@import "main/assets/jstree/themes/proton/style.less";
+@import "main/directive/seeaway-view-header/seeaway-view-header.less";
+@import "main/partial/perfil-usuario/perfil-usuario.less";
+@import "main/partial/perfil-usuario/cedente-form.less";
+@import "main/partial/perfil-usuario/perfil-form.less";
+@import "main/partial/perfil-usuario/usuario-form.less";
+@import "main/partial/cedente/cedente-dialog.less";
+@import "main/partial/example/example.less";
+@import "main/partial/example/example-form.less";
+@import "securities/partial/carteira-selecao/carteira-selecao.less";
+
+body, html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+body {
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	background-color: #FFFFFF;
+	.seeawayApp-views {
+		height: 100%;
+	}
+}
+
+px-nav-bar md-menu-bar button {
+	color: #FFFFFF;
+	font-size: 17px;
+}
+
+px-nav-bar md-menu-bar.md-default-theme md-menu.md-open > button, md-menu-bar md-menu.md-open > button, md-menu-bar.md-default-theme md-menu > button:focus, md-menu-bar md-menu > button:focus {
+	color: #000000;
+}
+
+md-menu-content.md-menu-bar-menu.md-dense .md-button span {
+	font-size: 17px;
+}
+
+.ng-invalid {
+	border-color: #A94442;
+	border-width: 1px;
+}
+
+.hint-datepicker {
+	/* Position the hint */
+	position: absolute;
+	left: 67px;
+	right: auto;
+	bottom: 7px;
+	/* Copy styles from ng-messages */
+	font-size: 12px;
+	line-height: 14px;
+	transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+	/* Set our own color */
+	color: grey;
+}
+
+.hint {
+	/* Position the hint */
+	position: absolute;
+	left: 2px;
+	right: auto;
+	bottom: 7px;
+	/* Copy styles from ng-messages */
+	font-size: 12px;
+	line-height: 14px;
+	transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+	/* Set our own color */
+	color: grey;
+}
+
+#loading-bar .bar {
+	background: #C6373B;
+}
+
+#loading-bar-spinner .spinner-icon {
+	border-top-color: #C6373B;
+	border-left-color: #C6373B;
+}
+
+#loading-bar .peg {
+	-moz-box-shadow: #C6373B 1px 0 6px 1px;
+	-ms-box-shadow: #C6373B 1px 0 6px 1px;
+	-webkit-box-shadow: #C6373B 1px 0 6px 1px;
+	box-shadow: #C6373B 1px 0 6px 1px;
+}
+
+.pointer {
+	cursor: pointer;
+	outline: none;
+}
+
+.icon-grey {
+	color: #E1E1E1;
+}
+
+md-actions{
+	background-color: #FAFAFA;
+	min-height: 50px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.center{
+	text-align: center !important;		
+}
+
+.right{
+	text-align: right !important;		
+}
+
+.default-dialog {
+    md-dialog-content{
+       min-height: 70vh;
+    }
+    .filter {
+        padding-left: 5px;
+        padding-right: 5px;
+        /*background-color: #D7D5CD;*/
+        background-color: white;
+        /*border-bottom: #D7D5CD 1px solid;*/
+        h5 {
+            width: 100%;
+            text-align: center;
+            color: #8F8981;
+            margin-top: 5px;
+            margin-bottom: 0;
+        }
+        md-input-container {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+    td {
+        cursor: pointer;
+    }
+}

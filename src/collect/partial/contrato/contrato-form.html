@@ -1,0 +1,132 @@
+<div layout="column" ng-cloak class="contrato-form" ng-init="vm.init()">
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Formulário (Título)</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" layout-padding class="content">
+        <div>
+            <form name="form">
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Título</label>
+                        <input name="CB213_NR_CONTRA" ng-model="vm.contrato.CB213_NR_CONTRA" disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Produto</label>
+                        <input name="CB255_DS_PRODR" ng-model="vm.contrato.CB255_DS_PRODR" disabled>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Data Título</label>
+                        <input name="CB213_DT_LIBERA" ng-model="vm.contrato.CB213_DT_LIBERA" disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Valor</label>
+                        <input ng-model="CB262_VL_FINAM" disabled ng-currency>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Data 1ª Parcela</label>
+                        <input disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Taxa</label>
+                        <input name="CB213_VL_TAXA" ng-model="vm.contrato.CB213_VL_TAXA" disabled ng-currency currency-symbol="" fraction="5">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Qtde. de parcelas</label>
+                        <input disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>CPF</label>
+                        <input name="CB213_NR_CPFCNPJ" ng-model="vm.contrato.CB213_NR_CPFCNPJ" disabled ui-br-cpf-mask>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Cliente</label>
+                        <input name="CB213_NM_CLIENT" ng-model="vm.contrato.CB213_NM_CLIENT" disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Data Nascimento</label>
+                        <input name="CB213_DT_NASC" ng-model="vm.contrato.CB213_DT_NASC" disabled>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="50">
+                        <label>Email</label>
+                        <input disabled>
+                    </md-input-container>
+
+                    <div layout="row" flex-gt-sm="50">
+                        <md-input-container flex="30">
+                            <label>DDD</label>
+                            <input name="CB213_NR_DDD1" ng-model="vm.contrato.CB213_NR_DDD1" disabled>
+                        </md-input-container>
+
+                        <md-input-container flex="70">
+                            <label>Telefone</label>
+                            <input name="CB213_NR_FONE1" ng-model="vm.contrato.CB213_NR_FONE1" disabled>
+                        </md-input-container>
+                    </div>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="30">
+                        <label>CEP</label>
+                        <input name="CB213_CD_CEP" ng-model="vm.contrato.CB213_CD_CEP" disabled ui-br-cep-mask>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Endereço</label>
+                        <input name="CB213_DS_LOGRAD" ng-model="vm.contrato.CB213_DS_LOGRAD" disabled>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Bairro</label>
+                        <input name="CB213_DS_BAIRRO" ng-model="vm.contrato.CB213_DS_BAIRRO" disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="">
+                        <label>Cidade</label>
+                        <input name="CB213_NM_CIDADE" ng-model="vm.contrato.CB213_NM_CIDADE" disabled>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm="15">
+                        <label>Estado</label>
+                        <input name="CB213_SG_UF" ng-model="vm.contrato.CB213_SG_UF" disabled>
+                    </md-input-container>
+                </div>
+            </form>
+        </div>
+    </md-content>
+
+    <md-actions layout="row" layout-xs="column">
+        <span flex></span>
+
+        <md-button ng-click="vm.cancel()">
+            <i class="" aria-hidden="true"></i> Cancelar
+        </md-button>
+
+    </md-actions>
+</div>

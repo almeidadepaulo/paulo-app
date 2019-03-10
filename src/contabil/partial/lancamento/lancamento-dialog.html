@@ -1,0 +1,100 @@
+<md-dialog ng-cloak flex="70" aria-label="">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{vm.title}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+
+        <form name="form" layout-padding>
+
+            <div layout-gt-sm="row" ng-if="vm.example.statusLabel">
+                <md-input-container class="md-block" flex-gt-sm="">
+                    <label>Status</label>
+                    <input ng-model="vm.example.statusLabel" disabled>
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm="">
+                    <label>Situação encontrada</label>
+                    <input name="debito" ng-model="vm.example.situacao" disabled>
+                </md-input-container>
+
+                <md-input-container flex-gt-sm="20">
+                    <label>Data</label>
+                    <input name="debito" ng-model="vm.example.dataco" disabled>
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm="">
+                    <label>Conta débito</label>
+                    <input name="contasi" ng-model="vm.example.contasi" ng-disabled="vm.changeStatus">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm="">
+                    <label>Valor de débito</label>
+                    <input ng-model="vm.example.valor" px-number-mask ng-disabled="vm.changeStatus">
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm="">
+                    <label>Conta crédito</label>
+                    <input name="contaco" ng-model="vm.example.contaco" ng-disabled="vm.changeStatus">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm="">
+                    <label>Valor do crédito</label>
+                    <input ng-model="vm.example.valorFake" px-number-mask ng-disabled="vm.changeStatus">
+                </md-input-container>
+            </div>
+
+        </form>
+
+        <!-- <md-divider></md-divider> -->
+
+        <div class="md-actions" layout="row" layout-xs="column" ng-if="!vm.changeStatus">
+
+            <!-- <md-button class="md-warn" ng-click="vm.removeById()" ng-if="vm.action === 'update'">
+                <i class="fa fa-times" aria-hidden="true"></i> Remover
+            </md-button> -->
+
+            <span flex></span>
+
+            <md-button ng-click="vm.cancel()">
+                <i class="" aria-hidden="true"></i> Cancelar
+            </md-button>
+
+            <md-button class="md-raised md-primary" ng-click="vm.save(vm.example)" ng-disabled="form.$invalid">
+                <i class="fa fa-check" aria-hidden="true"></i> Salvar
+            </md-button>
+        </div>
+
+        <div layout="row" layout-xs="column" ng-if="vm.changeStatus && vm.example.statusId === 0" layout-align="space-between center">
+
+            <md-button class="md-raised md-warn" ng-click="vm.reprovar()">
+                <i class="fa fa-times" aria-hidden="true"></i> Reprovar
+            </md-button>
+
+            <md-button class="md-raised md-primary" ng-click="vm.aprovar()">
+                <i class="fa fa-check" aria-hidden="true"></i> Aprovar
+            </md-button>
+
+        </div>
+
+        <div layout="row" layout-xs="column" ng-if="vm.changeStatus && vm.example.statusId !== 0" layout-align="end center">
+
+            <md-button class="md-raised" ng-click="vm.cancel()">
+                <i class="" aria-hidden="true"></i> Fechar
+            </md-button>
+
+        </div>
+    </md-dialog-content>
+</md-dialog>

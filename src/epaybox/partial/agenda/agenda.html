@@ -1,0 +1,6 @@
+<div layout="column" ng-cloak class="agenda" ng-init="vm.init()">
+    <md-content class="content">
+        <calendar-md flex layout layout-fill calendar-direction="direction" on-prev-month="vm.prevMonth" on-next-month="vm.nextMonth" on-day-click="dayClick" title-format="'MMMM y'" ng-model="vm.selectedDate" day-format="'d'" day-label-format="'EEE'" day-label-tooltip-format="'EEEE'"
+            day-tooltip-format="'fullDate'" week-starts-on="firstDayOfWeek" day-content="vm.setDayContent" data-start-year="{{vm.yearStart}}" data-start-month="{{vm.monthStart}}"></calendar-md>
+    </md-content>
+</div>

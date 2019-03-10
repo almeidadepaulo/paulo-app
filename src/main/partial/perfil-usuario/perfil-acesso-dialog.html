@@ -1,0 +1,49 @@
+<md-dialog ng-cloak flex="70" aria-label="" ng-init="vm.init()" class="perfil-acesso-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Gerenciar permissões de acesso</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <i class="fa fa-close"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content layout-padding>
+        <md-tabs md-center-tabs="true" md-dynamic-height md-border-bottom md-autoselect md-selected="vm.tabIndex" md-stretch-tabs="always">
+            <md-tab>
+                <md-tab-label>[Publish]</md-tab-label>
+                <md-tab-body>
+                    <md-content class="content">
+                        <div>
+                            <md-table-container layout-fill>
+                                <table md-table md-row-select="true" multiple="true" ng-model="vm.cedente.selected" md-progress="vm.cedente.promise">
+                                    <thead md-head md-order="vm.cedente.order">
+                                        <tr md-row>
+                                            <th md-column><span></span></th>
+                                            <th md-column md-order-by=""><span>Código</span></th>
+                                            <th md-column md-order-by=""><span>Nome</span></th>
+                                            <th md-column md-order-by=""><span>CNPJ</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody md-body>
+                                        <tr md-row md-select="item" md-select-id="ROW" ng-repeat="item in vm.cedente.data | orderBy: vm.cedente.order">
+                                            <td md-cell>
+                                                <md-button class="md-icon-button" ng-click="vm.update(item)">
+                                                    <md-icon>mode_edit</md-icon>
+                                                </md-button>
+                                            </td>
+                                            <td md-cell>{{item.CB053_CD_EMIEMP}}</td>
+                                            <td md-cell>{{item.CB053_DS_EMIEMP}}</td>
+                                            <td md-cell>{{item.CB053_NR_CPFCNPJ | padLeft : '00000000000000' | brCnpj}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                            <md-table-pagination md-label="{page: 'Página:', rowsPerPage: 'Qtd. por página:', of: 'de'}" md-limit="vm.cedente.limit" md-page="vm.cedente.page" md-total="{{vm.cedente.total}}" md-page-select md-on-paginate="vm.cedente.pagination"></md-table-pagination>
+                        </div>
+                    </md-content>
+                </md-tab-body>
+            </md-tab>
+    </md-dialog-content>
+</md-dialog>

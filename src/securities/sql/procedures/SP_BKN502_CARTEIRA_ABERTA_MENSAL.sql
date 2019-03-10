@@ -1,0 +1,414 @@
+
+
+-- Configura Procedure
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+-- Apaga Procedure
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SP_BKN502_CARTEIRA_ABERTA_MENSAL]') AND type in (N'P', N'PC'))
+DROP PROCEDURE  [dbo].[SP_BKN502_CARTEIRA_ABERTA_MENSAL]
+GO
+
+
+
+-- Cria Procedure
+CREATE PROCEDURE [dbo].[SP_BKN502_CARTEIRA_ABERTA_MENSAL]
+/*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  ::---------------------------------------------------------------------------::
+  :: PROGRAMADOR:                                                              ::
+  :: DATA       :                                              VERS�O SP:      ::
+  :: ALTERA��O  :                                                              ::
+  ::---------------------------------------------------------------------------::
+  :: PROGRAMADOR: Weslei Freitas                                               ::
+  :: DATA       : 10/05/2013                                   VERS�O SP: 4    ::
+  :: ALTERA��O  : BKN504_DT_MOVTO Numeric(8) -> : BKN504_DT_MOVTO Numeric(6)   ::
+  ::			  Cria��o do SUM para valor presente						   ::
+  ::---------------------------------------------------------------------------::
+  :: PROGRAMADOR: F�bio Bernardo                                               ::
+  :: DATA       : 27/03/2013                                   VERS�O SP: 3    ::
+  :: ALTERA��O  : produto por perfil										   ::
+  ::---------------------------------------------------------------------------::
+  :: PROGRAMADOR: F�bio Bernardo                                               ::
+  :: DATA       : 21/03/2013                                   VERS�O SP: 2    ::
+  :: ALTERA��O  : grupo de produto / mudan�a de nome						   ::
+  ::---------------------------------------------------------------------------::
+  :: PROGRAMADOR: F�bio Bernardo                                               ::
+  :: DATA       : 20/03/2013                                   VERS�O SP: 1    ::
+  :: ALTERA��O  : Atualizada no FLEX										   ::
+  ::---------------------------------------------------------------------------::
+  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+
+  /*-------------------------------------------------------------------------------
+  PARAMETROS DE ENTRADA
+  ----------------------------------------------------------------------------------*/
+  @ENT_NR_VRS				VARCHAR(4),     /* ENTRADA DA VERSAO DO MODULO			*/
+  @ENT_DT_MOVTO				NUMERIC(6),     /* Data do movimento 1o. dia do mes		*/
+  @ENT_NR_BANCO				NUMERIC(8),		/* N�m. do banco						*/
+  @ENT_NR_CESS				NUMERIC(8),		/* N�m. do cession�rio = -1 p/ todos	*/
+  @ENT_NR_PROD				NUMERIC(8),		/* N�m. do produto = -1 p/ todos		*/
+  @ENT_NR_USR				NUMERIC(8)  	/* N�m. do usu�rio = -1 p/ tudo			*/
+  /*--------------------------------------------------------------------------------*/
+  
+WITH ENCRYPTION
+AS
+
+-- Configura Procedure
+SET QUOTED_IDENTIFIER ON
+SET ANSI_NULLS OFF
+
+-- Inicio da Procedure
+	SELECT -- TITULOS A VENCER	
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO,
+		1								ORDEM,
+		'A VENCER'						POSICAO,
+		SUM(BKN502_QT_AVENC)			QT_TITULO,
+		SUM(BKN502_TT_AVENC)			TT_TITULO,
+		SUM(BKN502_VL_PRES)				TT_PRESENTE -- Total Valor Presente a Vencer
+	FROM BKN502 AS BKN502   
+	LEFT JOIN BKN005 AS BKN005
+	ON BKN005_NR_PROD = BKN502_NR_PROD
+	AND BKN005_NR_BANCO = BKN502_NR_BANCO
+	
+	WHERE  (BKN502_DT_MOVTO = @ENT_DT_MOVTO)
+		AND (BKN502_NR_BANCO = @ENT_NR_BANCO)
+
+		AND (	-- UM PRODUTO
+				(@ENT_NR_PROD <> -1  AND  BKN502_NR_PROD = @ENT_NR_PROD)
+			OR   -- TODOS PRODUTOS
+				(@ENT_NR_PROD  = -1  AND @ENT_NR_USR  = -1) 
+
+			OR   -- PRODUTOS DO PERFIL DO USUARIO
+				(@ENT_NR_PROD  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_PROD IN 
+					(SELECT PERFIL_PRODUTO.PRO_ID FROM IMS.PERFIL_USUARIO AS PERFIL_USUARIO
+						LEFT JOIN IMS.PERFIL_PRODUTO AS PERFIL_PRODUTO
+						ON PERFIL_PRODUTO.PER_ID = PERFIL_USUARIO.USU_PER_ID
+						WHERE PERFIL_USUARIO.USU_ID= @ENT_NR_USR)
+				)
+		)
+
+		AND (    -- UM CESSIONARIO
+				(@ENT_NR_CESS <> -1 AND BKN502_NR_CESS = @ENT_NR_CESS) 
+			OR   -- TODOS CESSIONARIOS
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR  = -1) 
+			OR   -- CESSIONARIOS DO USUARIO
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_CESS IN 
+				(SELECT ins_id FROM ims.USUARIO_INSTITUICAO WHERE usu_id=@ENT_NR_USR))								
+		)
+	GROUP BY 
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO
+
+
+
+	UNION
+	SELECT -- VENCIDOS ATE 30 DIAS
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO,
+		2								ORDEM,
+		'VENCIDOS ATÉ 30 DIAS'			POSICAO,
+		SUM(BKN502_QT_VA30)				QT_TITULO,
+		SUM(BKN502_TT_VA30)				TT_TITULO,
+		0								TT_PRESENTE -- Valor Presente � considerado somente no "A VENCER"
+	FROM BKN502 AS BKN502
+	LEFT JOIN BKN005 AS BKN005
+	ON BKN005_NR_PROD = BKN502_NR_PROD
+	AND BKN005_NR_BANCO = BKN502_NR_BANCO
+
+	WHERE  (BKN502_DT_MOVTO = @ENT_DT_MOVTO)
+		AND (BKN502_NR_BANCO = @ENT_NR_BANCO)
+
+		AND (	-- UM PRODUTO
+				(@ENT_NR_PROD <> -1  AND  BKN502_NR_PROD = @ENT_NR_PROD)
+			OR   -- TODOS PRODUTOS
+				(@ENT_NR_PROD  = -1  AND @ENT_NR_USR  = -1) 
+
+			OR   -- PRODUTOS DO PERFIL DO USUARIO
+				(@ENT_NR_PROD  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_PROD IN 
+					(SELECT PERFIL_PRODUTO.PRO_ID FROM IMS.PERFIL_USUARIO AS PERFIL_USUARIO
+						LEFT JOIN IMS.PERFIL_PRODUTO AS PERFIL_PRODUTO
+						ON PERFIL_PRODUTO.PER_ID = PERFIL_USUARIO.USU_PER_ID
+						WHERE PERFIL_USUARIO.USU_ID= @ENT_NR_USR)
+				)
+		)
+
+
+		AND (    -- UM CESSIONARIO
+				(@ENT_NR_CESS <> -1 AND BKN502_NR_CESS = @ENT_NR_CESS) 
+			OR   -- TODOS CESSIONARIOS
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR  = -1) 
+			OR   -- CESSIONARIOS DO USUARIO
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_CESS IN 
+				(SELECT ins_id FROM ims.USUARIO_INSTITUICAO WHERE usu_id=@ENT_NR_USR))
+		)
+	GROUP BY 
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO
+
+
+
+
+	UNION
+	SELECT -- VENCIDOS ATÉ 60 DIAS
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO,
+		3								ORDEM,
+		'VENCIDOS ATÉ 60 DIAS'			POSICAO,
+		SUM(BKN502_QT_VA60)				QT_TITULO,
+		SUM(BKN502_TT_VA60)				TT_TITULO,
+		0								TT_PRESENTE -- Valor Presente � considerado somente no "A VENCER"
+	FROM BKN502 AS BKN502
+	LEFT JOIN BKN005 AS BKN005
+	ON BKN005_NR_PROD = BKN502_NR_PROD
+	AND BKN005_NR_BANCO = BKN502_NR_BANCO
+
+	WHERE  (BKN502_DT_MOVTO = @ENT_DT_MOVTO)
+		AND (BKN502_NR_BANCO = @ENT_NR_BANCO)
+
+		AND (	-- UM PRODUTO
+				(@ENT_NR_PROD <> -1  AND  BKN502_NR_PROD = @ENT_NR_PROD)
+			OR   -- TODOS PRODUTOS
+				(@ENT_NR_PROD  = -1  AND @ENT_NR_USR  = -1) 
+
+			OR   -- PRODUTOS DO PERFIL DO USUARIO
+				(@ENT_NR_PROD  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_PROD IN 
+					(SELECT PERFIL_PRODUTO.PRO_ID FROM IMS.PERFIL_USUARIO AS PERFIL_USUARIO
+						LEFT JOIN IMS.PERFIL_PRODUTO AS PERFIL_PRODUTO
+						ON PERFIL_PRODUTO.PER_ID = PERFIL_USUARIO.USU_PER_ID
+						WHERE PERFIL_USUARIO.USU_ID= @ENT_NR_USR)
+				)
+		)
+
+
+		AND (    -- UM CESSIONARIO
+				(@ENT_NR_CESS <> -1 AND BKN502_NR_CESS = @ENT_NR_CESS) 
+			OR   -- TODOS CESSIONARIOS
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR  = -1) 
+			OR   -- CESSIONARIOS DO USUARIO
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_CESS IN 
+				(SELECT ins_id FROM ims.USUARIO_INSTITUICAO WHERE usu_id=@ENT_NR_USR))
+		)
+	GROUP BY 
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO
+
+
+
+
+	UNION
+	SELECT -- VENCIDOS ATÉ 90 DIAS
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO,
+		4								ORDEM,
+		'VENCIDOS ATÉ 90 DIAS'			POSICAO,
+		SUM(BKN502_QT_VA90)				QT_TITULO,
+		SUM(BKN502_TT_VA90)				TT_TITULO,
+		0								TT_PRESENTE -- Valor Presente � considerado somente no "A VENCER"
+	FROM BKN502 AS BKN502
+	LEFT JOIN BKN005 AS BKN005
+	ON BKN005_NR_PROD = BKN502_NR_PROD
+	AND BKN005_NR_BANCO = BKN502_NR_BANCO
+
+	WHERE  (BKN502_DT_MOVTO = @ENT_DT_MOVTO)
+		AND (BKN502_NR_BANCO = @ENT_NR_BANCO)
+
+		AND (	-- UM PRODUTO
+				(@ENT_NR_PROD <> -1  AND  BKN502_NR_PROD = @ENT_NR_PROD)
+			OR   -- TODOS PRODUTOS
+				(@ENT_NR_PROD  = -1  AND @ENT_NR_USR  = -1) 
+
+			OR   -- PRODUTOS DO PERFIL DO USUARIO
+				(@ENT_NR_PROD  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_PROD IN 
+					(SELECT PERFIL_PRODUTO.PRO_ID FROM IMS.PERFIL_USUARIO AS PERFIL_USUARIO
+						LEFT JOIN IMS.PERFIL_PRODUTO AS PERFIL_PRODUTO
+						ON PERFIL_PRODUTO.PER_ID = PERFIL_USUARIO.USU_PER_ID
+						WHERE PERFIL_USUARIO.USU_ID= @ENT_NR_USR)
+				)
+		)
+
+		AND (    -- UM CESSIONARIO
+				(@ENT_NR_CESS <> -1 AND BKN502_NR_CESS = @ENT_NR_CESS) 
+			OR   -- TODOS CESSIONARIOS
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR  = -1) 
+			OR   -- CESSIONARIOS DO USUARIO
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_CESS IN 
+				(SELECT ins_id FROM ims.USUARIO_INSTITUICAO WHERE usu_id=@ENT_NR_USR))
+		)
+	GROUP BY 
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO
+
+
+
+	UNION
+	SELECT -- VENCIDOS ATÉ 180 DIAS
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO,
+		5								ORDEM,
+		'VENCIDOS ATÉ 180 DIAS'			POSICAO,
+		SUM(BKN502_QT_VA180)			QT_TITULO,
+		SUM(BKN502_TT_VA180)			TT_TITULO,
+		0								TT_PRESENTE -- Valor Presente � considerado somente no "A VENCER"
+	FROM BKN502 AS BKN502
+	LEFT JOIN BKN005 AS BKN005
+	ON BKN005_NR_PROD = BKN502_NR_PROD
+	AND BKN005_NR_BANCO = BKN502_NR_BANCO
+
+	WHERE  (BKN502_DT_MOVTO = @ENT_DT_MOVTO)
+		AND (BKN502_NR_BANCO = @ENT_NR_BANCO)
+
+		AND (	-- UM PRODUTO
+				(@ENT_NR_PROD <> -1  AND  BKN502_NR_PROD = @ENT_NR_PROD)
+			OR   -- TODOS PRODUTOS
+				(@ENT_NR_PROD  = -1  AND @ENT_NR_USR  = -1) 
+
+			OR   -- PRODUTOS DO PERFIL DO USUARIO
+				(@ENT_NR_PROD  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_PROD IN 
+					(SELECT PERFIL_PRODUTO.PRO_ID FROM IMS.PERFIL_USUARIO AS PERFIL_USUARIO
+						LEFT JOIN IMS.PERFIL_PRODUTO AS PERFIL_PRODUTO
+						ON PERFIL_PRODUTO.PER_ID = PERFIL_USUARIO.USU_PER_ID
+						WHERE PERFIL_USUARIO.USU_ID= @ENT_NR_USR)
+				)
+		)
+
+		AND (    -- UM CESSIONARIO
+				(@ENT_NR_CESS <> -1 AND BKN502_NR_CESS = @ENT_NR_CESS) 
+			OR   -- TODOS CESSIONARIOS
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR  = -1) 
+			OR   -- CESSIONARIOS DO USUARIO
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_CESS IN 
+				(SELECT ins_id FROM ims.USUARIO_INSTITUICAO WHERE usu_id=@ENT_NR_USR))
+		)
+	GROUP BY 
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO
+
+
+
+	UNION
+	SELECT -- VENCIDOS ATÉ 360 DIAS
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO,
+		6								ORDEM,
+		'VENCIDOS ATÉ 360 DIAS'			POSICAO,
+		SUM(BKN502_QT_VA360)			QT_TITULO,
+		SUM(BKN502_TT_VA360)			TT_TITULO,
+		0								TT_PRESENTE -- Valor Presente � considerado somente no "A VENCER"
+	FROM BKN502 AS BKN502
+	LEFT JOIN BKN005 AS BKN005
+	ON BKN005_NR_PROD = BKN502_NR_PROD
+	AND BKN005_NR_BANCO = BKN502_NR_BANCO
+
+	WHERE  (BKN502_DT_MOVTO = @ENT_DT_MOVTO)
+		AND (BKN502_NR_BANCO = @ENT_NR_BANCO)
+		
+		AND (	-- UM PRODUTO
+				(@ENT_NR_PROD <> -1  AND  BKN502_NR_PROD = @ENT_NR_PROD)
+			OR   -- TODOS PRODUTOS
+				(@ENT_NR_PROD  = -1  AND @ENT_NR_USR  = -1) 
+
+			OR   -- PRODUTOS DO PERFIL DO USUARIO
+				(@ENT_NR_PROD  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_PROD IN 
+					(SELECT PERFIL_PRODUTO.PRO_ID FROM IMS.PERFIL_USUARIO AS PERFIL_USUARIO
+						LEFT JOIN IMS.PERFIL_PRODUTO AS PERFIL_PRODUTO
+						ON PERFIL_PRODUTO.PER_ID = PERFIL_USUARIO.USU_PER_ID
+						WHERE PERFIL_USUARIO.USU_ID= @ENT_NR_USR)
+				)
+		)
+
+		AND (    -- UM CESSIONARIO
+				(@ENT_NR_CESS <> -1 AND BKN502_NR_CESS = @ENT_NR_CESS) 
+			OR   -- TODOS CESSIONARIOS
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR  = -1) 
+			OR   -- CESSIONARIOS DO USUARIO
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_CESS IN 
+				(SELECT ins_id FROM ims.USUARIO_INSTITUICAO WHERE usu_id=@ENT_NR_USR))
+		)
+	GROUP BY 
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO
+
+
+
+
+	UNION
+	SELECT -- VENCIDOS > 360 DIAS
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO,
+		7								ORDEM,
+		'VENCIDOS > 360 DIAS'			POSICAO,
+		SUM(BKN502_QT_VCM360)			QT_TITULO,
+		SUM(BKN502_TT_VCM360)			TT_TITULO,
+		0								TT_PRESENTE -- Valor Presente � considerado somente no "A VENCER"
+	FROM BKN502 AS BKN502
+	LEFT JOIN BKN005 AS BKN005
+	ON BKN005_NR_PROD = BKN502_NR_PROD
+	AND BKN005_NR_BANCO = BKN502_NR_BANCO
+
+	WHERE  (BKN502_DT_MOVTO = @ENT_DT_MOVTO)
+		AND (BKN502_NR_BANCO = @ENT_NR_BANCO)
+
+		AND (	-- UM PRODUTO
+				(@ENT_NR_PROD <> -1  AND  BKN502_NR_PROD = @ENT_NR_PROD)
+			OR   -- TODOS PRODUTOS
+				(@ENT_NR_PROD  = -1  AND @ENT_NR_USR  = -1) 
+
+			OR   -- PRODUTOS DO PERFIL DO USUARIO
+				(@ENT_NR_PROD  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_PROD IN 
+					(SELECT PERFIL_PRODUTO.PRO_ID FROM IMS.PERFIL_USUARIO AS PERFIL_USUARIO
+						LEFT JOIN IMS.PERFIL_PRODUTO AS PERFIL_PRODUTO
+						ON PERFIL_PRODUTO.PER_ID = PERFIL_USUARIO.USU_PER_ID
+						WHERE PERFIL_USUARIO.USU_ID= @ENT_NR_USR)
+				)
+		)
+
+		AND (    -- UM CESSIONARIO
+				(@ENT_NR_CESS <> -1 AND BKN502_NR_CESS = @ENT_NR_CESS) 
+			OR   -- TODOS CESSIONARIOS
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR  = -1) 
+			OR   -- CESSIONARIOS DO USUARIO
+				(@ENT_NR_CESS  = -1 AND @ENT_NR_USR <> -1 AND BKN502_NR_CESS IN 
+				(SELECT ins_id FROM ims.USUARIO_INSTITUICAO WHERE usu_id=@ENT_NR_USR))
+		)
+	GROUP BY 
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO
+
+
+	ORDER BY	
+		BKN005_NR_PROD,
+		BKN005_NM_PROD,
+		BKN502_DT_MOVTO,
+		ORDEM
+
+SET QUOTED_IDENTIFIER OFF
+SET ANSI_NULLS ON
+/*-------------------------------------------------------------------------------
+  RESULT SET:
+
+  
+-------------------------------------------------------------------------------*/
+
+
+
+
+
+GO
+
+
