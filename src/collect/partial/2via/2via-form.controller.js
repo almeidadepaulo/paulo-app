@@ -8,8 +8,7 @@
     function SegundaviaFormCtrl($state, $stateParams, $mdDialog, segundaViaService, getData) {
 
         var vm = this;
-        vm.init = init;
-        
+        vm.init = init;        
         vm.segundaVia = {};
         vm.getData = getData;
         vm.removeById = removeById;
