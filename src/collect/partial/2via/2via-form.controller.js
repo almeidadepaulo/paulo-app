@@ -9,6 +9,7 @@
 
         var vm = this;
         vm.init = init;
+        
         vm.segundaVia = {};
         vm.getData = getData;
         vm.removeById = removeById;
